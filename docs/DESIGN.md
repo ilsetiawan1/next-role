@@ -221,6 +221,27 @@ Mengadopsi nuansa premium iOS frosted glass melayang:
   4. `Kalender`: Ikon kalender clean thin outline (`stroke: 1.5px, #64748B`, `fill: none`) + teks label "Kalender" (12px, 500, slate-500).
   5. `Settings`: Ikon pengaturan gear clean thin outline (`stroke: 1.5px, #64748B`, `fill: none`) + teks label "Settings" (12px, 500, slate-500).
 
+### H. Detail Lamaran Berbasis Bottom Sheet (Mobile 390x844)
+Mengadopsi pola visual lembar detail premium dari referensi `media_1794411634362_a5ed72dc.png`:
+* **Backdrop & Top Navigation Bar (`y: 44–90`):**
+  - Tombol Back bulat (`40x40 rounded-full bg-white shadow-sm`) dengan chevron `‹`.
+  - Header Perusahaan tengah: Nama perusahaan ("Tokopedia", 15px, SemiBold) dengan centang biru verified badge `✓`.
+  - Tombol Bookmark bulat (`40x40 rounded-full bg-white shadow-sm`) dengan ribbon merah `🔖`.
+* **Elevated White Bottom Sheet (`y: 116`, `h: 728`, `rounded-t-[36px]`):**
+  - **Arched Scooped Notch & Raised Logo Avatar:** Logo perusahaan bulat 64x64 menimpa tepi atas lembar detail (`-mt-8` / `y: -32`) dengan border halus dan shadow elevasi.
+  - **Judul Posisi & Rentang Gaji:** Nama posisi ("Senior Frontend Engineer", 19px, SemiBold, slate-900) dan gaji ("Rp 18.000.000 - 25.000.000 / bln", 13px, Medium, slate-500) tersusun simetris di tengah.
+  - **Metadata Chips Row:** Kapsul lembut `Full-Time`, `Hybrid`, dan status urgensi `⚠️ H+7 Perlu Follow-Up` (amber pill).
+  - **Segmented Control Tabs (`h-11 rounded-2xl bg-slate-100`):** Tiga tab kontekstual sesuai PRD/TSD:
+    1. `📄 Deskripsi` (Aktif, kartu putih timbul shadow-xs).
+    2. `🏢 Profil` (Perusahaan).
+    3. `✉️ Draf Pesan` (Follow-up generator otomatis ID/EN).
+  - **3-Kolom Info Strip Card (`bg-[#F8FAFC]`):** Menampilkan ringkasan esensial: Tipe Kerja (💼 Full-Time), Jam Kerja (⏱️ 09:00 - 18:00), dan Sistem Kerja (🏢 Hybrid 2d).
+  - **Detail Pekerjaan & Kualifikasi:** Paragraf deskripsi ringkas dengan link interaktif `"Baca Selengkapnya ›"`.
+  - **2-Kolom Metadata Cards:** Kartu Pengalaman (💼 3 - 5 Tahun) dan Lokasi Kantor (📍 Jakarta Selatan).
+  - **Guard Strip Keamanan Arsip:** Kapsul pelindung `"🔒 JD Snapshot tersimpan permanen — aman walau loker ditutup"`.
+  - **HR Contact Strip:** Catatan kontak perekrut `"👤 HR: Nabila Putri • 7 hari tanpa respon sejak lamaran terkirim"`.
+  - **Slide-to-Action Bottom CTA Bar (`h-13 rounded-full bg-gradient-to-r from-sky-500 to-sky-700`):** Slider interaktif dengan tombol putih *"Draf Pesan HRD ↗"* dan chevron animasi `› › › › ›`.
+
 ---
 
 ## 5. Layout Responsif
