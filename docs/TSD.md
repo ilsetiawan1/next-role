@@ -1,7 +1,7 @@
 # Technical Specifications Document (TSD) — NextRole
 
 > **Status:** Approved / Engineering Architecture  
-> **Versi:** 1.0.0  
+> **Versi:** 1.1.0  
 > **Target Platform:** Web (Full-Stack Next.js)  
 > **Arsitektur:** Frontend (FDA) • Backend (Modular Layered Repository Pattern)
 
@@ -16,7 +16,7 @@ Sistem dibangun menggunakan arsitektur monolit modern modular yang siap di-deplo
 * **Backend API:** Next.js Route Handlers (`src/app/api/...`)
 * **Autentikasi:** Auth.js (NextAuth.js v5) dengan **Google OAuth** & Credentials (1-Click Login tanpa ribet)
 * **ORM & Database:** Prisma ORM v6+ dengan PostgreSQL di **Neon Serverless** (koneksi via Neon Connection Pooler port 6543)
-* **Mesin AI & Ekstraksi:** Vercel AI SDK (`ai`), `@ai-sdk/google` (`gemini-1.5-flash`), dan `zod`
+* **Mesin AI & Ekstraksi:** Vercel AI SDK (`ai`), `@ai-sdk/google` (`gemini-1.5-flash`), dan `zod` (Mendukung input teks, tautan URL, dan **screenshot gambar multimodal**)
 * **Penjadwalan Otomatis:** Vercel Cron Jobs / Upstash QStash (Daily H+7 Check)
 * **Infrastruktur Hosting:** Vercel (Edge/Serverless Platform) + Cloudflare (DNS)
 
@@ -34,17 +34,17 @@ src/
 │   │   ├── api/               # authApi.ts
 │   │   └── types/             # auth.types.ts
 │   │
-│   ├── clipper/               # Fitur Smart Job Clipper (Modal input link/teks lowongan)
-│   │   ├── components/        # ClipperModal.tsx, RawTextForm.tsx
-│   │   ├── api/               # clipperApi.ts (panggil endpoint parser AI)
+│   ├── clipper/               # Fitur Smart Job Clipper (Modal input screenshot, teks, link)
+│   │   ├── components/        # ClipperModal.tsx, ScreenshotUpload.tsx, RawTextForm.tsx, QuotaBadge.tsx
+│   │   ├── api/               # clipperApi.ts (panggil endpoint parser AI multimodal)
 │   │   └── types/             # clipper.types.ts
 │   │
-│   ├── kanban/                # Fitur Papan Visual Kanban
+│   ├── kanban/                # Fitur Papan Visual Kanban (5 Kolom Langsung: Applied s/d Rejected)
 │   │   ├── components/        # KanbanBoard.tsx, KanbanColumn.tsx, ApplicationCard.tsx
 │   │   ├── hooks/             # useKanbanDnD.ts (logika geser kartu)
 │   │   └── types/             # kanban.types.ts
 │   │
-│   ├── application-detail/    # Fitur Detail Lamaran & Arsip JD
+│   ├── application-detail/    # Fitur Detail Lamaran & Arsip JD (Slide-Over Drawer)
 │   │   ├── components/        # DetailDrawer.tsx, JdSnapshotView.tsx, FollowUpGenerator.tsx
 │   │   └── hooks/             # useFollowUp.ts
 │   │
@@ -57,8 +57,8 @@ src/
 ```text
 src/
 ├── config/                    # Inisialisasi Prisma Client (Singleton) & Google AI SDK
-├── constants/                 # Enum status lamaran & konstanta waktu
-├── middlewares/               # Error handler & input sanitizer
+├── constants/                 # Enum status lamaran & konstanta kuota harian (MAX_DAILY_AI_CLIPS = 20)
+├── middlewares/               # Error handler, rate limit guard, & input sanitizer
 └── modules/
     ├── auth/                  # Modul Autentikasi (Register, Login, Session)
     │   ├── auth.controller.ts
@@ -66,9 +66,9 @@ src/
     │   ├── auth.repository.ts
     │   └── auth.routes.ts
     │
-    ├── job-parser/            # Modul Ekstraksi AI via Vercel AI SDK
-    │   ├── job-parser.controller.ts
-    │   ├── job-parser.service.ts     # Panggil generateObject dengan skema Zod
+    ├── job-parser/            # Modul Ekstraksi AI via Vercel AI SDK (Multimodal Text & Image)
+    │   ├── job-parser.controller.ts  # Validasi payload & cek kuota harian pengguna (20/hari)
+    │   ├── job-parser.service.ts     # Panggil generateObject multimodal dengan skema Zod
     │   └── job-parser.routes.ts
     │
     ├── applications/          # Modul CRUD & Logika Lamaran
@@ -98,7 +98,6 @@ generator client {
 }
 
 enum ApplicationStatus {
-  WISHLIST
   APPLIED
   FOLLOW_UP_NEEDED
   INTERVIEW_SCHEDULED
@@ -108,19 +107,23 @@ enum ApplicationStatus {
 }
 
 model User {
-  id            String        @id @default(uuid())
-  name          String?
-  email         String        @unique
-  emailVerified DateTime?     @map("email_verified")
-  image         String?
-  passwordHash  String?       @map("password_hash") // Optional jika login via Google
+  id                String        @id @default(uuid())
+  name              String?
+  email             String        @unique
+  emailVerified     DateTime?     @map("email_verified")
+  image             String?
+  passwordHash      String?       @map("password_hash") // Optional jika login via Google
 
-  accounts      Account[]
-  sessions      Session[]
-  applications  Application[]
+  // Proteksi Kuota Ekstraksi AI Harian (20 Klip/Hari)
+  dailyAiClipsCount Int           @default(0) @map("daily_ai_clips_count")
+  lastClipResetAt   DateTime      @default(now()) @map("last_clip_reset_at")
 
-  createdAt     DateTime      @default(now()) @map("created_at")
-  updatedAt     DateTime      @updatedAt @map("updated_at")
+  accounts          Account[]
+  sessions          Session[]
+  applications      Application[]
+
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
 
   @@map("users")
 }
@@ -213,12 +216,18 @@ model ActivityLog {
 
 ## 4. Spesifikasi Kontrak API (Endpoints)
 
-### 1. Ekstraksi AI dari Teks / URL
+### 1. Ekstraksi AI Multimodal (Teks, URL, atau Screenshot Gambar)
 * **Endpoint:** `POST /api/v1/parser/extract`
-* **Request Body:**
-  ```json
-  { "rawText": "Teks lowongan kerja dari LinkedIn..." }
-  ```
+* **Proteksi Kuota:** Maksimal 20 request/hari per akun pengguna terautentikasi.
+* **Request Body (Dua Pilihan Payload):**
+  * **Opsi A: Raw Text / URL**
+    ```json
+    { "type": "text", "content": "Teks lowongan kerja dari LinkedIn..." }
+    ```
+  * **Opsi B: Screenshot Gambar (Multimodal)**
+    ```json
+    { "type": "image", "imageBase64": "data:image/png;base64,iVBOR...", "mimeType": "image/png" }
+    ```
 * **Response 200 OK (Structured Output dari Gemini 1.5 Flash via Zod):**
   ```json
   {
@@ -228,17 +237,29 @@ model ActivityLog {
       "position": "Frontend Engineer",
       "location": "Jakarta / Hybrid",
       "employmentType": "Full-time",
-      "salaryRange": "Negotiable",
+      "salaryRange": "Rp 18.000.000 - 25.000.000",
       "keyRequirements": ["Next.js", "TypeScript", "Tailwind"],
-      "jdSnapshot": "Ringkasan lengkap tanggung jawab..."
+      "jdSnapshot": "Ringkasan lengkap tanggung jawab dan kualifikasi lowongan..."
+    },
+    "meta": {
+      "dailyAiClipsCount": 1,
+      "maxDailyAiClips": 20,
+      "remainingClipsToday": 19
     }
+  }
+  ```
+* **Response 429 Too Many Requests (Bila Melebihi Kuota Harian):**
+  ```json
+  {
+    "success": false,
+    "error": "Batas ekstraksi AI harian (20/20) telah tercapai. Kuota direset pukul 00:00 WIB. Anda tetap dapat mencatat lamaran manual tanpa batas."
   }
   ```
 
 ### 2. CRUD Lamaran (Daftar & Buat)
 * `GET /api/v1/applications` $\rightarrow$ Mengambil semua lamaran aktif (`WHERE deleted_at IS NULL`).
-* `POST /api/v1/applications` $\rightarrow$ Membuat lamaran baru.
-* `PATCH /api/v1/applications/:id/status` $\rightarrow$ Memperbarui status kolom Kanban saat kartu digeser.
+* `POST /api/v1/applications` $\rightarrow$ Membuat lamaran baru langsung ke status `APPLIED`.
+* `PATCH /api/v1/applications/:id/status` $\rightarrow$ Memperbarui status kolom Kanban saat kartu digeser (`APPLIED` $\rightarrow$ `FOLLOW_UP_NEEDED` $\rightarrow$ `INTERVIEW_SCHEDULED` $\rightarrow$ `OFFERED` $\rightarrow$ `REJECTED/GHOSTED`).
 * `DELETE /api/v1/applications/:id` $\rightarrow$ Soft delete (mengisi `deleted_at = NOW()`).
 
 ### 3. Generator Pesan Follow-Up
@@ -259,6 +280,7 @@ model ActivityLog {
 
 ## 5. Batasan Teknis & Kebijakan Rekayasa
 
+* **Proteksi Kuota AI Harian (*Rate Limit Guard*):** Batas 20 klip ekstraksi AI per akun per hari dihitung di sisi server via database User (`dailyAiClipsCount`). Reset otomatis harian jika selisih waktu `lastClipResetAt` melewati tanggal kalender baru.
 * **Zero RegEx Policy:** Dilarang menggunakan pola regex (`/pattern/` atau `RegExp`). Seluruh ekstraksi string wajib menggunakan metode bawaan (`.split()`, `.trim()`, `.includes()`) atau validasi skema resmi `zod`.
 * **Pragmatic Engineering (`ponytail`):** Tidak membuat interface berlebih jika implementasinya hanya 1. Menjaga fungsi tetap ringkas dan langsung menyelesaikan masalah.
 * **Keamanan:** Kunci rahasia AI (`GEMINI_API_KEY`) dan URL Database (`DATABASE_URL`) wajib diakses via server-side environment variables, tidak boleh terekspos ke bundle browser client.

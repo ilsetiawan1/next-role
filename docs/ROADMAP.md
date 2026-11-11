@@ -24,9 +24,11 @@ flowchart LR
 
 ---
 
-## 🏃 Sprint 1: Perancangan UI/UX di FigCraft (Canvas Visual)
+## 🏃 Sprint 1: Perancangan UI/UX di FigCraft (Canvas Visual) — [SELESAI ✅]
 
 > **Tujuan:** Merancang antarmuka visual high-fidelity di FigCraft yang 100% selaras dengan PRD dan TSD, bebas AI-slop, mengadopsi prinsip ergonomis modern, dan siap dikonversi ke kode.
+>
+> **Status:** 18 Frame High-Fidelity Lengkap (Landing Page, Auth, Home, Lamaran, Kalender, Settings) pada Mobile (390x844), Tablet (834x1194), dan Desktop (1440x900) tersimpan di `docs/next-role.figcraft`.
 >
 > ⚠️ **Protokol Keselamatan FigCraft:**  
 > Pengguna (*User*) **wajib membuka aplikasi FigCraft secara manual terlebih dahulu di `localhost:7979`** sebelum Agent mengirimkan perintah canvas apa pun untuk mencegah crash server localhost.

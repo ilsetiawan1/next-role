@@ -54,24 +54,43 @@ Aturan ini aktif saat Agent diminta membuat, merancang, atau merevisi visual di 
 * **`antislop-layoutmobile`**: Wajib dipatuhi saat membuat frame layar ponsel (target sentuh $\ge 44 \times 44$ px, form terpusat/centered).
 * **`antislop-copywriting`**: Wajib dipatuhi untuk teks tombol, label, dan dialog agar singkat, jelas, dan natural (tanpa bahasa marketing klise).
 
-### A.2. Aturan Estetika & Anti-AI Slop
-* **Bebas Pill/Badge Soup:** Dilarang membungkus setiap teks atau status ke dalam kotak/badge kapsul berwarna-warni pekat. Gunakan indikator minimalis: satu titik warna 6px di samping teks netral.
+### A.2. Aturan Estetika & Soft Sky Glass Elevation (v3.0.0)
+* **Kanvas Sky Gradient:** Latar belakang kanvas menggunakan gradasi sangat halus dari putih ke biru langit (`#F4F9FF` → `#E3F1FD` / `linear-gradient(180deg, #F4F9FF 0%, #E3F1FD 100%)`) dengan sentuhan blob blur biru samar untuk kedalaman visual.
+* **Frosted Cards (Kartu Kaca Bertingkat):** Kartu antarmuka menggunakan permukaan kaca putih semi-transparan (`rgba(255, 255, 255, 0.72)` / `bg-white/70`), blur halus (`backdrop-blur-md` 16px), sudut membulat `rounded-3xl` (24px), border ultra-halus (`border border-white/90`), dan bayangan difus **bernuansa biru** (`box-shadow: 0 12px 32px -8px rgba(2, 132, 199, 0.16), 0 2px 6px rgba(2, 132, 199, 0.06)`).
+* **Satu Hero Card per Layar (Prioritas Tertinggi):** Item paling mendesak (H+7 follow-up / interview terdekat) menggunakan kartu gradien biru memukau (`linear-gradient(135deg, #38A9E8 0%, #0284C7 55%, #075985 100%)`), teks putih, glossy radial highlight, logo lingkaran putih 44x44, dan tombol aksi sudut putih (`bg-white text-sky-700 font-semibold px-4 py-2 rounded-xl`).
+* **Reminder Strip:** Strip kaca biru muda di bawah header memuat agenda terdekat dengan kotak digit waktu `[09][:][45]` (`w-8 h-10 rounded-lg bg-sky-100 text-sky-800 font-bold`).
+* **Search Bar & Filter Chips (Peek Edge):**
+  * Search bar pill putih `h-12 rounded-2xl` dengan tombol filter kotak `40x40 rounded-xl bg-sky-100 text-sky-700` di kanan.
+  * Filter chips scroll horizontal: chip aktif gradien `sky-400→sky-600` teks putih; chip nonaktif `bg-white/70 text-slate-700 border border-white`.
+* **Status Badges (Soft Pills):** Menggunakan kapsul pastel lembut dengan teks berbobot `-700` (kontras $\ge 4.5:1$):
+  * `Applied`: `bg-blue-50 text-blue-700 border border-blue-100` (`#EFF6FF` / `#1D4ED8`)
+  * `Follow-Up (H+7)`: `bg-amber-50 text-amber-700 border border-amber-100` (`#FFFBEB` / `#B45309`)
+  * `Interview`: `bg-purple-50 text-purple-700 border border-purple-100` (`#FAF5FF` / `#7E22CE`)
+  * `Offer`: `bg-emerald-50 text-emerald-700 border border-emerald-100` (`#ECFDF5` / `#047857`)
+  * `Ghosted / Rejected`: `bg-rose-50 text-rose-700 border border-rose-100` (`#FFF1F2` / `#BE123C`)
+* **Arsitektur Kartu Lamaran (Card Architecture):**
+  1. Baris 1: Logo Perusahaan bulat (`40x40 rounded-full bg-white shadow-sm`) + Nama Perusahaan & Lokasi + Soft Status Badge + tombol bookmark bulat.
+  2. Baris 2: Nama Posisi Kerja (`Bold, text-base/16px, text-slate-900`) + Rentang Gaji (`text-sm font-medium text-slate-700`).
+  3. Baris 3: Tags Metadata (`text-xs bg-white/80 border border-sky-100 text-slate-700 px-2.5 py-1 rounded-full`).
+  4. Baris 4: Indikator waktu di kiri bawah dan tombol aksi ringkas di pojok kanan bawah (`text-xs font-semibold px-3.5 py-2 rounded-xl bg-sky-100 text-sky-800 hover:bg-sky-600 hover:text-white transition-all`). Dilarang memakai tombol lebar penuh (*full-width solid buttons*) di dalam kartu.
 * **Tipografi & Hirarki Brand:**
-  * **Logo/Brand:** Wajib menggunakan font display geometris berkarakter tegas (*Plus Jakarta Sans* atau *Outfit*) dengan *letter-spacing* tegas agar ter-highlight dari konten lainnya.
-  * **Konten & Body:** Gunakan font antarmuka netral (*Inter*).
-  * **Bebas Teks Fluff:** Hilangkan teks pemasaran, jargon AI, atau kutipan panjang pada antarmuka fungsional.
-* **Efek Kaca (*Glassmorphism*):**  
-  Gunakan refraksi halus: `backgroundBlur` (radius 20–36px), isian putih transparan (`#FFFFFFB8` – `#FFFFFFEE`), border tipis 1px, dan drop shadow lembut. Kontras teks wajib memenuhi $\ge 4.5:1$.
+  * Font terpadu: `Plus Jakarta Sans` untuk judul dan body (ukuran teks minimum absolut **12px**).
+* **Struktur Navigasi Responsif:**
+  * **Desktop (≥1024px / 1280px+):** Left Floating Glass Sidebar (`w-64`, `m-4 rounded-[28px]`, `bg-white/75 backdrop-blur-xl`), tombol utama `+ Catat Lamaran` (gradient sky), menu vertikal (Home, Lamaran, Kalender, Settings), widget kuota 18/20, dan profil footer.
+  * **Tablet (768px - 1023px):** Slim Glass Sidebar (`w-20`, `m-3 rounded-3xl`) dengan FAB Catat Lamaran 56x56 di tengah-atas, grid 2 kolom untuk kartu (Hero Card `col-span-2`), dan Detail sebagai Modal Sheet tengah (`max-w-[560px] rounded-[32px]`).
+  * **Mobile (<768px):** Floating Pill Nav Dock (`h-[68px] rounded-[28px]`, `bg-white/85 backdrop-blur-xl border border-white shadow-lg`) dengan **Raised Center FAB (64x64)** `sky-400→sky-600` terangkat `-translate-y-4` untuk aksi **Catat Lamaran**. Seluruh 4 tab (Home, Lamaran, Kalender, Settings) **selalu menampilkan label teks 12px**.
+* **Detail Lamaran Berbasis Sheet:**
+  * Format: Bottom Sheet 88% di Mobile, Modal Sheet di Tablet, dan Right Drawer `w-[480px]` di Desktop.
+  * Komponen Detail: Logo bulat 72x72 menimpa tepi atas sheet (`-mt-9` center), judul posisi center H1 + gaji, segmented tabs (`Deskripsi` | `Perusahaan` | `Draf Pesan`), 3-kolom Info Strip, Job Details, dan **Slide-to-Action** CTA slider (`h-14 rounded-full` dengan animasi chevrons `›››››` dan fallback tap untuk keyboard).
 
 ### A.3. Pemetaan Visual Persis PRD & TSD (Anti-Melenceng)
-* **6 Kolom Pipeline Kanban:** Wajib persis mencerminkan enum `ApplicationStatus` di TSD:
-  1. `Wishlist`
-  2. `Applied`
-  3. `Follow-Up Needed`
-  4. `Interview Scheduled`
-  5. `Offered`
-  6. `Rejected / Ghosted`
-* **Detail Drawer:** Wajib memuat 3 tab persis sesuai spesifikasi:
+* **5 Kolom Pipeline Kanban Langsung (Tanpa Wishlist):** Wajib persis mencerminkan enum `ApplicationStatus` di TSD:
+  1. `Applied`
+  2. `Follow-Up Needed`
+  3. `Interview Scheduled`
+  4. `Offered`
+  5. `Rejected / Ghosted`
+* **Detail Drawer:** Wajib memuat tab kontekstual sesuai spesifikasi:
   1. Tab Ringkasan & Riwayat (*Overview & Timeline*)
   2. Tab Arsip JD Snapshot (*Permanent Job Description Text*)
   3. Tab Follow-Up Generator (Draf dwi-bahasa ID/EN + indikator H+7)
@@ -162,7 +181,7 @@ src/
 ```
 
 * **Entitas Database Prisma (Model Inti):**
-  1. `User` — Identitas pengguna (id, name, email, passwordHash, createdAt, updatedAt).
+  1. `User` — Identitas pengguna (id, name, email, passwordHash, dailyAiClipsCount, lastClipResetAt, createdAt, updatedAt).
   2. `Account` & `Session` — Integrasi NextAuth / Auth.js untuk Google OAuth.
   3. `Application` — Entitas sentral lamaran kerja (userId, companyName, position, location, employmentType, salaryRange, keyRequirements, **jdSnapshot**, status, appliedAt, followUpAt, interviewAt, recruiterName, recruiterContact, **deletedAt**).
   4. `ActivityLog` — Catatan riwayat status dan follow-up per lamaran (applicationId, actionType, notes, createdAt).
