@@ -221,28 +221,30 @@ Mengadopsi nuansa premium iOS frosted glass melayang:
   4. `Kalender`: Ikon kalender clean thin outline (`stroke: 1.5px, #64748B`, `fill: none`) + teks label "Kalender" (12px, 500, slate-500).
   5. `Settings`: Ikon pengaturan gear clean thin outline (`stroke: 1.5px, #64748B`, `fill: none`) + teks label "Settings" (12px, 500, slate-500).
 
-### H. Detail Lamaran Berbasis Bottom Sheet (Mobile 390x844)
-Mengadopsi pola visual lembar detail premium dari referensi `media_1794411634362_a5ed72dc.png`:
+### H. Detail Lamaran Berbasis Bottom Sheet (Mobile 390x844 — Anti-Slop Minimalist)
+Mengadopsi hierarki visual lembar detail premium dan lapang dari referensi visual pengguna (`media_1794411634362_a5ed72dc.png`) dengan mematuhi prinsip **`antislop-ui`** (zero-bold typography, zero raw emojis, anti-bloat):
 * **Backdrop & Top Navigation Bar (`y: 44–90`):**
-  - Tombol Back bulat (`40x40 rounded-full bg-white shadow-sm`) dengan chevron `‹`.
-  - Header Perusahaan tengah: Nama perusahaan ("Tokopedia", 15px, SemiBold) dengan centang biru verified badge `✓`.
-  - Tombol Bookmark bulat (`40x40 rounded-full bg-white shadow-sm`) dengan ribbon merah `🔖`.
-* **Elevated White Bottom Sheet (`y: 116`, `h: 728`, `rounded-t-[36px]`):**
-  - **Arched Scooped Notch & Raised Logo Avatar:** Logo perusahaan bulat 64x64 menimpa tepi atas lembar detail (`-mt-8` / `y: -32`) dengan border halus dan shadow elevasi.
-  - **Judul Posisi & Rentang Gaji:** Nama posisi ("Senior Frontend Engineer", 19px, SemiBold, slate-900) dan gaji ("Rp 18.000.000 - 25.000.000 / bln", 13px, Medium, slate-500) tersusun simetris di tengah.
-  - **Metadata Chips Row:** Kapsul lembut `Full-Time`, `Hybrid`, dan status urgensi `⚠️ H+7 Perlu Follow-Up` (amber pill).
-  - **Segmented Control Tabs (`h-11 rounded-2xl bg-slate-100`):** Tiga tab kontekstual sesuai PRD/TSD:
-    1. `📄 Deskripsi` (Aktif, kartu putih timbul shadow-xs).
-    2. `🏢 Profil` (Perusahaan).
-    3. `✉️ Draf Pesan` (Follow-up generator otomatis ID/EN).
-  - **3-Kolom Info Strip Card (`bg-[#F8FAFC]`):** Menampilkan ringkasan esensial: Tipe Kerja (💼 Full-Time), Jam Kerja (⏱️ 09:00 - 18:00), dan Sistem Kerja (🏢 Hybrid 2d).
-  - **Detail Pekerjaan & Kualifikasi:** Paragraf deskripsi ringkas dengan link interaktif `"Baca Selengkapnya ›"`.
-  - **2-Kolom Metadata Cards:** Kartu Pengalaman (💼 3 - 5 Tahun) dan Lokasi Kantor (📍 Jakarta Selatan).
-  - **Guard Strip Keamanan Arsip:** Kapsul pelindung `"🔒 JD Snapshot tersimpan permanen — aman walau loker ditutup"`.
-  - **HR Contact Strip:** Catatan kontak perekrut `"👤 HR: Nabila Putri • 7 hari tanpa respon sejak lamaran terkirim"`.
-  - **Slide-to-Action Bottom CTA Bar (`h-13 rounded-full bg-gradient-to-r from-sky-500 to-sky-700`):** Slider interaktif dengan tombol putih *"Draf Pesan HRD ↗"* dan chevron animasi `› › › › ›`.
+  - Tombol Back bulat (`40x40 rounded-full bg-white shadow-sm`) dengan simbol chevron tipis `‹`.
+  - Header Perusahaan tengah: Nama perusahaan ("Tokopedia", 15px, Regular, `#0F172A`) dengan centang biru verified badge `✓`.
+  - Tombol Bookmark bulat (`40x40 rounded-full bg-white shadow-sm`) dengan aksen ribbon merah minimalis (`#F43F5E`).
+* **Elevated White Bottom Sheet (`y: 190`, `h: 654`, `rounded-t-[36px]`):**
+  - **Raised Logo Avatar:** Badge logo perusahaan bulat 64x64 menimpa tepi atas lembar detail (`-mt-8` / `y: -32`) dengan border halus `#F1F5F9` dan bayangan lembut.
+  - **Judul Posisi & Rentang Gaji:** Nama posisi ("Senior Frontend Engineer", 18px, Regular, `#0F172A`) dan gaji ("Rp 18.000.000 - 25.000.000 / bln", 13px, Regular, `#64748B`) tersusun simetris di tengah.
+  - **Metadata Chips Row:** Tiga kapsul minimalis bersih (`Full-Time`, `Hybrid`, `Senior`) dengan latar abu-abu netral lembut (`#F1F5F9`), teks slate, tanpa warna peringatan kontras.
+  - **Segmented Control Tabs (`h-11 rounded-2xl bg-slate-100`):** Dua tab esensial yang ringkas dan fokus:
+    1. `Deskripsi` (Aktif, kartu putih timbul dengan shadow-xs halus).
+    2. `Perusahaan` (Teks slate netral).
+  - **3-Kolom Info Strip Card (`bg-[#F8FAFC]`):** Ringkasan esensial 3 kolom bergaris pemisah halus:
+    - Kolom 1: "Full-Time" (13px Regular) / "Tipe Kerja" (11px Regular, `#94A3B8`).
+    - Kolom 2: "09:00 - 18:00" (13px Regular) / "Jam Kerja" (11px Regular, `#94A3B8`).
+    - Kolom 3: "Hybrid (2h)" (13px Regular) / "Sistem Kerja" (11px Regular, `#94A3B8`).
+  - **Detail Pekerjaan:** Judul "Detail Pekerjaan" (15px Regular) + tombol more `•••`. Paragraf deskripsi ringkas tanpa kata-kata tebal, dengan link `"Baca Selengkapnya ›"` (`#0284C7`) yang diberi jarak vertikal 14px bebas tumpang-tindih.
+  - **2-Kolom Metadata Cards:** Kartu "Pengalaman Kerja" ("3 - 5 Tahun") dan "Lokasi Kantor" ("Jakarta Selatan") dengan padding lapang dan latar `#F8FAFC`.
+  - **Slide-to-Action Bottom CTA Bar (`h-14 rounded-full bg-gradient-to-r from-sky-600 to-sky-700`):** Slider interaktif modern dengan tombol kapsul putih *"Lamar Sekarang"* di sisi kiri dan deretan chevron `› › › › ›` transparan di sisi kanan.
+  - **Home Indicator:** Garis navigasi iOS (`128x4 rounded-full bg-slate-300`) di bagian bawah dengan safe padding 24px.
 
 ---
+
 
 ## 5. Layout Responsif
 
