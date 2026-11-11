@@ -131,16 +131,17 @@ Terinspirasi murni dari `docs/assets/UI_STYLE_REFERENCES.jpg`:
   - Chip nonaktif (`Full Time`, `Hybrid`, `Remote`): Kapsul putih bersih `bg-white text-slate-700 border border-white shadow-xs px-3.5 py-1.5 rounded-full`.
   - Chip terakhir memotong tepi kanan (*peek edge*) sebagai petunjuk scroll tanpa scrollbar.
 
-### C. Recommended Carousel (Hero Card Perlu Tindak Lanjut)
+### C. Recommended Carousel (Hero Card Perlu Tindak Lanjut — Amber Accent Surface)
 * Format: **Carousel Horizontal dengan Lebar Kartu ~70–75% Layar (`w-[260px]`)**.
 * Di sisi kanannya: Kartu kedua (*Apple UI/UX*) tampak mengintip jelas selebar ~70–80px (*carousel peek*).
 * Visual Hero Card:
-  - Latar: Gradien cyan-sky bercahaya (`linear-gradient(135deg, #2EB5F8 0%, #0284C7 60%, #0369A1 100%)`).
-  - Sudut: `rounded-[28px]`, bayangan `box-shadow: 0 16px 36px -8px rgba(2, 132, 199, 0.38)`.
-  - Baris 1: Logo perusahaan bulat putih `40x40` (Tokopedia) + Nama perusahaan "Tokopedia · Jakarta" (13px, 500, putih). **Tanpa ikon Bookmark** (dihapus sesuai arahan).
-  - Baris 2: Nama posisi kerja "Senior Frontend Engineer" (15px, 600, putih).
-  - Baris 3: Rentang gaji "Rp 18.000.000 – 25.000.000 / bln" (12px, 500, putih/90).
-  - Baris 4: Kapsul status `H+7 Hari Ini` (`bg-white/20 text-white rounded-full px-2.5 py-1`) di kiri, bersisian dengan tombol aksi pill putih kompak `Draf follow-up ↗` (`bg-white text-sky-800 font-semibold px-3.5 py-1.5 rounded-full shadow-sm`) di kanan.
+  - Latar: Putih murni (`#FFFFFF`) dengan bayangan difus lembut (`box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06)`). Mencegah kompetisi visual dengan Hero Banner Slider biru di atasnya.
+  - Border/Aksen: Garis tepi amber halus `border border-amber-200/80` (`#FDE68A`, `strokeWeight: 1.5`) yang memberi sinyal urgensi tindak lanjut tanpa mencolok atau bentrok.
+  - Sudut: `rounded-[24px]`.
+  - Baris 1: Logo perusahaan bulat 40x40 `bg-emerald-50 border border-emerald-200` dengan inisial `TKP` hijau emerald-700 (`#047857`) + Nama perusahaan "Tokopedia" (14px, SemiBold 600, `text-slate-900`) & lokasi "Jakarta Selatan • Hybrid" (12px, Regular 400, `text-slate-500`).
+  - Baris 2: Nama posisi kerja "Senior Frontend Engineer" (16px, SemiBold 600, `text-slate-900`).
+  - Baris 3: Rentang gaji "Rp 18.000.000 - 25.000.000" (13px, Medium 500, `text-slate-500` / `text-slate-600`).
+  - Baris 4: Kapsul status soft amber pill `H+7 Hari Ini` (`bg-amber-50 text-amber-700 border border-amber-200 text-xs font-medium px-2.5 py-1 rounded-full`) di kiri, bersisian dengan tombol aksi gelap ringkas `Draf Pesan ↗` (`bg-slate-900 text-white text-xs font-medium px-3.5 py-1.5 rounded-full hover:bg-slate-800 transition-all`) di kanan.
 
 ### D. Latest Post (Kartu Lamaran Reguler — Clean Surface)
 * Format: Kartu putih murni melayang `rounded-[28px] p-4 bg-white shadow-sm border border-slate-100/60`.
