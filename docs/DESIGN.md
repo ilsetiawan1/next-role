@@ -1,7 +1,7 @@
 # Design System & UI/UX Specification: NextRole
 
-> **Status:** Approved Visual Direction (v3.3.0 — True Minimalist Reference Alignment)  
-> **Versi:** 3.3.0 (revisi terarah dari v3.2.0)  
+> **Status:** Approved Visual Direction (v3.4.0 — Glassmorphism, Zero-Avatar Clean Typography, Poppins & iOS Glass Dock)  
+> **Versi:** 3.4.0 (revisi terarah dari v3.3.0)  
 > **Referensi Visual Resmi:**  
 > - Kanvas, Header, Hero Carousel, Card, & Bottom Dock: `docs/assets/UI_STYLE_REFERENCES.jpg` (@siren.uix — Job Finder UI)  
 > - Modal Tambah Lamaran (Otomatis & Manual) & Kuota: `docs/assets/UPLOAD_MODAL_UI_REFERENCES.png` (Iconly Upload UI)  
@@ -80,7 +80,8 @@ Terinspirasi murni dari `docs/assets/UI_STYLE_REFERENCES.jpg`:
 
 ## 3. Tipografi
 
-**Satu keluarga font:** `Plus Jakarta Sans` (400 / 500 / 600 saja).
+* **Font Brand / Teks Logo:** `Plus Jakarta Sans` (khusus untuk mark teks logo "NextRole" agar memiliki identitas display visual yang khas dan berwibawa).
+* **Font Antarmuka (UI Text):** `Poppins` (diterapkan secara konsisten pada seluruh teks komponen: Home Mobile, Tablet, Desktop, serta modal pencatatan lamaran). Bobot font yang diizinkan: 400 (Regular), 500 (Medium), dan 600 (SemiBold).
 
 ### 3.1 Skala Ukuran
 | Tingkat | Mobile | Desktop | Line Height |
@@ -95,19 +96,21 @@ Terinspirasi murni dari `docs/assets/UI_STYLE_REFERENCES.jpg`:
 ### 3.2 Weight per Elemen (Sumber Kebenaran Tunggal)
 | Elemen | Weight | Warna |
 | :--- | :--- | :--- |
-| Nama pengguna di Header | 600 | slate-900 |
-| Role pengguna di Header | 400 | slate-500 |
-| Judul section ("Perlu Tindak Lanjut", "Aktivitas Terakhir") | 600 | slate-900 |
-| Nama posisi kerja (Hero & Card) | 600 | slate-900 (putih di Hero) |
-| Nama perusahaan | 500 | slate-700 (putih di Hero) |
-| Lokasi & sub-info | 400 | slate-500 |
-| Rentang gaji | 500 | slate-700 (putih/90 di Hero) |
-| Tag metadata (Full-time, Hybrid) | 400–500 | slate-600 |
-| Status badge | 500 | blue-700 / amber-700 / purple-700 |
-| Tombol CTA Hero ("Draf follow-up ↗") | 600 | sky-800 |
-| Link ("Lihat semua ›") | 500 | sky-700 |
-| Label nav aktif | 500 | sky-800 |
-| Label nav nonaktif | 400 | slate-500 |
+| Teks Logo "NextRole" | 600 (Plus Jakarta Sans) | slate-900 |
+| Slogan / Tagline | 400–500 (Poppins) | slate-500 |
+| Nama pengguna di Header | 600 (Poppins) | slate-900 |
+| Role pengguna di Header | 400 (Poppins) | slate-500 |
+| Judul section ("Perlu Tindak Lanjut", "Aktivitas Terakhir") | 600 (Poppins) | slate-900 |
+| Nama posisi kerja (Hero & Card) | 600 (Poppins) | slate-900 (putih di Hero) |
+| Nama perusahaan | 500 (Poppins) | slate-700 (putih di Hero) |
+| Lokasi & sub-info | 400 (Poppins) | slate-500 |
+| Rentang gaji | 500 (Poppins) | slate-700 (putih/90 di Hero) |
+| Tag metadata (Full-time, Hybrid) | 400–500 (Poppins) | slate-600 |
+| Status badge | 500 (Poppins) | blue-700 / amber-700 / purple-700 |
+| Tombol CTA Hero ("Draf Pesan HRD ↗") | 600 (Poppins) | text-white (bg-sky-600 #0284C7) |
+| Link ("Lihat semua ›") | 500 (Poppins) | sky-700 |
+| Label nav aktif | 500 (Poppins) | sky-800 |
+| Label nav nonaktif | 400 (Poppins) | slate-500 |
 
 ---
 
@@ -131,25 +134,27 @@ Terinspirasi murni dari `docs/assets/UI_STYLE_REFERENCES.jpg`:
   - Chip nonaktif (`Full Time`, `Hybrid`, `Remote`): Kapsul putih bersih `bg-white text-slate-700 border border-white shadow-xs px-3.5 py-1.5 rounded-full`.
   - Chip terakhir memotong tepi kanan (*peek edge*) sebagai petunjuk scroll tanpa scrollbar.
 
-### C. Recommended Carousel (Hero Card Perlu Tindak Lanjut — Amber Accent Surface)
+### C. Recommended Carousel (Hero Card Perlu Tindak Lanjut — Amber Accent Glass Surface)
 * Format: **Carousel Horizontal dengan Lebar Kartu ~70–75% Layar (`w-[260px]`)**.
-* Di sisi kanannya: Kartu kedua (*Apple UI/UX*) tampak mengintip jelas selebar ~70–80px (*carousel peek*).
+* Di sisi kanannya: Kartu kedua (*Apple UI/UX*) tampak mengintip jelas selebar ~70–80px (*carousel peek*, `x: 292`, `clip: true`).
 * Visual Hero Card:
-  - Latar: Putih murni (`#FFFFFF`) dengan bayangan difus lembut (`box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06)`). Mencegah kompetisi visual dengan Hero Banner Slider biru di atasnya.
-  - Border/Aksen: Garis tepi amber halus `border border-amber-200/80` (`#FDE68A`, `strokeWeight: 1.5`) yang memberi sinyal urgensi tindak lanjut tanpa mencolok atau bentrok.
+  - Latar: Kaca putih semi-transparan (`rgba(255, 255, 255, 0.85)` / `bg-white/85`) dengan pendaran bayangan difus biru lembut (`box-shadow: 0 10px 24px -4px rgba(2, 132, 199, 0.10), 0 2px 6px rgba(15, 23, 42, 0.04)`). Mencegah kompetisi visual dengan Hero Banner Slider biru di atasnya.
+  - Border/Aksen: Garis tepi amber halus `border border-amber-200` (`#FDE68A`, `strokeWeight: 1.5`) yang memberi sinyal urgensi tindak lanjut tanpa mencolok atau bentrok.
   - Sudut: `rounded-[24px]`.
-  - Baris 1: Logo perusahaan bulat 40x40 `bg-emerald-50 border border-emerald-200` dengan inisial `TKP` hijau emerald-700 (`#047857`) + Nama perusahaan "Tokopedia" (14px, SemiBold 600, `text-slate-900`) & lokasi "Jakarta Selatan • Hybrid" (12px, Regular 400, `text-slate-500`).
-  - Baris 2: Nama posisi kerja "Senior Frontend Engineer" (16px, SemiBold 600, `text-slate-900`).
-  - Baris 3: Rentang gaji "Rp 18.000.000 - 25.000.000" (13px, Medium 500, `text-slate-500` / `text-slate-600`).
-  - Baris 4: Kapsul status soft amber pill `H+7 Hari Ini` (`bg-amber-50 text-amber-700 border border-amber-200 text-xs font-medium px-2.5 py-1 rounded-full`) di kiri, bersisian dengan tombol aksi gelap ringkas `Draf Pesan ↗` (`bg-slate-900 text-white text-xs font-medium px-3.5 py-1.5 rounded-full hover:bg-slate-800 transition-all`) di kanan.
+  - **Zero-Avatar Clean Layout:** Dihilangkan seluruh avatar/logo bulat agar kartu berfokus penuh pada hierarki teks yang bersih dan elegan.
+  - Baris 1: Nama perusahaan "Tokopedia" (14px, Bold 600, `text-slate-900`) & lokasi "Jakarta Selatan • Hybrid" (12px, Regular 400, `text-slate-500`) dimulai rata kiri `x: 16`.
+  - Baris 2: Nama posisi kerja "Senior Frontend Engineer" (16px, Bold 600, `text-slate-900`).
+  - Baris 3: Rentang gaji "Rp 18.000.000 - 25.000.000" (13px, Regular 400, `text-slate-500`).
+  - Baris 4: Kapsul status soft amber pill `H+7 Hari Ini` (`bg-amber-50 text-amber-700 border border-amber-200 text-xs font-medium px-2.5 py-1 rounded-full`) di kiri, bersisian dengan tombol aksi ringkas **Sky Blue `#0284C7`** `Draf Pesan ↗` (`bg-[#0284C7] text-white text-xs font-semibold px-3.5 py-1.5 rounded-full hover:bg-sky-700 transition-all shadow-sm`) di kanan. Warna tombol selaras dengan tema utama dan tidak menciptakan kontras hitam yang terlalu tajam.
 
-### D. Latest Post (Kartu Lamaran Reguler — Clean Surface)
-* Format: Kartu putih murni melayang `rounded-[28px] p-4 bg-white shadow-sm border border-slate-100/60`.
+### D. Latest Post (Kartu Lamaran Reguler — Glassmorphic Clean Surface)
+* Format: Kartu kaca melayang modern `rounded-[28px] p-4 bg-white/85 border border-white shadow-[0_8px_20px_-4px_rgba(2,132,199,0.08)]`.
+* **Zero-Avatar Clean Typography:** Tanpa avatar atau lingkaran inisial logo perusahaan.
 * **Tanpa tombol aksi di pojok kartu:** Seluruh kartu adalah target sentuh untuk membuka lembar detail.
 * Komposisi:
-  1. Baris 1: Logo perusahaan bulat 40x40 + Nama perusahaan & lokasi ("Grab Indonesia · Jakarta Selatan") + Badge status soft pill di kanan (`Interview Besok` / `Applied`).
-  2. Baris 2: Nama posisi kerja (H3, 15px, 600, slate-900) + Rentang gaji (13px, 500, slate-700).
-  3. Baris 3: Deretan tag metadata kapsul lembut: `Full-time`, `Hybrid`, `Dilamar 2 hari lalu` (`text-xs bg-slate-50 text-slate-500 rounded-full px-3 py-1`).
+  1. Baris 1: Nama perusahaan & lokasi ("Grab Indonesia • Jakarta Selatan") di kiri + Badge status soft pill di kanan (`Interview Besok` / `Applied`).
+  2. Baris 2: Nama posisi kerja (H3, 15px, 600, slate-900) + Rentang gaji (13px, 400, slate-500).
+  3. Baris 3: Deretan tag metadata / info jadwal: `Zoom • 14:00 - 15:00 WIB` atau `Terkirim 2 hari lalu` (`text-xs bg-slate-50 text-slate-500 rounded-full px-3 py-1`).
 
 ### E. Modal Catat Lamaran (Split: Otomatis & Manual)
 Dibuka saat menekan tombol tengah dock `+` di mobile/tablet atau tombol `+ Catat Lamaran Baru` di sidebar desktop:
@@ -182,7 +187,10 @@ Dibuka saat menekan tombol tengah dock `+` di mobile/tablet atau tombol `+ Catat
 
 ### F. Banner Slider / Hero Announcement Carousel (E-Commerce & SaaS Promo Style)
 Mengadopsi pola visual banner slider modern (Gambar Referensi ke-4) untuk menggantikan dropzone repetitif di halaman utama:
-* **Visual Card & Kontur Estetik:** Gradien biru langit (`linear-gradient(135deg, #0284C7 0%, #0369A1 100%)`), sudut membulat `rounded-3xl` (22px-24px), aksen gelombang fluid translusen di latar.
+* **Visual Floating Glass Card & Kontur Estetik:** Gradien biru langit (`linear-gradient(135deg, #0284C7 0%, #0369A1 100%)`), sudut membulat `rounded-3xl` (22px-24px), specular border kaca translusen halus (`border border-white/25` / `#FFFFFF40`), aksen gelombang fluid translusen di latar, serta elevasi mengambang (*floating glass effect*) dengan dual drop shadow (ambient cyan glow `y: 12-16, r: 28-36` + diffuse shadow `y: 4, r: 10`).
+* **Presisi Jarak Subkomponen (Balanced Vertical Gaps):**
+  - Jarak vertikal antara Judul Banner dan Subtitle dirancang seimbang dan identik dengan jarak antara Subtitle dan Tombol CTA (Mobile: gap ~9-10px; Tablet: gap ~12px; Desktop: gap ~14px).
+  - Mencegah tombol CTA menempel (*touching*) pada baris teks terbawah deskripsi.
 * **Kontur Notch Berlekuk (*Scooped Bottom Tab*):** Mengadopsi lekukan tab unik pada tepi bawah tengah banner (`rounded-t-xl bg-[#F4F9FF]`) yang menyatu dengan kanvas, menjadi wadah estetik bagi indikator pagination dots `● ○ ○` (warna primary `#0284C7`).
 * **Artwork 3D Karier & Glassmorphism Terisolasi (100% Alpha Transparent):**
   - **Asset Tersimpan di Repository:**
@@ -197,15 +205,15 @@ Mengadopsi pola visual banner slider modern (Gambar Referensi ke-4) untuk mengga
   - **Tombol CTA Aksen Lime Kontras (Brand Secondary #D4FF47):** Kapsul pill membulat penuh `rounded-full bg-[#D4FF47] text-slate-900 font-semibold px-4 py-2 shadow-md` dengan teks **"Coba Sekarang ↗"**, selaras 100% dengan tombol aksi utama pada Landing Page dan Login Page untuk mengarahkan pengguna ke Modal Catat Lamaran (Smart Job Clipper).
 * **Penyelarasan Tablet:** Search bar (`w: 284`) dan tombol filter (`w: 44`) di topbar tablet diposisikan rata kanan persis (*flush*) dengan sisi kanan Banner Slider dan konten di bawahnya (`x: 818`).
 
-### G. Floating Pill Nav Dock (Mobile — 100% Siren.uix)
-Mengadopsi 1-to-1 dari bagian bawah `docs/assets/UI_STYLE_REFERENCES.jpg`:
+### G. Floating Pill Nav Dock (Mobile — iOS Premium Glass Dock)
+Mengadopsi nuansa premium iOS frosted glass melayang:
 * **Bentuk:** Kapsul membulat penuh (*pill dock* `rounded-full`), melayang di posisi `bottom-4`, lebar `calc(100% - 32px)`, tinggi `68px`.
-* **Material:** `bg-white/94 backdrop-blur-xl border border-white shadow-[0_16px_40px_-10px_rgba(2,132,199,0.2)]`.
-* **Susunan 5 Tab Lengkap Berlabel (Clean Thin Outline Icons):**
-  1. `Home`: Ikon rumah clean thin outline (`stroke: 1.75px, #0284C7`, `fill: none`) + teks label "Home" (12px, 600, sky-600).
+* **Material iOS Frosted Glass:** `bg-white/80 backdrop-blur-xl border border-white shadow-[0_16px_36px_-6px_rgba(2,132,199,0.14),0_4px_12px_rgba(15,23,42,0.06)]`.
+* **Susunan 5 Tab Lengkap Berlabel (Clean Thin Outline Icons + 12px Labels):**
+  1. `Home`: Kapsul aktif biru muda lembut (`bg-sky-100/85 border border-sky-200/80 rounded-2xl`) + ikon rumah clean thin outline (`stroke: 1.75px, #0284C7`) + teks label "Home" (12px, 600, sky-600).
   2. **`Roles` (Resmi menggantikan Lamaran):** Ikon tas kerja / briefcase clean thin outline (`stroke: 1.5px, #64748B`, `fill: none`) + teks label "Roles" (12px, 500, slate-500).
   3. **Tombol Tengah Terangkat (Raised Center Button):**
-     - Lingkaran `56x56 px` naik melayang terangkat `-translate-y-3.5`.
+     - Lingkaran `56x56 px` naik melayang terangkat `-translate-y-3.5` dengan **tepi putih tebal (*thick white rim* 4px)** `border-4 border-white`.
      - Latar: Gradien cyan-sky cerah (`linear-gradient(135deg, #2EB5F8 0%, #0284C7 100%)`).
      - Cincin pendaran cahaya (*glowing ring*): `box-shadow: 0 8px 20px -4px rgba(2, 132, 199, 0.35)`.
      - Ikon: Simbol `+` putih bersih tebal 2.5px.
