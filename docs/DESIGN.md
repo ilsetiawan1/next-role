@@ -200,17 +200,17 @@ Mengadopsi pola visual banner slider modern (Gambar Referensi ke-4) untuk mengga
 Mengadopsi 1-to-1 dari bagian bawah `docs/assets/UI_STYLE_REFERENCES.jpg`:
 * **Bentuk:** Kapsul membulat penuh (*pill dock* `rounded-full`), melayang di posisi `bottom-4`, lebar `calc(100% - 32px)`, tinggi `68px`.
 * **Material:** `bg-white/94 backdrop-blur-xl border border-white shadow-[0_16px_40px_-10px_rgba(2,132,199,0.2)]`.
-* **Susunan 5 Tab Lengkap Berlabel:**
-  1. `Home`: Ikon rumah solid `sky-600` + teks label "Home" (12px, 600, sky-600).
-  2. **`Roles` (Resmi menggantikan Lamaran):** Ikon layers/briefcase outline `slate-400` + teks label "Roles" (12px, 500, slate-500).
+* **Susunan 5 Tab Lengkap Berlabel (Clean Thin Outline Icons):**
+  1. `Home`: Ikon rumah clean thin outline (`stroke: 1.75px, #0284C7`, `fill: none`) + teks label "Home" (12px, 600, sky-600).
+  2. **`Roles` (Resmi menggantikan Lamaran):** Ikon tas kerja / briefcase clean thin outline (`stroke: 1.5px, #64748B`, `fill: none`) + teks label "Roles" (12px, 500, slate-500).
   3. **Tombol Tengah Terangkat (Raised Center Button):**
      - Lingkaran `56x56 px` naik melayang terangkat `-translate-y-3.5`.
      - Latar: Gradien cyan-sky cerah (`linear-gradient(135deg, #2EB5F8 0%, #0284C7 100%)`).
      - Cincin pendaran cahaya (*glowing ring*): `box-shadow: 0 8px 20px -4px rgba(2, 132, 199, 0.35)`.
      - Ikon: Simbol `+` putih bersih tebal 2.5px.
      - Fungsi: Membuka Modal Catat Lamaran (Seksi 4.E).
-  4. `Kalender`: Ikon kalender outline `slate-400` + teks label "Kalender" (12px, 500, slate-500).
-  5. `Settings`: Ikon pengaturan/cog outline `slate-400` + teks label "Settings" (12px, 500, slate-500).
+  4. `Kalender`: Ikon kalender clean thin outline (`stroke: 1.5px, #64748B`, `fill: none`) + teks label "Kalender" (12px, 500, slate-500).
+  5. `Settings`: Ikon pengaturan gear clean thin outline (`stroke: 1.5px, #64748B`, `fill: none`) + teks label "Settings" (12px, 500, slate-500).
 
 ---
 
