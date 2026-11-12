@@ -261,45 +261,53 @@ Mengadopsi hierarki visual lembar detail premium dan lapang dari referensi visua
   6. **Aktivitas Terakhir (Latest Post Feed):** Kartu lamaran putih Grab & Shopee tanpa tombol pojok.
   7. **Floating Pill Dock:** 5 tab lengkap dengan raised center FAB (Home · Roles · [ + ] · Kalender · Settings).
 
-### B. Tablet (768px – 1023px / 834px) — 2-Column Balanced Bento Layout
-* Slim glass sidebar `w-20` melayang memanjang: Brand logo, tombol `+` catat lamaran di atas, ikon navigasi vertikal (Home, Roles, Kalender, Settings), dan avatar profil di bagian bawah (`y: 1080`).
-* Top bar: "Budi Santoso" · "Fullstack Web Developer", search bar pill ("Cari perusahaan atau posisi..."), filter button.
-* **Banner Slider Tablet:** Membentang lebar di atas konten (`w: 714, h: 140`) di `y: 96`.
-* **2-Kolom Balanced Bento Grid (y: 256 s.d. y: 1180):**
-  - **Kolom Kiri (w: 420): Application Feed & Follow-Ups**
+### B. Tablet (768px – 1023px / 834px) — Top Floating Pill Navbar & 2-Column Balanced Bento
+* **Top Floating Pill Navbar (`w: 786, h: 58`, radius 29px):**
+  - Menggantikan sidebar vertikal samping, melayang anggun di bagian atas kanvas (`y: 20`).
+  - Kiri: Logo brand `NR` (30x30) + nama brand `nextrole` (Courier New, 16px).
+  - Tengah: Navigasi pill terpadu (`Home` aktif dengan pill biru pekat `#0284C7` teks putih, `Roles`, `Kalender`, `Settings`).
+  - Kanan: Pill kuota harian `18/20 Klip`, tombol cepat `+`, dan avatar `BS` (32x32). **Bebas dari ikon notifikasi**.
+* Top bar konten: "Budi Santoso" · "Fullstack Web Developer", search bar pill ("Cari perusahaan atau posisi..."), filter button.
+* **Banner Slider Tablet:** Membentang lebar di atas konten (`w: 786, h: 140`) di `y: 160`.
+* **2-Kolom Balanced Bento Grid (y: 324 s.d. y: 1180):**
+  - **Kolom Kiri (w: 454): Application Feed & Follow-Ups**
     1. Header "Perlu Tindak Lanjut" + link "Lihat semua ›"
     2. Hero Card Tokopedia (H+7) (`h: 168`)
     3. Card Bukalapak (Follow-Up H+7) (`h: 154`)
     4. Card GoTo Financial (Follow-Up H+6) (`h: 154`)
     5. Header "Pipeline Lamaran" + link "Lihat semua ›"
-    6. Card Grab Indonesia (Interview Besok, Zoom) (`h: 154`)
-    7. Card Shopee Indonesia (Applied) (`h: 154`)
-  - **Kolom Kanan (w: 278): Analytics, Mini Calendar, & Career Insights**
+    6. Card Grab Indonesia (Interview Besok): Dilengkapi informasi "Dilamar: 05 Nov 2026" & "Jadwal: 13 Nov • 14:00 WIB". Bebas dari tombol CTA Zoom/Meet berlebih.
+    7. Card Shopee Indonesia (Applied): Dilengkapi informasi "Dilamar: 10 Nov 2026" & "Status: Menunggu Review".
+  - **Kolom Kanan (w: 308): Analytics, Mini Calendar, & Career Insights**
     1. Header "Statistik Lamaran" + link "Bulan Ini ›"
-    2. Quick Analytics Bento Card (`h: 220`): 4 metrik pastel (Total Dilamar: 24, Interview: 3, Perlu Follow-Up: 2, Tingkat Respon: 68%)
+    2. Clean Ringkasan Lamaran (`h: 200`): 4 metrik dalam kontainer netral elegan (`#F8FAFC` border `#F1F5F9`), bebas warna-warni AI-slop.
     3. Header "Kalender Agenda" + link "Buka ›"
-    4. Mini Calendar Card (`h: 360`): Kalender interaktif November 2026 dengan indikator tanggal aktif (12 Hari Ini, 13 Grab Interview, 14 Tokopedia H+7) dan kartu agenda Zoom interview Grab
+    4. Mini Calendar Card (`h: 320`): Kalender interaktif November 2026 + daftar ringkas jadwal lamaran pada tanggal terpilih (bullet dot terpadu tanpa kartu Zoom).
     5. Header "Tips & Insight AI"
-    6. Career Tips Card (`h: 216`): Insight follow-up H+7 dengan CTA "Gunakan Draf AI ›"
+    6. Career Tips Card (`h: 190`): Insight follow-up H+7 dengan CTA "Gunakan Draf AI ›".
 
-### C. Desktop (≥ 1024px / 1440px) — 3-Column Modular Bento Dashboard
-* Floating glass sidebar `w-64`: Brand NextRole (courier new lowercase), tombol pill gradien `+ Catat Lamaran Baru`, menu vertikal dengan active state rata tengah (Home, Roles, Kalender, Settings), **Widget Kuota Resmi (18/20)**, dan profil footer Budi Santoso.
-* Top bar: "Budi Santoso" · "Fullstack Web Developer", search bar pill ("Cari perusahaan atau posisi..."), filter button.
-* **3-Kolom Modular Bento Dashboard (y: 96 s.d. y: 674, tinggi kolom identik terpadu):**
-  - **Kolom 1 (x: 304, w: 354) — Perlu Tindak Lanjut:**
+### C. Desktop (≥ 1024px / 1440px) — Top Floating Pill Navbar & 3-Column Modular Dashboard
+* **Top Floating Pill Navbar (`w: 1344, h: 64`, radius 32px):**
+  - Melayang di bagian atas kanvas (`y: 20`), menggantikan sidebar samping lama.
+  - Kiri: Logo icon `NR` (32x32) + teks brand `nextrole` (Courier New, 18px) + slogan `Job Hunt Assistant` (11px).
+  - Tengah: Navigasi pill terpadu (`Home` aktif dengan pill biru pekat `#0284C7` teks putih, `Roles`, `Kalender`, `Settings`).
+  - Kanan: Pill kuota harian `18 / 20 Klip`, tombol utama `+ Catat Lamaran`, dan avatar pengguna `BS` (36x36). **Bebas dari ikon notifikasi**.
+* Top bar konten (y: 102): "Budi Santoso" · "Fullstack Web Developer", search bar pill ("Cari perusahaan atau posisi...", w: 320), filter button.
+* **3-Kolom Modular Bento Dashboard (y: 168 s.d. y: 742, tinggi kolom identik terpadu):**
+  - **Kolom 1 (x: 48, w: 432) — Perlu Tindak Lanjut:**
     1. Header "Perlu Tindak Lanjut" + link "Lihat semua ›"
-    2. Hero Card Tokopedia (H+7) (`h: 184`)
-    3. Card Bukalapak (Follow-Up H+7) (`h: 164`)
-    4. Card GoTo Financial (Follow-Up H+6) (`h: 164`)
-  - **Kolom 2 (x: 678, w: 354) — Pipeline Lamaran Aktif:**
+    2. Hero Card Tokopedia (H+7) (`h: 180`)
+    3. Card Bukalapak (Follow-Up H+7) (`h: 160`)
+    4. Card GoTo Financial (Follow-Up H+6) (`h: 160`)
+  - **Kolom 2 (x: 504, w: 432) — Pipeline Lamaran Aktif:**
     1. Header "Pipeline Lamaran" + link "Lihat semua ›"
-    2. Banner AI Carousel Kuasai Wawancara AI (`h: 184`)
-    3. Card Grab Indonesia (Interview Besok, Zoom 14:00 - 15:00 WIB) (`h: 164`)
-    4. Card Shopee Indonesia (Applied, Terkirim 2 hari lalu) (`h: 164`)
-  - **Kolom 3 (x: 1052, w: 368) — Statistik & Kalender Agenda:**
+    2. Banner AI Carousel Kuasai Wawancara AI (`h: 180`)
+    3. Card Grab Indonesia (`h: 160`): Menampilkan "Dilamar: 05 Nov 2026" & "Jadwal: 13 Nov • 14:00 WIB" (tanpa tombol CTA Zoom).
+    4. Card Shopee Indonesia (`h: 160`): Menampilkan "Dilamar: 10 Nov 2026" & "Status: Menunggu Review" (tanpa tombol CTA luar).
+  - **Kolom 3 (x: 960, w: 432) — Statistik & Kalender Agenda:**
     1. Header "Statistik & Kalender"
-    2. Quick Analytics Bento Card (`h: 184`): 4 metrik pastel (Total Dilamar: 24, Interview Aktif: 3, Perlu Follow-Up: 2, Tingkat Respon: 68%)
-    3. Mini Calendar Card (`h: 344`): Kalender interaktif bulan berjalan dengan highlight status lamaran dan kartu agenda interview Grab Besok.
+    2. Clean Ringkasan Lamaran (`h: 180`): Tampilan metrik profesional dengan latar netral seragam (`#F8FAFC` border `#F1F5F9`) dan tipografi berbobot normal, menyingkirkan estetika warna-warni AI-slop.
+    3. Mini Calendar Card (`h: 340`): Kalender interaktif bulan berjalan dengan highlight tanggal dan daftar agenda lamaran ringkas di bawah tanggal terpilih (bullet dot minimalis).
 
 ---
 
