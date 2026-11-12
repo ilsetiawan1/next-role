@@ -1,244 +1,113 @@
-# Design System & UI/UX Specification: NextRole
-
-> **Status:** Approved Visual Direction (v3.3.0 — True Minimalist Reference Alignment)  
-> **Versi:** 3.3.0 (revisi terarah dari v3.2.0)  
-> **Referensi Visual Resmi:**  
-> - Kanvas, Header, Hero Carousel, Card, & Bottom Dock: `docs/assets/UI_STYLE_REFERENCES.jpg` (@siren.uix — Job Finder UI)  
-> - Modal Tambah Lamaran (Otomatis & Manual) & Kuota: `docs/assets/UPLOAD_MODAL_UI_REFERENCES.png` (Iconly Upload UI)  
-> **Dokumen Terkait:** `docs/PRD.md`, `docs/TSD.md`, `docs/ROADMAP.md`, `AGENTS.md`
+# NextRole — Dokumen Desain & Panduan Gaya UI/UX
+*Versi: 3.2.0 (Glassmorphic Bento & Symmetrical Balance Refactor)*
 
 ---
 
-## 0. Aturan Wajib untuk AI Agent (BACA DULU)
+## 1. Ikhtisar & Arah Desain (Design Philosophy)
 
-Bagian ini menang atas bagian lain bila ada konflik. Tujuannya: hasil desain terasa **lembut, lapang, bernapas (*airy*), dan dirancang manusia**, bukan kaku atau generik seperti dashboard admin.
+NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, dan lapang (*airy*), berlandaskan prinsip *anti-slop* UI. Antarmuka mengutamakan kejelasan hierarki informasi, rasio spasi 8-point yang konsisten, tipografi tajam, serta eliminasi ornamen atau palet pelangi (*rainbow badges*) berlebih.
 
-### 0.1 Disiplin Font Weight (Anti "Semua Bold")
-1. **Dilarang** memakai `font-bold`, `font-extrabold`, `font-black` (weight 700+) di mana pun, kecuali teks logo/brand mark.
-2. Hanya tiga weight yang boleh dipakai: **400 (Regular)**, **500 (Medium)**, **600 (SemiBold)**.
-3. **Default semua teks adalah 400.** Weight dinaikkan hanya bila tercantum di tabel 3.2.
-4. Hierarki dibangun dari **ukuran, warna, dan jarak (*whitespace*)**, bukan dari bobot font.
-5. Dalam satu kartu, **maksimal satu teks** ber-weight 600 (nama posisi). Sisanya 400–500.
-6. Dalam satu layar, tidak boleh ada lebih dari **tiga** elemen teks ber-weight 600 di luar judul halaman.
-7. Label, meta, tag, badge, placeholder, caption, dan teks nav tidak pernah di atas 500.
-
-### 0.2 Ciri "AI-Slop" yang DILARANG Keras
-* **Containeritis (Penyakit Kotak):** Membungkus Header dalam kotak persegi bergaris. Header wajib melayang bebas langsung di atas kanvas (*bare on canvas*).
-* **Kata Sapaan "Hi":** Dilarang di header. Cukup foto profil, nama pengguna, dan role spesifik.
-* **Komponen Reminder Strip di Home:** Dihapus dari Home page agar feed bersih dan fokus ke penemuan lowongan / prioritas tindak lanjut.
-* **Menjejali Metrik Angka (Quick Stats) di Home:** Kotak metrik (18 lamaran aktif, 3 follow-up, 2 interview) dihapus dari Home karena redundan.
-* **Semua teks tebal**, termasuk label kecil dan meta.
-* **Tombol aksi di setiap kartu reguler:** Tombol seperti "Buka Arsip ↗" atau "Detail ↗" di pojok kartu lamaran reguler dilarang; seluruh kartu adalah area sentuh (*clickable card*).
-* **Ikon Bookmark pada Hero Card:** Dilarang/dihapus sesuai arahan pengguna.
-* **Teks di bawah 12px**, atau teks abu-abu terang di atas latar terang.
-
-### 0.3 Nomenklatur Navigasi Utama
-* Menu navigasi utama yang sebelumnya bernama **"Lamaran" kini resmi diganti menjadi "Roles"** (mencerminkan brand NextRole). Susunan menu: **Home · Roles · [ + ] · Kalender · Settings**.
-
-### 0.4 Pemeriksaan Sebelum Selesai (Checklist)
-- [ ] Header melayang bebas tanpa kotak pembungkus, memuat logo resmi NextRole, nama brand ("NextRole"), dan slogan ("Intelligent Job Hunt Assistant"), sisi kanan lapang/kosong.
-- [ ] Tidak ada tombol notifikasi dan tidak ada chip kuota di header.
-- [ ] Tidak ada komponen Reminder Strip di halaman Home.
-- [ ] Tidak ada kartu metrik angka (Quick Stats) di halaman Home.
-- [ ] Hero card tanpa ikon bookmark, berukuran carousel ~70% lebar layar, dengan kartu kedua terlihat mengintip.
-- [ ] Kartu lamaran reguler bersih tanpa tombol aksi pojok.
-- [ ] Menu "Lamaran" di bottom dock dan sidebar telah diganti menjadi "Roles".
-- [ ] Modal Catat Lamaran memiliki tab split **Otomatis | Manual**, dengan kuota tampil di tab Otomatis.
-- [ ] Cari `font-bold|font-extrabold|font-black` → harus nol hasil.
-- [ ] Tidak ada teks < 12px.
+### Prinsip Utama:
+1. **Glassmorphic Subtlety:** Menggunakan material kaca semi-transparan (`bg-white/75 backdrop-blur-xl border border-white/90`) dengan bayangan difus biru langit (`0 12px 32px -8px rgba(2, 132, 199, 0.12)`).
+2. **Deterministic & Token-Efficient:** Visual dashboard mengutamakan data riil dari database (kuota, target mingguan, pipeline jadwal) tanpa memanggil LLM untuk hal statis. LLM hanya digunakan pada fitur esensial (*Job Parser* dan *Follow-Up Generator*).
+3. **Responsive Symmetrical Balance:** Setiap breakpoint (Desktop 1440px, Tablet 834px, Mobile 390px) memiliki batas garis dasar (*baseline alignment*) dan ritme vertikal yang rapi tanpa celah *white space* timpang.
 
 ---
 
-## 1. Filosofi Visual: Soft Sky Glass (v3.3.0)
+## 2. Token Desain Terpadu
 
-Terinspirasi murni dari `docs/assets/UI_STYLE_REFERENCES.jpg`:
+### A. Palet Warna (Color Palette)
+* **Background Kanvas:** Gradasi linear halus `#F4F9FF` $\rightarrow$ `#E3F1FD` (180deg).
+* **Primary Sky:** `#0284C7` (Sky-600) untuk aksi utama, link interaktif, dan highlight aktif.
+* **Primary Deep:** `#0369A1` (Sky-700) / `#075985` (Sky-800) untuk hover dan penekanan.
+* **Neutral Slate:**
+  * Title/Headings: `#0F172A` (Slate-900)
+  * Body/Text: `#334155` (Slate-700)
+  * Secondary/Muted: `#64748B` (Slate-500)
+  * Borders/Dividers: `#E2E8F0` (Slate-200) atau `#FFFFFF` semi-transparan
+* **Status Badges (Soft Pastel with Dark Text):**
+  * `Applied`: `bg-blue-50 text-blue-700 border-blue-100` (`#EFF6FF` / `#1D4ED8`)
+  * `Follow-Up Needed (H+7)`: `bg-amber-50 text-amber-700 border-amber-100` (`#FFFBEB` / `#B45309`)
+  * `Interview Scheduled`: `bg-purple-50 text-purple-700 border-purple-100` (`#FAF5FF` / `#7E22CE`)
+  * `Offered`: `bg-emerald-50 text-emerald-700 border-emerald-100` (`#ECFDF5` / `#047857`)
+  * `Rejected / Ghosted`: `bg-rose-50 text-rose-700 border-rose-100` (`#FFF1F2` / `#BE123C`)
 
-1. **Kanvas Lembut Berkedalaman:** Latar belakang putih dengan gradasi biru es organik yang sangat pudar (`#FAFDFE` → `#F0F6FD`) dan gelombang kabut transparan.
-2. **Kartu Kaca Melayang (*Soft Floating Elevation*):** Permukaan putih bersih semi-transparan (`rgba(255,255,255,0.85)` / `bg-white`), sudut membulat lebar `rounded-[28px]`, bayangan difus bernuansa biru es pudar (`box-shadow: 0 14px 34px -8px rgba(2, 132, 199, 0.12), 0 2px 6px rgba(2, 132, 199, 0.04)`).
-3. **Hero Card Carousel Bernapas:** Kartu cyan-biru berpendar yang menjadi jangkar utama, bersisian dengan kartu kedua.
-4. **Floating Pill Dock:** Kapsul kaca melayang memuat 5 navigasi terpadu dengan tombol tengah terangkat bercahaya.
-5. **Modal Unggah Terpusat:** Pengalaman pencatatan lamaran cerdas via modal split (Otomatis & Manual) mengadopsi `docs/assets/UPLOAD_MODAL_UI_REFERENCES.png`.
-
----
-
-## 2. Token Warna
-
-### A. Brand & Surface
-| Token | Nilai | Tailwind | Peruntukan |
-| :--- | :--- | :--- | :--- |
-| `--sky-50` | `#F4F9FF` | `bg-sky-50` | Awal kanvas, tile dalam, dropzone |
-| `--sky-100` | `#E3F1FD` | `bg-sky-100` | Akhir kanvas, track progress, tombol filter search |
-| `--sky-300` | `#7CC8F2` | `border-sky-300` | Garis dropzone putus-putus |
-| `--sky-400` | `#2EB5F8` | `bg-sky-400` | Awal gradient hero, chip filter aktif, tombol tengah |
-| `--primary` | `#0284C7` | `bg-sky-600` | Gradient hero tengah, progress fill, aksen link |
-| `--primary-deep` | `#0369A1` | `bg-sky-700` | Akhir gradient hero, teks kontras tinggi |
-| `--secondary-lime` | `#D4FF47` | `bg-[#D4FF47]` | Aksen sekunder terpadu: Tombol CTA Landing Page, Login Button, & Banner Slider |
-| `--glass` | `rgba(255,255,255,0.82)` | `bg-white/80` | Kartu kaca melayang, floating dock |
-| `--glass-solid` | `#FFFFFF` | `bg-white` | Kartu konten teks, modal unggah |
+### B. Tipografi
+* **Font Family:** `Plus Jakarta Sans` / `Poppins` (Fallback: `Inter`, system sans-serif).
+* **Ukuran Minimum:** 10px untuk metadata/chips, 12px untuk tombol dan body text.
 
 ---
 
-## 3. Tipografi
+## 3. Spesifikasi Tata Letak Per Perangkat (Home Screen)
 
-**Satu keluarga font:** `Plus Jakarta Sans` (400 / 500 / 600 saja).
-
-### 3.1 Skala Ukuran
-| Tingkat | Mobile | Desktop | Line Height |
-| :--- | :--- | :--- | :--- |
-| Judul halaman (H1) | 22px | 28px | 1.25 |
-| Judul section (H2) | 15px | 18px | 1.3 |
-| Judul posisi di kartu (H3) | 15px | 16px | 1.35 |
-| Body / deskripsi | 14px | 14px | 1.55 |
-| Meta / gaji / info | 13px | 13px | 1.4 |
-| Micro (badge, tag, label nav) | 12px | 12px | 1.2 |
-
-### 3.2 Weight per Elemen (Sumber Kebenaran Tunggal)
-| Elemen | Weight | Warna |
-| :--- | :--- | :--- |
-| Nama pengguna di Header | 600 | slate-900 |
-| Role pengguna di Header | 400 | slate-500 |
-| Judul section ("Perlu Tindak Lanjut", "Aktivitas Terakhir") | 600 | slate-900 |
-| Nama posisi kerja (Hero & Card) | 600 | slate-900 (putih di Hero) |
-| Nama perusahaan | 500 | slate-700 (putih di Hero) |
-| Lokasi & sub-info | 400 | slate-500 |
-| Rentang gaji | 500 | slate-700 (putih/90 di Hero) |
-| Tag metadata (Full-time, Hybrid) | 400–500 | slate-600 |
-| Status badge | 500 | blue-700 / amber-700 / purple-700 |
-| Tombol CTA Hero ("Draf follow-up ↗") | 600 | sky-800 |
-| Link ("Lihat semua ›") | 500 | sky-700 |
-| Label nav aktif | 500 | sky-800 |
-| Label nav nonaktif | 400 | slate-500 |
+### A. Mobile (< 768px / 390x844)
+* **Top Bar:** Header greeting ("Budi Santoso", Fullstack Web Developer) + search bar pill + filter modal trigger.
+* **Horizontal Filters:** Pill scroll horizontal (*Semua*, *Full-time*, *Hybrid*, *Follow-Up*).
+* **Banner AI Carousel (`w: 358, h: 140`):** Promosi fitur Smart AI Clipper dengan ilustrasi 3D.
+* **Perlu Tindak Lanjut Feed:** Kartu vertikal dengan Hero Tokopedia (H+7), Bukalapak, GoTo Financial.
+* **Floating Bottom Pill Nav Dock (`h: 68`, radius 28px):** 4 menu utama (*Home*, *Roles*, *Kalender*, *Settings*) dengan **Raised Center FAB (+)** terangkat `-translate-y-4` untuk aksi *Catat Lamaran*.
 
 ---
 
-## 4. Komponen Antarmuka Terpadu
-
-### A. Header Pengguna (Mobile — Naked on Canvas)
-* **Tanpa wadah kotak:** Elemen melayang langsung di atas kanvas sky, mengadopsi referensi minimalis *Oakory UI*.
-* Kiri:
-  - **Logo Resmi NextRole:** Badge squircle `38x38` memuat logo surge arrow biru-cyan (`docs/assets/next-role-logo.jpg`).
-  - **Nama Brand:** **"NextRole"** (18px, 600, slate-900).
-  - **Slogan / Tagline:** **"Intelligent Job Hunt Assistant"** (11px, 500, slate-500).
-* Kanan:
-  - **KOSONG / LAPANG:** Tanpa tombol notifikasi, tanpa chip kuota, tanpa ikon keranjang. Memberikan ruang bernapas yang bersih dan lega.
-
-### B. Search Bar & Filter Chips Carousel
-* **Search Bar:** Kapsul lonjong putih penuh `h-12 rounded-full bg-white shadow-sm border border-slate-100/60 px-4`.
-  - Kiri: Ikon search tipis + placeholder "Cari perusahaan atau posisi…" (13px, 400, slate-400).
-  - Kanan: Tombol filter squircle cyan lembut (`w-9 h-9 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center`).
-* **Filter Chips Carousel:** Deretan kapsul scroll horizontal tepat di bawah search bar:
-  - Chip aktif (`Semua`): Kapsul cyan gradien cerah `bg-gradient-to-r from-sky-400 to-sky-600 text-white font-medium px-4 py-1.5 rounded-full shadow-sm`.
-  - Chip nonaktif (`Full Time`, `Hybrid`, `Remote`): Kapsul putih bersih `bg-white text-slate-700 border border-white shadow-xs px-3.5 py-1.5 rounded-full`.
-  - Chip terakhir memotong tepi kanan (*peek edge*) sebagai petunjuk scroll tanpa scrollbar.
-
-### C. Recommended Carousel (Hero Card Perlu Tindak Lanjut)
-* Format: **Carousel Horizontal dengan Lebar Kartu ~70–75% Layar (`w-[260px]`)**.
-* Di sisi kanannya: Kartu kedua (*Apple UI/UX*) tampak mengintip jelas selebar ~70–80px (*carousel peek*).
-* Visual Hero Card:
-  - Latar: Gradien cyan-sky bercahaya (`linear-gradient(135deg, #2EB5F8 0%, #0284C7 60%, #0369A1 100%)`).
-  - Sudut: `rounded-[28px]`, bayangan `box-shadow: 0 16px 36px -8px rgba(2, 132, 199, 0.38)`.
-  - Baris 1: Logo perusahaan bulat putih `40x40` (Tokopedia) + Nama perusahaan "Tokopedia · Jakarta" (13px, 500, putih). **Tanpa ikon Bookmark** (dihapus sesuai arahan).
-  - Baris 2: Nama posisi kerja "Senior Frontend Engineer" (15px, 600, putih).
-  - Baris 3: Rentang gaji "Rp 18.000.000 – 25.000.000 / bln" (12px, 500, putih/90).
-  - Baris 4: Kapsul status `H+7 Hari Ini` (`bg-white/20 text-white rounded-full px-2.5 py-1`) di kiri, bersisian dengan tombol aksi pill putih kompak `Draf follow-up ↗` (`bg-white text-sky-800 font-semibold px-3.5 py-1.5 rounded-full shadow-sm`) di kanan.
-
-### D. Latest Post (Kartu Lamaran Reguler — Clean Surface)
-* Format: Kartu putih murni melayang `rounded-[28px] p-4 bg-white shadow-sm border border-slate-100/60`.
-* **Tanpa tombol aksi di pojok kartu:** Seluruh kartu adalah target sentuh untuk membuka lembar detail.
-* Komposisi:
-  1. Baris 1: Logo perusahaan bulat 40x40 + Nama perusahaan & lokasi ("Grab Indonesia · Jakarta Selatan") + Badge status soft pill di kanan (`Interview Besok` / `Applied`).
-  2. Baris 2: Nama posisi kerja (H3, 15px, 600, slate-900) + Rentang gaji (13px, 500, slate-700).
-  3. Baris 3: Deretan tag metadata kapsul lembut: `Full-time`, `Hybrid`, `Dilamar 2 hari lalu` (`text-xs bg-slate-50 text-slate-500 rounded-full px-3 py-1`).
-
-### E. Modal Catat Lamaran (Split: Otomatis & Manual)
-Dibuka saat menekan tombol tengah dock `+` di mobile/tablet atau tombol `+ Catat Lamaran Baru` di sidebar desktop:
-
-1. **Wadah Modal:** Kaca putih solid `rounded-[28px] p-6 shadow-2xl`, latar belakang diblur lembut (`backdrop-blur-md bg-slate-900/25`).
-2. **Segmented Tab (Atas):**
-   - Kapsul tab: `w-full h-11 bg-slate-100 rounded-xl p-1 flex`.
-   - **Tab Otomatis (Aktif):** Kapsul putih melayang dengan shadow halus, teks "Otomatis (AI)" (13px, 600, sky-700).
-   - **Tab Manual:** Teks "Manual" (13px, 500, slate-600).
-3. **Konten Tab Otomatis (`UPLOAD_MODAL_UI_REFERENCES.png`):**
-   - Dropzone area dashed: Border `1.5px dashed sky-300 rounded-[22px] bg-slate-50/70 p-6`.
-   - **Orb Unggah 3D Frosted Glass (Iconly Aesthetic):**
-     * Lingkaran kaca `60x60 px` dengan specular shine melengkung di tepi atas.
-     * Gradien kaca translusen (`linear-gradient(135deg, rgba(255,255,255,0.95), rgba(224,242,254,0.75), rgba(186,230,253,0.6))`).
-     * Border glossy putih transparan `1.5px solid rgba(255, 255, 255, 0.95)` dan pendaran bayangan difus biru langit (`box-shadow: 0 8px 20px rgba(2, 132, 199, 0.32)`).
-     * Ikon panah unggah biru tajam `#0284C7` di tengah.
-   - Sub-teks instruksi & input link loker ("Tempel Link").
-   - File preview item: Thumbnail dokumen, nama file, progress bar, tombol remove `×`.
-   - **Panel Kuota Kontekstual:** "Sisa Kuota: 18 / 20 klip hari ini • Memakai 1 klip" (13px, 500, sky-800) dengan badge AI Flash 1.5.
-   - Footer: Dua tombol pill sejajar ("Batal" & "Ekstrak dengan AI ↗").
-4. **Konten Tab Manual (Dokumentasi Permanen Anti-Lupa):**
-   - Field input form bersih:
-     * Nama Perusahaan (Placeholder: "Contoh: GoTo, Shopee, Traveloka").
-     * Posisi / Role Lowongan (Placeholder: "Contoh: Senior Frontend Engineer").
-     * Tipe Kerja Pills: `Remote` (aktif) | `Hybrid` | `On-Site`.
-     * Perkiraan Rentang Gaji (Opsional).
-     * **Deskripsi Pekerjaan & Kualifikasi (Wajib):** Textarea multi-baris `h-20` (Placeholder: *"Tempel deskripsi atau kualifikasi: React, Next.js, TypeScript, REST API, min. 2 th pengalaman..."*). Bersifat wajib agar pengguna memiliki arsip permanen dan tidak kebingungan saat dipanggil wawancara.
-   - Strip konfirmasi: "✓ Lamaran akan otomatis dicatat ke kolom Applied di Kanban".
-   - Footer: Tombol "Batal" & "Simpan Lamaran".
-
-### F. Banner Slider / Hero Announcement Carousel (E-Commerce & SaaS Promo Style)
-Mengadopsi pola visual banner slider modern (Gambar Referensi ke-4) untuk menggantikan dropzone repetitif di halaman utama:
-* **Visual Card & Kontur Estetik:** Gradien biru langit (`linear-gradient(135deg, #0284C7 0%, #0369A1 100%)`), sudut membulat `rounded-3xl` (22px-24px), aksen gelombang fluid translusen di latar.
-* **Kontur Notch Berlekuk (*Scooped Bottom Tab*):** Mengadopsi lekukan tab unik pada tepi bawah tengah banner (`rounded-t-xl bg-[#F4F9FF]`) yang menyatu dengan kanvas, menjadi wadah estetik bagi indikator pagination dots `● ○ ○` (warna primary `#0284C7`).
-* **Artwork 3D Karier & Glassmorphism Terisolasi (100% Alpha Transparent):**
-  - **Asset Tersimpan di Repository:**
-    * `docs/assets/banner-object-1.png`: Dokumen resume matte white clay dengan segel centang cyan neon, clipboard kaca frosted translusen dengan garis grafik pertumbuhan cyan dan mini bars data 3D.
-    * `docs/assets/banner-object-2.png`: Pedestal disk kaca melingkar translusen dengan panah pertumbuhan 3D neon cyan menjulang tinggi.
-  - **Integrasi Visual:** Menggunakan format PNG transparan murni (*pure alpha channel*), sehingga objek 3D melayang bebas langsung di atas gradien biru langit (`#0284C7` $\rightarrow$ `#0369A1`) dan aksen pita gelombang tanpa garis batas atau kotak latar apa pun.
-  - Di **Desktop & Tablet**: Berada di sisi kanan dengan proporsi lega (`w: 160-182, h: 130-146`).
-  - Di **Mobile**: Diposisikan di sisi kanan (`x: 210, w: 135, h: 112`) berpadu dengan teks 2 baris yang tidak saling bertumpuk.
-* **Konten Teks & Aksi:**
-  - Headline cerah: "Kuasai Wawancara Kerja dengan Ringkasan AI" / "Kuasai Wawancara AI" di mobile (putih, SemiBold).
-  - Subline: "Dapatkan draf follow-up otomatis dan arsip permanen lowongan" (putih/88, Regular).
-  - **Tombol CTA Aksen Lime Kontras (Brand Secondary #D4FF47):** Kapsul pill membulat penuh `rounded-full bg-[#D4FF47] text-slate-900 font-semibold px-4 py-2 shadow-md` dengan teks **"Coba Sekarang ↗"**, selaras 100% dengan tombol aksi utama pada Landing Page dan Login Page untuk mengarahkan pengguna ke Modal Catat Lamaran (Smart Job Clipper).
-* **Penyelarasan Tablet:** Search bar (`w: 284`) dan tombol filter (`w: 44`) di topbar tablet diposisikan rata kanan persis (*flush*) dengan sisi kanan Banner Slider dan konten di bawahnya (`x: 818`).
-
-### G. Floating Pill Nav Dock (Mobile — 100% Siren.uix)
-Mengadopsi 1-to-1 dari bagian bawah `docs/assets/UI_STYLE_REFERENCES.jpg`:
-* **Bentuk:** Kapsul membulat penuh (*pill dock* `rounded-full`), melayang di posisi `bottom-4`, lebar `calc(100% - 32px)`, tinggi `68px`.
-* **Material:** `bg-white/94 backdrop-blur-xl border border-white shadow-[0_16px_40px_-10px_rgba(2,132,199,0.2)]`.
-* **Susunan 5 Tab Lengkap Berlabel:**
-  1. `Home`: Ikon rumah solid `sky-600` + teks label "Home" (12px, 600, sky-600).
-  2. **`Roles` (Resmi menggantikan Lamaran):** Ikon layers/briefcase outline `slate-400` + teks label "Roles" (12px, 500, slate-500).
-  3. **Tombol Tengah Terangkat (Raised Center Button):**
-     - Lingkaran `56x56 px` naik melayang terangkat `-translate-y-3.5`.
-     - Latar: Gradien cyan-sky cerah (`linear-gradient(135deg, #2EB5F8 0%, #0284C7 100%)`).
-     - Cincin pendaran cahaya (*glowing ring*): `box-shadow: 0 8px 20px -4px rgba(2, 132, 199, 0.35)`.
-     - Ikon: Simbol `+` putih bersih tebal 2.5px.
-     - Fungsi: Membuka Modal Catat Lamaran (Seksi 4.E).
-  4. `Kalender`: Ikon kalender outline `slate-400` + teks label "Kalender" (12px, 500, slate-500).
-  5. `Settings`: Ikon pengaturan/cog outline `slate-400` + teks label "Settings" (12px, 500, slate-500).
+### B. Tablet (768px – 1023px / 834x1194) — Top Floating Pill Navbar & 2-Kolom Seimbang
+* **Top Floating Pill Navbar (`w: 786, h: 58`, radius 29px, y: 20):**
+  * Kiri: Logo resmi NextRole + brand text `nextrole` (Courier New Bold, 18px).
+  * Tengah: Pill navigasi terpadu (`Home` aktif, `Roles`, `Kalender`, `Settings`).
+  * Kanan: Pill kuota harian `18/20 Klip`, tombol cepat `+`, dan avatar `BS` (32x32).
+* **Banner Slider Tablet (`w: 786, h: 140`, y: 160):** Membentang penuh di atas konten.
+* **Grid 2-Kolom (y: 324 s.d. y: 910):**
+  * **Kolom Kiri (w: 454) — Tindak Lanjut:**
+    1. Header "Perlu Tindak Lanjut" + link "Lihat semua ›"
+    2. Hero Card Tokopedia (H+7) (`h: 196`): Padding button CTA $24$ px dari tepi kanan dan bawah, teks tombol rata tengah sempurna.
+    3. Card Bukalapak (H+7) (`h: 160`)
+    4. Card GoTo Financial (Follow-Up H+6) (`h: 166`, berakhir di **Y = 910**)
+  * **Kolom Kanan (w: 308) — Statistik & Kalender Agenda:**
+    1. Header "Statistik Lamaran" + link "Bulan Ini ›"
+    2. Quick Analytics Bento Card (`h: 200`): 4 kotak metrik simetris dengan ikon 3D squircle (Total Dilamar, Interview Aktif, Perlu Follow-Up, Tingkat Respon), label berjarak aman dari tepi kanan, link "Detail ›" rata kanan presisi.
+    3. Header "Kalender Agenda" + link "Buka ›"
+    4. Mini Calendar Tablet (`h: 306`, berakhir persis di **Y = 910**): Kalender November 2026 + jadwal agenda terpilih.
+* **Pipeline Lamaran Horizontal Row (y: 934 s.d. y: 1134):**
+  * Header "Pipeline Lamaran" + link "Lihat semua ›"
+  * Disusun dalam 2 kartu horizontal berdampingan:
+    * **Grab Indonesia Tablet (`w: 382, h: 160`, x: 24):** Status "Interview Besok" & jadwal interview.
+    * **Shopee Indonesia Tablet (`w: 382, h: 160`, x: 428):** Status "Applied" & review status.
 
 ---
 
-## 5. Layout Responsif
+### C. Desktop (≥ 1024px / 1440x1000) — 3-Column Balanced Dashboard
+* **Top Floating Pill Navbar (`w: 1344, h: 64`, radius 32px, y: 20):**
+  * Kiri: Logo resmi NextRole (36x36) + brand `nextrole` (Courier New Bold, 18px).
+  * Tengah: Segmented pill tabs (`Home`, `Roles`, `Kalender`, `Settings`).
+  * Kanan: Kuota harian `18 / 20 Klip`, tombol utama `+ Catat Lamaran` (`w: 154, h: 36`), dan avatar `BS` (36x36).
+* **Baris Atas (y: 168):**
+  * **Banner AI Carousel Desktop (`w: 888, h: 164`, x: 48):** Membentang lebar di atas Kolom 1 dan Kolom 2.
+  * **Kolom 3 Kanan Atas (x: 960, w: 432):**
+    * Header "Statistik & Kalender"
+    * Quick Analytics Bento Card (`h: 220`): 4 tile metrik simetris ($188 \times 72$ px) dengan 4 ikon 3D glassmorphic seimbang, angka `#0F172A`, dan label `#64748B`. Link "Bulan Ini ›" rata kanan sejajar batas bento box ($x = 414$).
+* **Baris Bawah (y: 356 s.d. y: 950 — Terkunci Baseline Y = 950):**
+  * **Kolom 1 (x: 48, w: 432) — Perlu Tindak Lanjut:**
+    1. Header "Perlu Tindak Lanjut" + link "Lihat semua ›"
+    2. Hero Card Tokopedia (H+7) (`h: 200`): CTA button memiliki padding aman $24$ px kanan & bawah.
+    3. Card Bukalapak (H+7) (`h: 160`)
+    4. Card GoTo Financial (Follow-Up H+6) (`h: 168`, berakhir di **Y = 950**)
+  * **Kolom 2 (x: 504, w: 432) — Pipeline Lamaran:**
+    1. Header "Pipeline Lamaran" + link "Lihat semua ›"
+    2. Card Grab Indonesia (`h: 168`)
+    3. Card Shopee Indonesia (`h: 168`)
+    4. Card Traveloka (Offering) (`h: 168`, berakhir di **Y = 950**): Menampilkan tag status Offering dan CTA "Review Offer ↗". Mengeliminasi *white space* kolom tengah.
+  * **Kolom 3 (x: 960, w: 432) — Kalender & Target Mingguan:**
+    1. Mini Calendar Card (`h: 510`, berakhir di **Y = 950**):
+       - Kalender interaktif November 2026.
+       - Agenda & Wawancara Mendatang (Grab, Shopee, Tokopedia, Traveloka).
+       - Widget Deterministik **"Target Lamaran Minggu Ini"**: Progress bar $80\%$ ($8/10$ lamaran tercapai), 0 token AI.
 
-### A. Mobile (< 768px / 390px — Scrollable Feed Flow)
-* Padding `px-4 pt-3 pb-28`.
-* **Alur Hirarki Home Mobile Resmi (Scrollable Feed):**
-  1. **Header Naked:** Avatar + "Budi Santoso" + "Fullstack Web Developer" (tanpa kotak, tanpa "Hi", tanpa notifikasi, tanpa kuota).
-  2. **Search Bar & Filter Button.**
-  3. **Filter Chips Carousel:** `Semua` | `Full-time` | `Hybrid` | `Follow-Up` | `Remote`.
-  4. **Banner Slider Hero:** Banner edukasi/fitur AI cerdas bergradien biru dengan aksen tombol kuning dan pagination dots `● ○ ○`.
-  5. **Perlu Tindak Lanjut (Hero Carousel):** Kartu Tokopedia (H+7) tanpa bookmark + kartu Apple mengintip.
-  6. **Aktivitas Terakhir (Latest Post Feed):** Kartu lamaran putih Grab & Shopee tanpa tombol pojok.
-  7. **Floating Pill Dock:** 5 tab lengkap dengan raised center FAB (Home · Roles · [ + ] · Kalender · Settings).
+---
 
-### B. Tablet (768px – 1023px / 834px)
-* Slim glass sidebar `w-20` melayang memanjang: Brand logo, tombol `+` catat lamaran di atas, ikon navigasi vertikal (Home, Roles, Kalender, Settings), dan avatar profil di bagian bawah (`y: 1080`).
-* Top bar: "Budi Santoso" · "Fullstack Web Developer", search bar pill, filter button.
-* **Banner Slider Tablet:** Membentang lebar di atas konten (`w: 714, h: 140`) menggantikan dropzone redundan.
-* **2-Kolom Bento di bawah Banner:**
-  - Kiri: Perlu Tindak Lanjut (Hero Tokopedia H+7 + Card Bukalapak H+7).
-  - Kanan: Pipeline Terkini Feed Card.
+## 4. Master File FigCraft & Riwayat Aset
 
-### C. Desktop (≥ 1024px / 1440px)
-* Floating glass sidebar `w-64`: Brand NextRole, tombol pill gradien `+ Catat Lamaran Baru`, menu vertikal (Home, Roles, Kalender, Settings), **Widget Kuota Resmi (18/20)**, dan profil footer Budi Santoso.
-* Main area:
-  - Baris 1: **Banner Slider Desktop (`w: 1116, h: 154`)** menggantikan dropzone repetitif.
-  - Baris 2: 2-Kolom Bento:
-    * Kiri (w: 680): Perlu Tindak Lanjut (Hero Tokopedia H+7 + Bukalapak H+7).
-    * Kanan (w: 416): Pipeline Terkini Activity Card.
+* **Master Canvas File:** `docs/next-role.figcraft`
+* **Aset Ikon 3D Glassmorphic:**
+  * `docs/assets/icon_3d_total_dilamar.png` (Folder Dokumen 3D Glass)
+  * `docs/assets/icon_3d_interview_aktif.png` (Kalender Wawancara 3D Glass)
+  * `docs/assets/icon_3d_follow_up.png` (Lampu Pengingat 3D Glass)
+  * `docs/assets/icon_3d_tingkat_respon.png` (Grafik Pertumbuhan 3D Glass)
