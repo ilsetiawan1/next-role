@@ -276,3 +276,33 @@ Mengadopsi hierarki visual lembar detail premium dan lapang dari referensi visua
   - Baris 2: 2-Kolom Bento:
     * Kiri (w: 680): Perlu Tindak Lanjut (Hero Tokopedia H+7 + Bukalapak H+7).
     * Kanan (w: 416): Pipeline Terkini Activity Card.
+
+---
+
+## 6. Standardisasi Frame Mobile & Bottom Sheet Detail Lamaran (v3.1.0)
+
+### A. Format Frame Mockup Mobile (`390x844`, `cornerRadius: 36`, `clip: true`)
+* Seluruh frame mobile (`Home`, `Modal Smart Clipper`, `Modal Catat Lamaran`, `Detail Lamaran`) diseragamkan menggunakan format **iOS Device Viewport Frame**:
+  - Dimensi: `390 x 844 px`
+  - Radius sudut: `36px`
+  - Floating Bottom Nav Dock (`350 x 68 px`) terjangkar elegan di `y: 756` dengan Raised FAB di `y: 734`.
+
+### B. Detail Lamaran — Contextual Glass Bottom Sheet
+* **Latar Belakang:** Menampilkan layar `Home` penuh dengan lapisan `Backdrop Overlay` (`#0F172A` opacity 0.5 + `layerBlur: 16px`).
+* **Top Bar Interaktif:**
+  - Tombol kembali lingkaran putih (`40 x 40 px`, radius 20px) dengan ikon chevron `‹` (`#0F172A`, centered).
+  - Tanda merah/trash dan judul teks atas Tokopedia dihilangkan agar fokus visual tertuju langsung ke konten sheet.
+* **Arsitektur Konten Bottom Sheet (`y: 274`, `h: 570 px`, `cornerRadius: [36, 36, 0, 0]`):**
+  1. **Raised Company Logo (`64 x 64 px`):** Circle logo TKP menimpa tepi atas sheet (`y: -32`).
+  2. **Hirarki Identitas Pekerjaan:**
+     - Nama Perusahaan: `Tokopedia` (Sky-600 `#0284C7`, text-sm 14px, font normal, text-center).
+     - Nama Jabatan: `Senior Frontend Engineer` (Slate-900 `#0F172A`, text-lg 18px, font normal, text-center).
+     - Rentang Gaji: `Rp 18.000.000 – 25.000.000 / bln` (Slate-500 `#64748B`, text-xs 13px, text-center).
+     - *(Badge redundan tipe kerja, lokasi, dan status di bawah gaji dihapus bersih).*
+  3. **Segmented Control Tabs:** `Deskripsi` (tab aktif) | `Perusahaan`.
+  4. **3-Column Info Strip:** `Hybrid` (Tipe Kerja) | `Jakarta Selatan` (Lokasi Kerja) | `Applied` (Status Kanban).
+  5. **Deskripsi & Kualifikasi:** Paragraf rapi + link `Baca Selengkapnya ›`.
+  6. **Timeline Cards (2-Kolom):** `Tanggal Melamar` (7 Hari Lalu) | `Tindak Lanjut` (H+7 Hari Ini).
+  7. **Centered Action Button:** Pill button Sky Blue (`350 x 50 px`, radius 25px, `#0284C7`) dengan teks rata tengah `"Draf Pesan HRD ↗"` (putih, 15px), menggantikan slider action.
+  8. **iOS Home Indicator:** Strip abu-abu halus (`128 x 4 px`, `#CBD5E1`) di bagian bawah sheet.
+
