@@ -156,34 +156,31 @@ Terinspirasi murni dari `docs/assets/UI_STYLE_REFERENCES.jpg`:
   2. Baris 2: Nama posisi kerja (H3, 15px, 600, slate-900) + Rentang gaji (13px, 400, slate-500).
   3. Baris 3: Deretan tag metadata / info jadwal: `Zoom • 14:00 - 15:00 WIB` atau `Terkirim 2 hari lalu` (`text-xs bg-slate-50 text-slate-500 rounded-full px-3 py-1`).
 
-### E. Modal Catat Lamaran (Split: Otomatis & Manual)
-Dibuka saat menekan tombol tengah dock `+` di mobile/tablet atau tombol `+ Catat Lamaran Baru` di sidebar desktop:
+### E. Modal Kontekstual Mobile (Smart Clipper & Catat Lamaran — 390x844 Frame)
+Modal tidak berdiri sendiri di kanvas kosong, melainkan diwujudkan dalam frame mobile (`390x844`) lengkap dengan konteks halaman Home di latar belakang yang diblur dan digelapkan secara elegan (`backdrop-blur-md bg-slate-900/50`):
 
-1. **Wadah Modal:** Kaca putih solid `rounded-[28px] p-6 shadow-2xl`, latar belakang diblur lembut (`backdrop-blur-md bg-slate-900/25`).
-2. **Segmented Tab (Atas):**
-   - Kapsul tab: `w-full h-11 bg-slate-100 rounded-xl p-1 flex`.
-   - **Tab Otomatis (Aktif):** Kapsul putih melayang dengan shadow halus, teks "Otomatis (AI)" (13px, 600, sky-700).
-   - **Tab Manual:** Teks "Manual" (13px, 500, slate-600).
-3. **Konten Tab Otomatis (`UPLOAD_MODAL_UI_REFERENCES.png`):**
-   - Dropzone area dashed: Border `1.5px dashed sky-300 rounded-[22px] bg-slate-50/70 p-6`.
-   - **Orb Unggah 3D Frosted Glass (Iconly Aesthetic):**
-     * Lingkaran kaca `60x60 px` dengan specular shine melengkung di tepi atas.
-     * Gradien kaca translusen (`linear-gradient(135deg, rgba(255,255,255,0.95), rgba(224,242,254,0.75), rgba(186,230,253,0.6))`).
-     * Border glossy putih transparan `1.5px solid rgba(255, 255, 255, 0.95)` dan pendaran bayangan difus biru langit (`box-shadow: 0 8px 20px rgba(2, 132, 199, 0.32)`).
-     * Ikon panah unggah biru tajam `#0284C7` di tengah.
-   - Sub-teks instruksi & input link loker ("Tempel Link").
-   - File preview item: Thumbnail dokumen, nama file, progress bar, tombol remove `×`.
-   - **Panel Kuota Kontekstual:** "Sisa Kuota: 18 / 20 klip hari ini • Memakai 1 klip" (13px, 500, sky-800) dengan badge AI Flash 1.5.
-   - Footer: Dua tombol pill sejajar ("Batal" & "Ekstrak dengan AI ↗").
-4. **Konten Tab Manual (Dokumentasi Permanen Anti-Lupa):**
-   - Field input form bersih:
-     * Nama Perusahaan (Placeholder: "Contoh: GoTo, Shopee, Traveloka").
-     * Posisi / Role Lowongan (Placeholder: "Contoh: Senior Frontend Engineer").
-     * Tipe Kerja Pills: `Remote` (aktif) | `Hybrid` | `On-Site`.
-     * Perkiraan Rentang Gaji (Opsional).
-     * **Deskripsi Pekerjaan & Kualifikasi (Wajib):** Textarea multi-baris `h-20` (Placeholder: *"Tempel deskripsi atau kualifikasi: React, Next.js, TypeScript, REST API, min. 2 th pengalaman..."*). Bersifat wajib agar pengguna memiliki arsip permanen dan tidak kebingungan saat dipanggil wawancara.
-   - Strip konfirmasi: "✓ Lamaran akan otomatis dicatat ke kolom Applied di Kanban".
-   - Footer: Tombol "Batal" & "Simpan Lamaran".
+1. **`Modal Smart Clipper - (Mobile 390x844)`:**
+   - **Backdrop Blur Overlay:** Lapisan penutup layar penuh `w: 390, h: 844` dengan transparansi gelap dan blur halus (`#0F172A` opacity 0.5 + blur 16px).
+   - **Kartu Modal Mengambang:** Kartu putih terpusat vertikal `w: 350, h: 580, rounded-3xl`, bayangan difus elevasi tinggi (`0 16px 32px rgba(15,23,42,0.15)`).
+   - **Header Modal:** Judul "Catat Lamaran Baru" (18px Regular Poppins), subtitle "Ekstrak otomatis info loker dari tangkapan layar", dan tombol tutup `✕` bulat di pojok kanan atas.
+   - **Segmented Control (w: 310, h: 36):** Tab `Otomatis (AI)` (Aktif, kartu putih shadow halus) | `Manual`.
+   - **Dropzone Area (w: 310, h: 154):** Garis putus-putus biru langit (`1.5px dashed #BAE6FD`), orb ikon panah unggah, teks instruksi, dan bilah input URL cepat ("Atau tempel link loker...") dengan tombol "Tempel".
+   - **File Preview Card (w: 310, h: 66):** Menampilkan file terpilih "Screenshot_Tokopedia_Frontend.png" (PNG • 1.8 MB • Siap diekstrak) dengan progress bar biru penuh.
+   - **Panel Kuota Kontekstual:** "Sisa Kuota: 18 / 20 klip hari ini • Gemini 1.5 Flash" berlatar hijau lembut `#F0FDF4`.
+   - **Footer Aksi:** Tombol "Batal" (w: 100) dan tombol utama "Ekstrak dengan AI ↗" (w: 200, gradien sky blue dengan bayangan lembut).
+
+2. **`Modal Catat Lamaran - (Mobile 390x844)`:**
+   - **Struktur Layar:** Frame mobile `390x844` berlatar belakang halaman Home yang diblur, dengan kartu modal putih di tengah (`w: 350, h: 580, rounded-3xl`).
+   - **Header Modal:** Judul "Catat Lamaran Baru" (18px Regular Poppins), subtitle "Simpan lowongan kerja ke pipeline karir Anda", dan tombol tutup `✕`.
+   - **Segmented Control:** Tab `Otomatis (AI)` | `Manual` (Aktif).
+   - **Field Formulir Manual:**
+     1. `Nama Perusahaan`: Placeholder "Contoh: Tokopedia, Shopee, GoTo".
+     2. `Posisi / Role Lowongan`: Placeholder "Contoh: Senior Frontend Engineer".
+     3. `Tipe Kerja` (3 Pills): `Remote` | `Hybrid` (Aktif) | `On-Site`.
+     4. `Perkiraan Rentang Gaji (Opsional)`: Placeholder "Contoh: Rp 18.000.000 - 25.000.000".
+     5. `Deskripsi Pekerjaan & Kualifikasi (Wajib)`: Textarea multi-baris "Tempel deskripsi: React, Next.js, TypeScript, REST API...".
+     6. **Strip Bantuan:** "✓ Lamaran otomatis dicatat ke kolom Applied di Kanban" (`#F0FDF4`).
+     7. **Footer Aksi:** Tombol "Batal" (w: 100) dan "Simpan Lamaran" (w: 200, `#0284C7`).
 
 ### F. Banner Slider / Hero Announcement Carousel (E-Commerce & SaaS Promo Style)
 Mengadopsi pola visual banner slider modern (Gambar Referensi ke-4) untuk menggantikan dropzone repetitif di halaman utama:
@@ -221,26 +218,31 @@ Mengadopsi nuansa premium iOS frosted glass melayang:
   4. `Kalender`: Ikon kalender clean thin outline (`stroke: 1.5px, #64748B`, `fill: none`) + teks label "Kalender" (12px, 500, slate-500).
   5. `Settings`: Ikon pengaturan gear clean thin outline (`stroke: 1.5px, #64748B`, `fill: none`) + teks label "Settings" (12px, 500, slate-500).
 
-### H. Detail Lamaran Berbasis Bottom Sheet (Mobile 390x844 — Anti-Slop Minimalist)
-Mengadopsi hierarki visual lembar detail premium dan lapang dari referensi visual pengguna (`media_1794411634362_a5ed72dc.png`) dengan mematuhi prinsip **`antislop-ui`** (zero-bold typography, zero raw emojis, anti-bloat):
+### H. Detail Lamaran Berbasis Bottom Sheet (Mobile 390x844 — Sinkronisasi Penuh Input Lamaran)
+Mengadopsi hierarki visual lembar detail premium dan lapang dari referensi visual pengguna (`media_1794411634362_a5ed72dc.png`) dengan seluruh data tersinkronisasi 100% terhadap field inputan formulir pencatatan lamaran:
 * **Backdrop & Top Navigation Bar (`y: 44–90`):**
   - Tombol Back bulat (`40x40 rounded-full bg-white shadow-sm`) dengan simbol chevron tipis `‹`.
   - Header Perusahaan tengah: Nama perusahaan ("Tokopedia", 15px, Regular, `#0F172A`) dengan centang biru verified badge `✓`.
   - Tombol Bookmark bulat (`40x40 rounded-full bg-white shadow-sm`) dengan aksen ribbon merah minimalis (`#F43F5E`).
 * **Elevated White Bottom Sheet (`y: 190`, `h: 654`, `rounded-t-[36px]`):**
   - **Raised Logo Avatar:** Badge logo perusahaan bulat 64x64 menimpa tepi atas lembar detail (`-mt-8` / `y: -32`) dengan border halus `#F1F5F9` dan bayangan lembut.
-  - **Judul Posisi & Rentang Gaji:** Nama posisi ("Senior Frontend Engineer", 18px, Regular, `#0F172A`) dan gaji ("Rp 18.000.000 - 25.000.000 / bln", 13px, Regular, `#64748B`) tersusun simetris di tengah.
-  - **Metadata Chips Row:** Tiga kapsul minimalis bersih (`Full-Time`, `Hybrid`, `Senior`) dengan latar abu-abu netral lembut (`#F1F5F9`), teks slate, tanpa warna peringatan kontras.
+  - **Judul Posisi & Rentang Gaji:** Nama posisi ("Senior Frontend Engineer", 18px, Regular, `#0F172A`) dan gaji ("Rp 18.000.000 - 25.000.000 / bln", 13px, Regular, `#64748B`) tersusun simetris di tengah (persis field formulir).
+  - **Metadata Chips Row (Sinkron Inputan):** Tiga kapsul minimalis bersih yang merefleksikan data input:
+    1. `Hybrid` (Tipe Kerja)
+    2. `Jakarta Selatan` (Lokasi Kerja)
+    3. `Applied` (Status Pipeline)
   - **Segmented Control Tabs (`h-11 rounded-2xl bg-slate-100`):** Dua tab esensial yang ringkas dan fokus:
     1. `Deskripsi` (Aktif, kartu putih timbul dengan shadow-xs halus).
     2. `Perusahaan` (Teks slate netral).
-  - **3-Kolom Info Strip Card (`bg-[#F8FAFC]`):** Ringkasan esensial 3 kolom bergaris pemisah halus:
-    - Kolom 1: "Full-Time" (13px Regular) / "Tipe Kerja" (11px Regular, `#94A3B8`).
-    - Kolom 2: "09:00 - 18:00" (13px Regular) / "Jam Kerja" (11px Regular, `#94A3B8`).
-    - Kolom 3: "Hybrid (2h)" (13px Regular) / "Sistem Kerja" (11px Regular, `#94A3B8`).
-  - **Detail Pekerjaan:** Judul "Detail Pekerjaan" (15px Regular) + tombol more `•••`. Paragraf deskripsi ringkas tanpa kata-kata tebal, dengan link `"Baca Selengkapnya ›"` (`#0284C7`) yang diberi jarak vertikal 14px bebas tumpang-tindih.
-  - **2-Kolom Metadata Cards:** Kartu "Pengalaman Kerja" ("3 - 5 Tahun") dan "Lokasi Kantor" ("Jakarta Selatan") dengan padding lapang dan latar `#F8FAFC`.
-  - **Slide-to-Action Bottom CTA Bar (`h-14 rounded-full bg-gradient-to-r from-sky-600 to-sky-700`):** Slider interaktif modern dengan tombol kapsul putih *"Lamar Sekarang"* di sisi kiri dan deretan chevron `› › › › ›` transparan di sisi kanan.
+  - **3-Kolom Info Strip Card (`bg-[#F8FAFC]` — 100% Selaras Input Form):**
+    - Kolom 1: "Hybrid" (13px Regular) / "Tipe Kerja" (11px Regular, `#94A3B8`).
+    - Kolom 2: "Jakarta Selatan" (12px Regular) / "Lokasi Kerja" (11px Regular, `#94A3B8`).
+    - Kolom 3: "Applied" (13px Regular) / "Status Kanban" (11px Regular, `#94A3B8`).
+  - **Deskripsi & Kualifikasi:** Judul "Deskripsi & Kualifikasi" (15px Regular, persis label input form) + tombol more `•••`. Paragraf deskripsi ringkas ("Bertanggung jawab atas arsitektur frontend web app dengan Next.js & TypeScript, mengoptimalkan Core Web Vitals, serta kolaborasi lintas tim.") dengan link `"Baca Selengkapnya ›"` (`#0284C7`) berjarak vertikal 14px bebas tabrakan.
+  - **2-Kolom Metadata Cards (Status & Riwayat Input):**
+    - Kartu 1: Label "Tanggal Melamar" / Nilai "7 Hari Lalu" (tercatat di sistem).
+    - Kartu 2: Label "Tindak Lanjut" / Nilai "H+7 Hari Ini" (urgensi follow-up recruiter).
+  - **Slide-to-Action Bottom CTA Bar (`h-14 rounded-full bg-gradient-to-r from-sky-600 to-sky-700`):** Slider interaktif modern dengan tombol kapsul putih *"Draf Pesan HRD ↗"* (tindak lanjut logis untuk lamaran yang telah tercatat) dan deretan chevron `› › › › ›` transparan.
   - **Home Indicator:** Garis navigasi iOS (`128x4 rounded-full bg-slate-300`) di bagian bawah dengan safe padding 24px.
 
 ---
