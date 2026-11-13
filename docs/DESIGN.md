@@ -111,3 +111,46 @@ NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, d
   * `docs/assets/icon_3d_interview_aktif.png` (Kalender Wawancara 3D Glass)
   * `docs/assets/icon_3d_follow_up.png` (Lampu Pengingat 3D Glass)
   * `docs/assets/icon_3d_tingkat_respon.png` (Grafik Pertumbuhan 3D Glass)
+
+---
+
+## 5. Spesifikasi Tata Letak Halaman Roles / Kanban Board (Desktop, Tablet, Mobile)
+
+Mengadopsi hierarki visual dan bahasa desain **Soft Sky Glass Elevation** yang selaras 100% dengan halaman Home:
+
+### A. Standardisasi Label Menu: `Roles`
+* Seluruh menu navigasi lintas halaman (Desktop navbar, Tablet navbar, dan Mobile dock) telah distandardisasi menjadi **`Roles`** (menggantikan label *Lamaran* sebelumnya).
+* Status aktif pada halaman Roles menampilkan:
+  * Desktop: Sky pill container aktif pada tab `Roles` (`#0284C7` dengan teks putih).
+  * Tablet: Sky pill tab aktif pada `Roles` (`#0284C7` dengan teks putih).
+  * Mobile: Tab dock aktif pada ikon & label `Roles` (`#E0F2FE` soft pill dengan teks `#0284C7`).
+
+### B. Desktop (1440x900) — 5-Kolom Horizontal Kanban Board
+* **Top Floating Pill Navbar (`w: 1344, h: 64`, y: 20):** Tab `Roles` aktif.
+* **Header Bar (y: 102):**
+  * Judul "Papan Lamaran" (`fontSize: 24, fontStyle: SemiBold, #0F172A`)
+  * Subtitle "Kelola 18 lamaran aktif di 5 tahap pipeline" (`fontSize: 13, #64748B`)
+  * Search bar pill (`w: 310, h: 44`, x: 976) + filter square button (`w: 44, h: 44`, x: 1298)
+* **5 Kolom Pipeline Seimbang (y: 176 s.d. 736, h: 560):**
+  * `Applied` (w: 256, x: 48)
+  * `Follow-Up Needed` (w: 256, x: 320)
+  * `Interview Scheduled` (w: 256, x: 592)
+  * `Offered` (w: 256, x: 864)
+  * `Rejected / Ghosted` (w: 256, x: 1136)
+  * Material kaca semi-transparan (`bg-white/55 backdrop-blur-xl border border-white/90 rounded-3xl`).
+* **Ringkasan Pipeline Strip (y: 760, w: 1344, h: 96):**
+  * 4 kotak metrik dengan ikon 3D glassmorphic (Total Dilamar: 24, Interview Aktif: 3, Perlu Follow-Up: 2, Tingkat Respon: 68%).
+
+### C. Tablet (834x1194) — 2-Row Balanced Bento Kanban
+* **Top Navbar Tablet (`w: 786, h: 58`, y: 20):** Tab `Roles` aktif.
+* **Header Bar (y: 98):** Judul "Papan Lamaran" + Search Bar pill + Filter button.
+* **Ringkasan Pipeline Strip Tablet (y: 160, w: 786, h: 84):** 4 kotak metrik simetris dengan ikon 3D glassmorphic seragam.
+* **Row 1 (y: 258 s.d. 698, h: 440):** 3 kolom berdampingan (`Applied`, `Follow-Up Needed`, `Interview Scheduled`), masing-masing `w: 248px`.
+* **Row 2 (y: 714 s.d. 1154, h: 440):** 2 kolom berdampingan (`Offered` & `Rejected / Ghosted`), masing-masing `w: 382px` (ritme 2-kolom identik dengan Tablet Home).
+
+### D. Mobile (390x844) — Single Column Feed dengan Status Chips
+* **Top Header:** Logo resmi NextRole + brand text + search bar dengan tombol filter.
+* **Filter Chips Carousel (y: 138, h: 32):** Chips filter status pipeline horizontal (`Semua (18)`, `Applied (6)`, `Follow-Up (3)`, `Interview (3)`, `Offering (1)`).
+* **Card Feed (y: 182 s.d. 730):** 4 kartu lamaran vertikal bernuansa kaca bersih dengan status badge pastel dan tombol aksi ringkas berjarak aman.
+* **Floating Bottom Pill Nav Dock (`h: 68`, y: 756):** Menu `Roles` aktif dengan soft blue pill highlight + Raised FAB Catat Lamaran (+) di tengah. Seluruh label navigasi (*Home*, *Roles*, *Kalender*, *Settings*) menggunakan ukuran **10px (`text-[10px]` / `2xs`)**, bobot **Regular (400)**, dan penempatan presisi rata tengah (`width: 62, x: 0, textAlign: center, y: 30`) untuk estetika minimalis, airy, dan proporsional.
+
