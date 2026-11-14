@@ -47,6 +47,11 @@ Aturan ini aktif saat Agent diminta membuat, merancang, atau merevisi visual di 
 
 ### A.0. Protokol Keselamatan Server FigCraft
 * ⚠️ **Pencegahan Crash Server:** Pengguna (*User*) **wajib membuka aplikasi FigCraft secara manual terlebih dahulu di `localhost:7979`** sebelum Agent mengirim perintah canvas apa pun. Jangan memanggil MCP FigCraft jika server belum aktif.
+* **Perintah Menjalankan FigCraft di Command Prompt (CMD):**
+  ```cmd
+  "D:\ArtCraft\FigCraft\figcraft.exe" --control 7979 "E:\project-nextjs\next-role\docs\next-role.figcraft"
+  ```
+* **Target MCP Server untuk Live GUI:** Wajib menggunakan `ServerName: "figcraft-app"` (bukan daemon headless `figcraft`) agar setiap modifikasi layer langsung terhubung dan tampil secara *realtime* di jendela FigCraft aktif.
 * **Auto-Save:** Panggil `save_file` setelah menyelesaikan revisi kanvas utama.
 
 ### A.1. Integrasi Skills Desain
