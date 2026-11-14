@@ -154,3 +154,57 @@ Mengadopsi hierarki visual dan bahasa desain **Soft Sky Glass Elevation** yang s
 * **Card Feed (y: 182 s.d. 730):** 4 kartu lamaran vertikal bernuansa kaca bersih dengan status badge pastel dan tombol aksi ringkas berjarak aman.
 * **Floating Bottom Pill Nav Dock (`h: 68`, y: 756):** Menu `Roles` aktif dengan soft blue pill highlight + Raised FAB Catat Lamaran (+) di tengah. Seluruh label navigasi (*Home*, *Roles*, *Kalender*, *Settings*) menggunakan ukuran **10px (`text-[10px]` / `2xs`)**, bobot **Regular (400)**, dan penempatan presisi rata tengah (`width: 62, x: 0, textAlign: center, y: 30`) untuk estetika minimalis, airy, dan proporsional.
 
+---
+
+## 6. Spesifikasi Tata Letak Halaman Kalender & Agenda (Desktop, Tablet, Mobile)
+
+Halaman Kalender dirancang untuk memberikan transparansi penuh jadwal pencarian kerja: jadwal wawancara terdekat, batas respons offering, dan pengingat otomatis follow-up H+7 dengan aksi dokumentasi dan pelacakan lamaran 1-click.
+
+### A. Prinsip UI & Anti-Slop Kalender
+* **Zero OS Emoji:** Seluruh emoji default bawaan sistem operasi (`⏱`, `⚡`, `🗓`, `⏳`, `📅`, `⚙`, `⚠️`) ditiadakan. Navigasi dan indikator status menggunakan ikon vektor autentik yang seragam dan teks informatif bersih.
+* **Muted Badges (Kurangi Badge Warna-Warni):** Badge status agenda menggunakan palet warna netral yang tenang (`bg: #F1F5F9` / `#F8FAFC`, `border: #E2E8F0`, `text: #475569`), menghindari distraksi visual berlebih agar mata pengguna tetap fokus pada prioritas agenda.
+* **Dokumentasi & Pelacakan Lamaran (Bukan Video Call CTA):** Menghilangkan tombol aksi pihak ketiga seperti "Masuk Google Meet / Zoom" karena NextRole berfokus sebagai platform dokumentasi lamaran. Tombol aksi difokuskan ke: `Detail Lamaran ↗`, `Snapshot JD ↗`, `Draf Pesan Follow-Up ↗`, dan `Review Penawaran ↗`.
+
+### B. Desktop (1440x900) — Split Calendar Grid & Agenda Inspector
+* **Top Floating Pill Navbar (`w: 1344, h: 64`, y: 20):** Tab `Kalender` aktif dengan kapsul biru (`#0284C7`), logo resmi nextrole, badge kuota AI `18/20`, tombol `+ Catat Lamaran`, dan avatar pengguna.
+* **Header & Controls (y: 104 s.d. 138):**
+  * Judul "Jadwal & Agenda" + Subtitle "Pantau wawancara, deadline penawaran, dan pengingat follow-up H+7".
+  * Navigasi Bulan (`‹ November 2026 ›`), tombol `Hari Ini`, View Switcher segmented (`Bulan` aktif / `Minggu`), dan tombol aksi cepat `+`.
+* **Filter Chips Carousel (y: 156, h: 32):** Chips filter agenda horizontal (`Semua Agenda (6)`, `Wawancara (2)`, `Follow-Up H+7 (2)`, `Offering (2)`).
+* **Calendar Grid Box (`w: 848, h: 672`, x: 48, y: 204):**
+  * 7 Kolom Hari (`Sen` s.d. `Min` 112px) + 35 Tanggal Matrix (Okt 26 s.d. Nov 29).
+  * Hari Aktif (Jum, 13 Nov): Glowing Blue Ring (`#0284C7` 2px), date circle biru, pill netral 14:00 Grab, Tokopedia H+7, dan indikator `+1 lainnya`.
+  * Event Badges pada Cell 10 (Shopee), Cell 14 (Mekari), Cell 15 (Traveloka), dan Cell 18 (Blibli) bernuansa muted slate yang bersih.
+* **Agenda Inspector Box (`w: 480, h: 672`, x: 912, y: 204):**
+  * **Hero Grab Interview Card (h: 236):** Logo Grab hijau, badge netral `Wawancara User`, jadwal terstruktur "Jadwal: 14:00 - 15:00 WIB • Tinjau Dokumen Pendukung", tombol `Detail Lamaran ↗`, tombol `Snapshot JD ↗`, dan tombol `Detail ↗`.
+  * **Tokopedia Follow-Up Card (h: 216):** Logo Tokopedia, badge netral `Perlu Follow-Up`, deskripsi status "Status: 7 hari tanpa kabar pasca Technical Test. Disarankan kirim follow-up.", tombol `Draf Pesan Follow-Up ↗`, dan tombol `Lihat Snapshot JD ↗`.
+  * **Upcoming 7 Days Strip (h: 120):** Mini agenda mendatang (Mekari 14 Nov, Traveloka 15 Nov, Blibli 18 Nov) dengan tipografi slate elegan.
+
+### C. Tablet (834x1194) — Month Grid & 2-Kolom Balanced Bento Inspector
+* **Top Navbar Tablet (`w: 786, h: 58`, y: 20):** Tab `Kalender` aktif.
+* **Header Bar (y: 94):** Judul "Jadwal & Agenda" + Subtitle + Navigasi Bulan `‹ November 2026 ›` + Tombol `Hari Ini` + Tombol `+`.
+* **Filter Chips Row (y: 150, h: 32):** Chips status agenda (`Semua (6)`, `Wawancara (2)`, `Follow-Up (2)`, `Offering (2)`).
+* **Calendar Grid Box Tablet (`w: 786, h: 466`, y: 196):**
+  * 7 Kolom Hari (`Sen` s.d. `Min` 104px) + 35 Sel Tanggal kompak (76px tinggi).
+  * Hari Aktif (Jum, 13 Nov): Highlight lembut biru, badge Grab 14:00, badge Tokopedia H+7.
+* **Row 2 — 2-Kolom Bento Inspector (y: 682 s.d. 1168, h: 486):**
+  * **Kolom Kiri (`w: 382`, x: 24) — Agenda Terpilih (13 Nov):** Hero Grab Card (badge `Wawancara User`, detail pewawancara, jadwal tinjau dokumen, tombol `Detail Lamaran ↗` + `Snapshot JD ↗`) + Tokopedia Card (badge `Perlu Follow-Up`, tombol `Draf Pesan Follow-Up ↗` + `Lihat JD ↗`).
+  * **Kolom Kanan (`w: 382`, x: 428) — Agenda Mendatang (7 Hari):** 3 kartu agenda mendatang dengan badge netral dan tombol terarah (`Mekari` - `Detail Lamaran ↗`, `Traveloka` - `Review Penawaran ↗`, `Blibli` - `Detail Lamaran ↗`).
+
+### D. Mobile (390x844) — Weekly Date Strip & Agenda Action Feed
+* **Top Floating Header (`w: 358, h: 48`, y: 16):** Brand logo `nextrole` monospace + Month pill `‹ November 2026 ›` + tombol aksi cepat `+`.
+* **Horizontal Weekly Date Strip (`w: 358, h: 76`, y: 72):**
+  * 7 hari berjalan (Sen 9 s.d. Min 15 Nov) dalam kapsul sentuh responsif.
+  * Hari ini (Jum 13 Nov) aktif dengan warna biru cerah (`#0284C7`), angka tanggal kontras putih, dan dot indikator tunggal yang rapi.
+* **Filter Chips Carousel (y: 156, h: 32):** Chips status agenda horizontal (`Semua (6)`, `Wawancara (2)`, `Follow-Up (2)`, `Offering (2)`).
+* **Agenda Action Feed (y: 198 s.d. 744):**
+  * **Hero Grab Card (h: 188):** Logo Grab hijau, badge netral `Wawancara User`, info jadwal terstruktur, tombol `Detail Lamaran ↗` + tombol `Snapshot JD ↗`.
+  * **Tokopedia Card (h: 182):** Logo Tokopedia hijau, badge netral `Perlu Follow-Up`, ringkasan status 7 hari, tombol `Draf Pesan Follow-Up ↗` + tombol `Lihat JD ↗`.
+  * **Mekari Card (h: 76):** Wawancara HR Besok 10:00 WIB + tombol `Detail ↗`.
+  * **Traveloka Card (h: 76):** Batas Offering Minggu 15 Nov + tombol `Review ↗`.
+* **Floating Bottom Pill Nav Dock (`h: 68`, y: 756):**
+  * Ikon vektor autentik: Menggunakan layer `VECTOR` asli (Home, Roles, Kalender, Settings) dengan bobot garis 1.5px tanpa menggunakan karakter emoji Unicode.
+  * Menu `Kalender` aktif dengan soft blue pill highlight (`#E0F2FE` + `#0284C7`) + Raised FAB Catat Lamaran (+) 64x64 di tengah.
+  * Seluruh label teks navigasi berukuran **10px (`text-[10px]` / `2xs`)**, bobot **Regular (400)**, dan presisi rata tengah.
+
+
