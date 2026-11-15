@@ -254,64 +254,63 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
 
 ## 6. Spesifikasi Tata Letak Halaman Analitik & Performa Karir (Desktop, Tablet, Mobile)
 
-Halaman Analitik dirancang untuk memberikan visibilitas metrik pencarian kerja secara komprehensif, berbasis bento-grid modern: konversi funnel tahapan rekrutmen, efektivitas portal sumber lamaran (bar chart), kecepatan respon recruiter (spline trend line chart), rekomendasi strategis AI, target mingguan, serta daftar lamaran dalam pantauan intensif.
+Halaman Analitik dirancang untuk memberikan visibilitas performa pencarian kerja secara komprehensif, presisi, dan bebas dari ornamen berlebih (Anti-Slop): konversi pipeline dengan segmented funnel bar, efektivitas portal sumber lamaran (bar chart minimalis), kecepatan respon recruiter (line trend chart bersih), analisis lead time per tahapan, serta pantauan intensif lamaran aktif.
 
 ### A. Prinsip UI & Anti-Slop Analitik
-* **Zero OS Emoji:** Seluruh emoji default bawaan sistem operasi ditiadakan. Indikator status, aksi, dan metrik menggunakan teks terstruktur dan palet warna semantik bersih.
-* **Soft Sky Glass Elevation v3.0.0:** Menggunakan material kaca semi-transparan (`bg-white/88 backdrop-blur-md border border-white`), elevasi bayangan difus biru langit (`0 8px 24px rgba(2, 132, 199, 0.08)`), dan tipografi utama `Plus Jakarta Sans`.
-* **Actionable Insight Over Raw Data:** Setiap kartu metrik menyertakan perbandingan kontekstual (misal: "33.3% Rasio Lolos", "-1.8 hari lebih cepat dari rata-rata industri", "Match rate 92%") dan tombol aksi langsung ke modul terkait.
+* **Zero OS Emoji:** Seluruh emoji default ditiadakan secara ketat. Visual mengandalkan tipografi jelas, angka metrik tegas, dan garis indikator fungsional.
+* **Unified Neutral Containers:** Semua kartu analitik menggunakan kontainer putih solid seragam (`bg: #FFFFFF`, border tipis `#E2E8F0`, cornerRadius 16px, bayangan halus `0 2px 8px rgba(15, 23, 42, 0.04)`). Mengeliminasi kartu biru neon maupun gradasi berwarna yang bertabrakan.
+* **Monochrome & Single Accent System:** Seluruh status badge menggunakan palet netral seragam (`bg: #F1F5F9` / `#FFFFFF`, `border: #E2E8F0`, teks `slate-700 #334155`). Aksen Sky Blue (`#0284C7`) hanya digunakan sebagai penanda elemen aktif, tombol utama, atau bar sorotan utama.
+* **Actionable & Data-Driven:** Mengeliminasi tips AI generik. Mengutamakan data nyata seperti lead time antar-tahap (rata-rata hari tunggu), conversion rate riil, dan pembaruan log recruiter.
 
-### B. Desktop (1440x900) — Bento Grid Karir Terpadu
+### B. Desktop (1440x900) — Bento Grid Karir Minimalis
 * **Top Floating Pill Navbar (`w: 1344, h: 64`, y: 20):** Tab `Analitik` aktif dengan kapsul biru (`#0284C7`), logo resmi nextrole, badge kuota AI `18/20 Kuota AI`, tombol `+ Catat Lamaran`, dan avatar profil `BS`.
 * **Header & Controls (y: 104 s.d. 136):**
   * Judul "Analitik & Performa Karir" (`Plus Jakarta Sans Bold 24px`) + Subtitle "Evaluasi konversi funnel lamaran, efektivitas portal sumber, dan kecepatan respon recruiter".
   * Period Selector Pill (`w: 170, h: 40`, x: 1046): Dropdown pilihan rentang waktu `30 Hari Terakhir ▾`.
   * Tombol `Unduh Laporan` (`w: 160, h: 40`, x: 1232): Tombol ekspor laporan analitik dalam format dokumen/PDF.
-* **Filter Chips Row (y: 156, h: 34):** Chips horizontal (`Semua Posisi (18)`, `Wawancara (6)`, `Follow-Up H+7 (2)`, `Offering (2)`).
+* **Filter Chips Row (y: 156, h: 34):**
+  * Chip Aktif: `Semua Posisi (18)` (`bg: #0F172A`, teks putih).
+  * Chip Netral: `Wawancara (6)`, `Follow-Up H+7 (2)`, `Offering (2)` (`bg: #FFFFFF`, border `#E2E8F0`, teks `#475569`).
 * **Kolom Kiri Bento (`w: 848`, x: 48, y: 204 s.d. 876):**
-  * **Funnel Hero Card (`w: 848, h: 208`, y: 204):**
-    - Judul "Funnel Konversi Lamaran" + Subtitle + Badge "Konversi 33.3% ↑".
-    - 3 Kapsul Metrik Terhubung (Connected Fluid Bridge):
-      - Pill 1: "18 Lamaran Terkirim" (100% Volume Total).
-      - Pill 2 (Glowing Hero): "6 Tahap Wawancara" (`linear-gradient #0284C7 -> #38BDF8`, teks putih, badge "33.3% Rasio Lolos").
-      - Pill 3: "2 Penawaran Kerja" (11.1% Final Offer).
-  * **Baris Tengah Bento Berdampingan (`y: 432, h: 216`):**
-    - **Card Bar Chart Performa Portal (`w: 412`, x: 48):** Bar rounded per portal (LinkedIn: 8 pos, JobStreet: 5, Glints: 3, TechInAsia: 2, Direct: 1) dengan tooltip sorot aktif pada channel utama.
-    - **Card Line Chart Kecepatan Respon (`w: 412`, x: 484):** Hero card gradasi biru (`#0284C7` -> `#0369A1`), metrik "5.4 Hari", badge selisih "-1.8 hari lebih cepat dari rata-rata (7.2h)", vektor garis spline halus dengan titik aktif "4.8 Hari (Mg 4)", dan sumbu minggu horizontal (Mg 1 s.d. Mg 4).
-  * **Card Daftar Lamaran Terkini (`w: 848, h: 216`, y: 660):**
-    - Judul "Daftar Lamaran dalam Pantauan Intensif" + link "Buka Papan Roles ›".
-    - 3 Baris lamaran: Tokopedia (Wawancara User 18 Nov, Rp 18-25 jt), Tiket.com (Follow-Up H+7 Hari Ini, Rp 16-22 jt), Grab Indonesia (Offering Diterima, Rp 22-30 jt) dengan tombol aksi kontekstual `Detail ›`, `Draf Pesan ›`, dan `Review ›`.
+  * **Card Pipeline & Konversi Lamaran (`w: 848, h: 184`, y: 204):**
+    - Judul "Pipeline & Konversi Lamaran" + Subtitle + Badge Netral "Konversi: 33.3%".
+    - Segmented Funnel Progress Bar (`h: 12`, radius 6px) proporsional: Applied (440px / `#94A3B8`), Interview (246px / `#0284C7`), Offered (114px / `#0F172A`).
+    - 3 Blok Metrik Bersih di bawah bar: "18 Lamaran Terkirim", "6 Wawancara (33.3% Lolos)", "2 Penawaran (11.1% Offer Rate)".
+  * **Baris Tengah Bento Berdampingan (`y: 408, h: 236`):**
+    - **Card Efektivitas Saluran Lamaran (`w: 412`, x: 48):** Background putih bersih, gridlines halus, grafik batang minimalis (LinkedIn: 8 pos sorotan `#0284C7`, JobStreet: 5, Glints: 3, TechInAsia: 2, Direct: 1).
+    - **Card Kecepatan Respon Recruiter (`w: 412`, x: 484):** Background putih seragam, metrik "5.4 Hari", subtext komparasi industri, dan grafik garis spline biru presisi dengan titik penanda minggu 1 s.d. 4.
+  * **Card Lamaran dalam Pantauan Intensif (`w: 848, h: 216`, y: 660):**
+    - Format tabel ringkas: Tokopedia (Wawancara User 18 Nov, Rp 18-25 jt), Tiket.com (Follow-Up H+7 Hari Ini, Rp 16-22 jt), Grab Indonesia (Offering Diterima, Rp 22-30 jt) dengan badge netral seragam dan link aksi langsung.
 * **Kolom Kanan Bento (`w: 476`, x: 916, y: 204 s.d. 876):**
-  * **Card Aktivitas Terbaru Recruiter (`h: 260`, y: 204):** Feed pembaruan langsung recruiter dengan indikator "● Live Update" (Gojek, Bukalapak, Grab) lengkap dengan timestamp dan status badge.
-  * **Card Rekomendasi Karir AI (`h: 176`, y: 480):** Permukaan kaca biru muda (`#F0F9FF`), badge "✦ AI Career Strategic Tip", fit rate "92% Fit Rate", tips optimasi tindak lanjut, dan tombol CTA "Generate Draf Follow-Up AI ›".
-  * **Card Target Mingguan (`h: 204`, y: 672):** Progres target 4 dari 5 lamaran (80%) dengan progress bar visual, kontak cepat recruiter (Sarah P. Gojek, Dimas Tiket.com), dan tombol utama "+ Catat Lamaran Baru".
+  * **Card Aktivitas Terkini Recruiter (`h: 320`, y: 204):** Timeline vertikal bersih dengan garis penghubung dan titik status (Gojek, Bukalapak, Grab, Traveloka).
+  * **Card Target & Lead Time Pipeline (`h: 332`, y: 544):** Target mingguan 4/5 lamaran (80%), 2 boks metrik lead time ("Applied ➔ Wawancara: 4.2 Hari", "Wawancara ➔ Keputusan: 5.8 Hari"), kontak aktif recruiter, dan tombol "+ Catat Lamaran Baru".
 
 ### C. Tablet (834x1194) — 2-Kolom Balanced Bento
-* **Top Floating Navbar Tablet (`w: 770, h: 64`, y: 20):** Tab `Analitik` aktif dengan kapsul biru.
+* **Top Floating Navbar Tablet (`w: 770, h: 64`, y: 20):** Tab `Analitik` aktif.
 * **Header & Controls (y: 94 s.d. 122):** Judul "Analitik & Performa Karir" + Subtitle + Period Selector `30 Hari Terakhir ▾` + Tombol `Unduh Laporan`.
-* **Filter Chips Row (y: 156, h: 32):** `Semua Posisi (18)`, `Wawancara (6)`, `Follow-Up (2)`, `Offering (2)`.
-* **Hero Funnel Card Tablet (`w: 786, h: 196`, y: 196):** 3 kapsul terhubung simetris (Terkirim 18, Wawancara 6, Offering 2) dengan bridge gradien.
-* **Row 1 — 2-Kolom Berdampingan (`y: 408, h: 216`):**
-  * Kiri (`w: 383`, x: 24): Card Bar Chart Performa Portal.
-  * Kanan (`w: 383`, x: 427): Card Line Chart Kecepatan Respon (5.4 Hari, spline curve putih).
-* **Row 2 — 2-Kolom Berdampingan (`y: 638, h: 244`):**
-  * Kiri (`w: 383`, x: 24): Card Rekomendasi AI & Target Mingguan (Progress bar 80%, tombol generate draf AI dan catat lamaran).
-  * Kanan (`w: 383`, x: 427): Card Aktivitas Terbaru Recruiter (Feed Gojek, Bukalapak, Grab).
-* **Row 3 — Full-Width Bottom (`w: 786, h: 244`, y: 896):**
-  * Card Daftar Lamaran dalam Pantauan Intensif dengan 3 baris terstruktur (Tokopedia, Tiket.com, Grab).
+* **Filter Chips Row (y: 150, h: 32):** `Semua Posisi (18)` aktif gelap, `Wawancara (6)`, `Follow-Up (2)`, `Offering (2)` netral.
+* **Card Pipeline & Konversi Tablet (`w: 786, h: 184`, y: 196):** Segmented funnel bar proporsional + 3 blok metrik horizontal.
+* **Row 1 — 2-Kolom Berdampingan (`y: 396, h: 236`):**
+  * Kiri (`w: 383`, x: 24): Card Efektivitas Saluran (Bar Chart putih bersih).
+  * Kanan (`w: 383`, x: 427): Card Kecepatan Respon Recruiter (Line Chart putih bersih, 5.4 Hari).
+* **Row 2 — 2-Kolom Berdampingan (`y: 648, h: 260`):**
+  * Kiri (`w: 383`, x: 24): Card Target & Lead Time (Progress 80%, lead time 4.2h & 5.8h, tombol catat).
+  * Kanan (`w: 383`, x: 427): Card Aktivitas Terkini (Timeline log Gojek, Bukalapak, Grab).
+* **Row 3 — Full-Width Bottom (`w: 786, h: 220`, y: 924):**
+  * Card Lamaran dalam Pantauan Intensif dengan 3 baris terstruktur dan badge netral seragam.
 
 ### D. Mobile (390x844) — Compact Vertical Bento & Floating Dock
 * **Top Header Bar (`w: 358, h: 48`, y: 16):** Brand `nextrole` + Period pill `30 Hari Terakhir ▾` + Tombol unduh laporan `⤓`.
 * **Title & Subtitle (y: 74 s.d. 98):** "Analitik & Performa Karir" + "Konversi funnel & kecepatan respon recruiter".
-* **Mobile Funnel Hero Card (`w: 358, h: 142`, y: 124):**
-  * 3 Pill vertikal terhubung: Applied (18), Interview (6 - Hero Glowing), Offering (2).
-* **Mobile 2-Card Row (`w: 358, h: 154`, y: 276):**
-  * Kiri (`w: 173`, x: 16): Bar Chart Portal Sumber (LinkedIn, JobStreet, Glints).
-  * Kanan (`w: 173`, x: 201): Kecepatan Respon (5.4 Hari, spline trend curve putih).
-* **Mobile AI Recommendation Card (`w: 358, h: 106`, y: 444):**
-  * Background `#F0F9FF`, badge "✦ AI Strategic Tip", copy insight H+5, dan tautan aksi "Buka Draf Follow-Up AI ›".
-* **Mobile Daftar Lamaran Terkini (`w: 358, h: 184`, y: 560):**
-  * 3 item lamaran ringkas dengan logo inisial, rentang gaji, badge status, serta mini progress bar target mingguan (4/5 lamaran, 80%).
+* **Card Pipeline & Konversi Mobile (`w: 358, h: 136`, y: 124):**
+  * Segmented funnel bar (Applied, Interview, Offered) + 3 metrik ringkas di bawahnya.
+* **Mobile 2-Card Row (`w: 358, h: 148`, y: 272):**
+  * Kiri (`w: 173`, x: 16): Saluran Lamaran (3 bar saluran utama LinkedIn, JobStreet, Glints).
+  * Kanan (`w: 173`, x: 201): Waktu Respon (5.4 Hari, grafik garis biru minimalis berlatar putih).
+* **Card Target & Lead Time Mobile (`w: 358, h: 114`, y: 432):**
+  * Progress target 80% + 2 stat boks lead time tahapan (4.2 hari & 5.8 hari).
+* **Card Lamaran Pantauan Intensif Mobile (`w: 358, h: 186`, y: 558):**
+  * 3 baris lamaran ringkas dengan logo inisial, rentang gaji, dan badge netral tanpa warna pelangi.
 * **Floating Bottom Pill Nav Dock (`h: 68`, y: 756):**
   * Tab `Analitik` aktif dengan highlight pill biru muda (`#E0F2FE` + `#0284C7`).
   * Raised Center FAB (64x64) `+` di tengah terangkat `-translate-y-4` untuk aksi cepat catat lamaran.
