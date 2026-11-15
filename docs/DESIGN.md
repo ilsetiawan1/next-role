@@ -45,7 +45,7 @@ NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, d
 * **Horizontal Filters:** Pill scroll horizontal (*Semua*, *Full-time*, *Hybrid*, *Follow-Up*).
 * **Banner AI Carousel (`w: 358, h: 140`):** Promosi fitur Smart AI Clipper dengan ilustrasi 3D.
 * **Perlu Tindak Lanjut Feed:** Kartu vertikal dengan Hero Tokopedia (H+7), Bukalapak, GoTo Financial.
-* **Floating Bottom Pill Nav Dock (`h: 68`, radius 28px):** 4 menu utama (*Home*, *Roles*, *Kalender*, *Settings*) dengan **Raised Center FAB (+)** terangkat `-translate-y-4` untuk aksi *Catat Lamaran*.
+* **Floating Bottom Pill Nav Dock (`h: 68`, radius 28px):** 4 menu utama (*Home*, *Roles*, *Analitik*, *Settings*) dengan **Raised Center FAB (+)** terangkat `-translate-y-4` untuk aksi *Catat Lamaran*.
 
 ---
 
@@ -252,55 +252,68 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
 
 ---
 
-## 6. Spesifikasi Tata Letak Halaman Kalender & Agenda (Desktop, Tablet, Mobile)
+## 6. Spesifikasi Tata Letak Halaman Analitik & Performa Karir (Desktop, Tablet, Mobile)
 
-Halaman Kalender dirancang untuk memberikan transparansi penuh jadwal pencarian kerja: jadwal wawancara terdekat, batas respons offering, dan pengingat otomatis follow-up H+7 dengan aksi dokumentasi dan pelacakan lamaran 1-click.
+Halaman Analitik dirancang untuk memberikan visibilitas performa pencarian kerja secara komprehensif, presisi, dan bebas dari ornamen berlebih (Anti-Slop): konversi pipeline dengan segmented funnel bar, efektivitas portal sumber lamaran (bar chart minimalis), kecepatan respon recruiter (line trend chart bersih), analisis lead time per tahapan, serta pantauan intensif lamaran aktif.
 
-### A. Prinsip UI & Anti-Slop Kalender
-* **Zero OS Emoji:** Seluruh emoji default bawaan sistem operasi (`⏱`, `⚡`, `🗓`, `⏳`, `📅`, `⚙`, `⚠️`) ditiadakan. Navigasi dan indikator status menggunakan ikon vektor autentik yang seragam dan teks informatif bersih.
-* **Muted Badges (Kurangi Badge Warna-Warni):** Badge status agenda menggunakan palet warna netral yang tenang (`bg: #F1F5F9` / `#F8FAFC`, `border: #E2E8F0`, `text: #475569`), menghindari distraksi visual berlebih agar mata pengguna tetap fokus pada prioritas agenda.
-* **Dokumentasi & Pelacakan Lamaran (Bukan Video Call CTA):** Menghilangkan tombol aksi pihak ketiga seperti "Masuk Google Meet / Zoom" karena NextRole berfokus sebagai platform dokumentasi lamaran. Tombol aksi difokuskan ke: `Detail Lamaran ↗`, `Snapshot JD ↗`, `Draf Pesan Follow-Up ↗`, dan `Review Penawaran ↗`.
+### A. Prinsip UI & Anti-Slop Analitik
+* **Zero OS Emoji:** Seluruh emoji default ditiadakan secara ketat. Visual mengandalkan tipografi jelas, angka metrik tegas, dan garis indikator fungsional.
+* **Unified Neutral Containers:** Semua kartu analitik menggunakan kontainer putih solid seragam (`bg: #FFFFFF`, border tipis `#E2E8F0`, cornerRadius 16px, bayangan halus `0 2px 8px rgba(15, 23, 42, 0.04)`). Mengeliminasi kartu biru neon maupun gradasi berwarna yang bertabrakan.
+* **Monochrome & Single Accent System:** Seluruh status badge menggunakan palet netral seragam (`bg: #F1F5F9` / `#FFFFFF`, `border: #E2E8F0`, teks `slate-700 #334155`). Aksen Sky Blue (`#0284C7`) hanya digunakan sebagai penanda elemen aktif, tombol utama, atau bar sorotan utama.
+* **Actionable & Data-Driven:** Mengeliminasi tips AI generik. Mengutamakan data nyata seperti lead time antar-tahap (rata-rata hari tunggu), conversion rate riil, dan pembaruan log recruiter.
 
-### B. Desktop (1440x900) — Split Calendar Grid & Agenda Inspector
-* **Top Floating Pill Navbar (`w: 1344, h: 64`, y: 20):** Tab `Kalender` aktif dengan kapsul biru (`#0284C7`), logo resmi nextrole, badge kuota AI `18/20`, tombol `+ Catat Lamaran`, dan avatar pengguna.
-* **Header & Controls (y: 104 s.d. 138):**
-  * Judul "Jadwal & Agenda" + Subtitle "Pantau wawancara, deadline penawaran, dan pengingat follow-up H+7".
-  * Navigasi Bulan (`‹ November 2026 ›`), tombol `Hari Ini`, View Switcher segmented (`Bulan` aktif / `Minggu`), dan tombol aksi cepat `+`.
-* **Filter Chips Carousel (y: 156, h: 32):** Chips filter agenda horizontal (`Semua Agenda (6)`, `Wawancara (2)`, `Follow-Up H+7 (2)`, `Offering (2)`).
-* **Calendar Grid Box (`w: 848, h: 672`, x: 48, y: 204):**
-  * 7 Kolom Hari (`Sen` s.d. `Min` 112px) + 35 Tanggal Matrix (Okt 26 s.d. Nov 29).
-  * Hari Aktif (Jum, 13 Nov): Glowing Blue Ring (`#0284C7` 2px), date circle biru, pill netral 14:00 Grab, Tokopedia H+7, dan indikator `+1 lainnya`.
-  * Event Badges pada Cell 10 (Shopee), Cell 14 (Mekari), Cell 15 (Traveloka), dan Cell 18 (Blibli) bernuansa muted slate yang bersih.
-* **Agenda Inspector Box (`w: 480, h: 672`, x: 912, y: 204):**
-  * **Hero Grab Interview Card (h: 236):** Logo Grab hijau, badge netral `Wawancara User`, jadwal terstruktur "Jadwal: 14:00 - 15:00 WIB • Tinjau Dokumen Pendukung", tombol `Detail Lamaran ↗`, tombol `Snapshot JD ↗`, dan tombol `Detail ↗`.
-  * **Tokopedia Follow-Up Card (h: 216):** Logo Tokopedia, badge netral `Perlu Follow-Up`, deskripsi status "Status: 7 hari tanpa kabar pasca Technical Test. Disarankan kirim follow-up.", tombol `Draf Pesan Follow-Up ↗`, dan tombol `Lihat Snapshot JD ↗`.
-  * **Upcoming 7 Days Strip (h: 120):** Mini agenda mendatang (Mekari 14 Nov, Traveloka 15 Nov, Blibli 18 Nov) dengan tipografi slate elegan.
+### B. Desktop (1440x900) — Bento Grid Karir Minimalis
+* **Top Floating Pill Navbar (`w: 1344, h: 64`, y: 20):** Tab `Analitik` aktif dengan kapsul biru (`#0284C7`), logo resmi nextrole, badge kuota AI `18/20 Kuota AI`, tombol `+ Catat Lamaran`, dan avatar profil `BS`.
+* **Header & Controls (y: 104 s.d. 136):**
+  * Judul "Analitik & Performa Karir" (`Plus Jakarta Sans Bold 24px`) + Subtitle "Evaluasi konversi funnel lamaran, efektivitas portal sumber, dan kecepatan respon recruiter".
+  * Period Selector Pill (`w: 170, h: 40`, x: 1046): Dropdown pilihan rentang waktu `30 Hari Terakhir ▾`.
+  * Tombol `Unduh Laporan` (`w: 160, h: 40`, x: 1232): Tombol ekspor laporan analitik dalam format dokumen/PDF.
+* **Filter Chips Row (y: 156, h: 34):**
+  * Chip Aktif: `Semua Posisi (18)` (`bg: #0F172A`, teks putih).
+  * Chip Netral: `Wawancara (6)`, `Follow-Up H+7 (2)`, `Offering (2)` (`bg: #FFFFFF`, border `#E2E8F0`, teks `#475569`).
+* **Kolom Kiri Bento (`w: 848`, x: 48, y: 204 s.d. 876):**
+  * **Card Pipeline & Konversi Lamaran (`w: 848, h: 184`, y: 204):**
+    - Judul "Pipeline & Konversi Lamaran" + Subtitle + Badge Netral "Konversi: 33.3%".
+    - Segmented Funnel Progress Bar (`h: 12`, radius 6px) proporsional: Applied (440px / `#94A3B8`), Interview (246px / `#0284C7`), Offered (114px / `#0F172A`).
+    - 3 Blok Metrik Bersih di bawah bar: "18 Lamaran Terkirim", "6 Wawancara (33.3% Lolos)", "2 Penawaran (11.1% Offer Rate)".
+  * **Baris Tengah Bento Berdampingan (`y: 408, h: 236`):**
+    - **Card Efektivitas Saluran Lamaran (`w: 412`, x: 48):** Background putih bersih, gridlines halus, grafik batang minimalis (LinkedIn: 8 pos sorotan `#0284C7`, JobStreet: 5, Glints: 3, TechInAsia: 2, Direct: 1).
+    - **Card Kecepatan Respon Recruiter (`w: 412`, x: 484):** Background putih seragam, metrik "5.4 Hari", subtext komparasi industri, dan grafik garis spline biru presisi dengan titik penanda minggu 1 s.d. 4.
+  * **Card Lamaran dalam Pantauan Intensif (`w: 848, h: 216`, y: 660):**
+    - Format tabel ringkas: Tokopedia (Wawancara User 18 Nov, Rp 18-25 jt), Tiket.com (Follow-Up H+7 Hari Ini, Rp 16-22 jt), Grab Indonesia (Offering Diterima, Rp 22-30 jt) dengan badge netral seragam dan link aksi langsung.
+* **Kolom Kanan Bento (`w: 476`, x: 916, y: 204 s.d. 876):**
+  * **Card Aktivitas Terkini Recruiter (`h: 320`, y: 204):** Timeline vertikal bersih dengan garis penghubung dan titik status (Gojek, Bukalapak, Grab, Traveloka).
+  * **Card Target & Lead Time Pipeline (`h: 332`, y: 544):** Target mingguan 4/5 lamaran (80%), 2 boks metrik lead time ("Applied ➔ Wawancara: 4.2 Hari", "Wawancara ➔ Keputusan: 5.8 Hari"), kontak aktif recruiter, dan tombol "+ Catat Lamaran Baru".
 
-### C. Tablet (834x1194) — Month Grid & 2-Kolom Balanced Bento Inspector
-* **Top Navbar Tablet (`w: 786, h: 58`, y: 20):** Tab `Kalender` aktif.
-* **Header Bar (y: 94):** Judul "Jadwal & Agenda" + Subtitle + Navigasi Bulan `‹ November 2026 ›` + Tombol `Hari Ini` + Tombol `+`.
-* **Filter Chips Row (y: 150, h: 32):** Chips status agenda (`Semua (6)`, `Wawancara (2)`, `Follow-Up (2)`, `Offering (2)`).
-* **Calendar Grid Box Tablet (`w: 786, h: 466`, y: 196):**
-  * 7 Kolom Hari (`Sen` s.d. `Min` 104px) + 35 Sel Tanggal kompak (76px tinggi).
-  * Hari Aktif (Jum, 13 Nov): Highlight lembut biru, badge Grab 14:00, badge Tokopedia H+7.
-* **Row 2 — 2-Kolom Bento Inspector (y: 682 s.d. 1168, h: 486):**
-  * **Kolom Kiri (`w: 382`, x: 24) — Agenda Terpilih (13 Nov):** Hero Grab Card (badge `Wawancara User`, detail pewawancara, jadwal tinjau dokumen, tombol `Detail Lamaran ↗` + `Snapshot JD ↗`) + Tokopedia Card (badge `Perlu Follow-Up`, tombol `Draf Pesan Follow-Up ↗` + `Lihat JD ↗`).
-  * **Kolom Kanan (`w: 382`, x: 428) — Agenda Mendatang (7 Hari):** 3 kartu agenda mendatang dengan badge netral dan tombol terarah (`Mekari` - `Detail Lamaran ↗`, `Traveloka` - `Review Penawaran ↗`, `Blibli` - `Detail Lamaran ↗`).
+### C. Tablet (834x1194) — 2-Kolom Balanced Bento
+* **Top Floating Navbar Tablet (`w: 770, h: 64`, y: 20):** Tab `Analitik` aktif.
+* **Header & Controls (y: 94 s.d. 122):** Judul "Analitik & Performa Karir" + Subtitle + Period Selector `30 Hari Terakhir ▾` + Tombol `Unduh Laporan`.
+* **Filter Chips Row (y: 150, h: 32):** `Semua Posisi (18)` aktif gelap, `Wawancara (6)`, `Follow-Up (2)`, `Offering (2)` netral.
+* **Card Pipeline & Konversi Tablet (`w: 786, h: 184`, y: 196):** Segmented funnel bar proporsional + 3 blok metrik horizontal.
+* **Row 1 — 2-Kolom Berdampingan (`y: 396, h: 236`):**
+  * Kiri (`w: 383`, x: 24): Card Efektivitas Saluran (Bar Chart putih bersih).
+  * Kanan (`w: 383`, x: 427): Card Kecepatan Respon Recruiter (Line Chart putih bersih, 5.4 Hari).
+* **Row 2 — 2-Kolom Berdampingan (`y: 648, h: 260`):**
+  * Kiri (`w: 383`, x: 24): Card Target & Lead Time (Progress 80%, lead time 4.2h & 5.8h, tombol catat).
+  * Kanan (`w: 383`, x: 427): Card Aktivitas Terkini (Timeline log Gojek, Bukalapak, Grab).
+* **Row 3 — Full-Width Bottom (`w: 786, h: 220`, y: 924):**
+  * Card Lamaran dalam Pantauan Intensif dengan 3 baris terstruktur dan badge netral seragam.
 
-### D. Mobile (390x844) — Weekly Date Strip & Agenda Action Feed
-* **Top Floating Header (`w: 358, h: 48`, y: 16):** Brand logo `nextrole` monospace + Month pill `‹ November 2026 ›` + tombol aksi cepat `+`.
-* **Horizontal Weekly Date Strip (`w: 358, h: 76`, y: 72):**
-  * 7 hari berjalan (Sen 9 s.d. Min 15 Nov) dalam kapsul sentuh responsif.
-  * Hari ini (Jum 13 Nov) aktif dengan warna biru cerah (`#0284C7`), angka tanggal kontras putih, dan dot indikator tunggal yang rapi.
-* **Filter Chips Carousel (y: 156, h: 32):** Chips status agenda horizontal (`Semua (6)`, `Wawancara (2)`, `Follow-Up (2)`, `Offering (2)`).
-* **Agenda Action Feed (y: 198 s.d. 744):**
-  * **Hero Grab Card (h: 188):** Logo Grab hijau, badge netral `Wawancara User`, info jadwal terstruktur, tombol `Detail Lamaran ↗` + tombol `Snapshot JD ↗`.
-  * **Tokopedia Card (h: 182):** Logo Tokopedia hijau, badge netral `Perlu Follow-Up`, ringkasan status 7 hari, tombol `Draf Pesan Follow-Up ↗` + tombol `Lihat JD ↗`.
-  * **Mekari Card (h: 76):** Wawancara HR Besok 10:00 WIB + tombol `Detail ↗`.
-  * **Traveloka Card (h: 76):** Batas Offering Minggu 15 Nov + tombol `Review ↗`.
+### D. Mobile (390x844) — Compact Vertical Bento & Floating Dock
+* **Top Header Bar (`w: 358, h: 48`, y: 16):** Brand `nextrole` + Period pill `30 Hari Terakhir ▾` + Tombol unduh laporan `⤓`.
+* **Title & Subtitle (y: 74 s.d. 98):** "Analitik & Performa Karir" + "Konversi funnel & kecepatan respon recruiter".
+* **Card Pipeline & Konversi Mobile (`w: 358, h: 136`, y: 124):**
+  * Segmented funnel bar (Applied, Interview, Offered) + 3 metrik ringkas di bawahnya.
+* **Mobile 2-Card Row (`w: 358, h: 148`, y: 272):**
+  * Kiri (`w: 173`, x: 16): Saluran Lamaran (3 bar saluran utama LinkedIn, JobStreet, Glints).
+  * Kanan (`w: 173`, x: 201): Waktu Respon (5.4 Hari, grafik garis biru minimalis berlatar putih).
+* **Card Target & Lead Time Mobile (`w: 358, h: 114`, y: 432):**
+  * Progress target 80% + 2 stat boks lead time tahapan (4.2 hari & 5.8 hari).
+* **Card Lamaran Pantauan Intensif Mobile (`w: 358, h: 186`, y: 558):**
+  * 3 baris lamaran ringkas dengan logo inisial, rentang gaji, dan badge netral tanpa warna pelangi.
 * **Floating Bottom Pill Nav Dock (`h: 68`, y: 756):**
-  * Ikon vektor autentik: Menggunakan layer `VECTOR` asli (Home, Roles, Kalender, Settings) dengan bobot garis 1.5px tanpa menggunakan karakter emoji Unicode.
-  * Menu `Kalender` aktif dengan soft blue pill highlight (`#E0F2FE` + `#0284C7`) + Raised FAB Catat Lamaran (+) 64x64 di tengah.
-  * Seluruh label teks navigasi berukuran **10px (`text-[10px]` / `2xs`)**, bobot **Regular (400)**, dan presisi rata tengah.
+  * Tab `Analitik` aktif dengan highlight pill biru muda (`#E0F2FE` + `#0284C7`).
+  * Raised Center FAB (64x64) `+` di tengah terangkat `-translate-y-4` untuk aksi cepat catat lamaran.
+  * Teks label navigasi 10px Regular rata tengah.
 
 
