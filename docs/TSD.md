@@ -168,6 +168,8 @@ model Application {
   location        String?
   employmentType  String?           @map("employment_type") // Full-time, Hybrid, Remote
   salaryRange     String?           @map("salary_range")
+  jobSource       String?           @map("job_source")      // LinkedIn, JobStreet, Glints, Direct (Opsional)
+  jobUrl          String?           @map("job_url")         // Tautan asli lowongan (Opsional)
   keyRequirements String[]          @default([]) @map("key_requirements")
   
   // Fitur Krusial: Arsip Permanen Teks Iklan Lowongan
@@ -238,6 +240,8 @@ model ActivityLog {
       "location": "Jakarta / Hybrid",
       "employmentType": "Full-time",
       "salaryRange": "Rp 18.000.000 - 25.000.000",
+      "jobSource": "LinkedIn",
+      "jobUrl": "https://www.linkedin.com/jobs/view/...",
       "keyRequirements": ["Next.js", "TypeScript", "Tailwind"],
       "jdSnapshot": "Ringkasan lengkap tanggung jawab dan kualifikasi lowongan..."
     },
