@@ -40,61 +40,56 @@ NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, d
 
 ## 3. Spesifikasi Tata Letak Per Perangkat (Home Screen)
 
-### A. Mobile (< 768px / 390x844)
-* **Top Bar:** Header greeting ("Budi Santoso", Fullstack Web Developer) + search bar pill + filter modal trigger.
+### A. Mobile (< 768px / 390x844, `cornerRadius: 36px`, `clip: true`)
+* **Top Bar:** Brand mark + `nextrole` + search bar pill + filter modal trigger.
 * **Horizontal Filters:** Pill scroll horizontal (*Semua*, *Full-time*, *Hybrid*, *Follow-Up*).
-* **Banner AI Carousel (`w: 358, h: 140`):** Promosi fitur Smart AI Clipper dengan ilustrasi 3D.
-* **Perlu Tindak Lanjut Feed:** Kartu vertikal dengan Hero Tokopedia (H+7), Bukalapak, GoTo Financial.
-* **Floating Bottom Pill Nav Dock (`h: 68`, radius 28px):** 4 menu utama (*Home*, *Roles*, *Analitik*, *Settings*) dengan **Raised Center FAB (+)** terangkat `-translate-y-4` untuk aksi *Catat Lamaran*.
+* **Banner AI Carousel (`w: 350, h: 134`):** Promosi fitur Smart AI Clipper dengan ilustrasi 3D.
+* **Perlu Tindak Lanjut Carousel (`y: 354, h: 102`):** Kartu horizontal kompak (`w: 280, h: 102`, selaras standar kartu Roles) memuat kotak inisial perusahaan (`38x38`), nama perusahaan & lokasi, link `Detail ↗`, posisi, rentang gaji biru `#0284C7`, dan keterangan waktu H+7 di kanan bawah (Tokopedia, peek Apple).
+* **Aktivitas Terakhir Feed (`y: 476` s.d. `y: 720`):** Kartu vertikal kompak (`w: 350, h: 102`, selaras standar kartu Roles) untuk Grab Indonesia (`y: 504`) dan Shopee Indonesia (`y: 618`), berakhir aman di atas Floating Bottom Dock.
+* **Floating Bottom Pill Nav Dock (`h: 68`, radius 28px):** 4 menu utama berbahasa Inggris (*Home*, *Roles*, *Analytics*, *Settings*) dengan ikon grafik batang untuk *Analytics* dan **Raised Center FAB (+)** untuk aksi *Catat Lamaran*.
 
 ---
 
 ### B. Tablet (768px – 1023px / 834x1194) — Top Floating Pill Navbar & 2-Kolom Seimbang
 * **Top Floating Pill Navbar (`w: 786, h: 58`, radius 29px, y: 20):**
   * Kiri: Logo resmi NextRole + brand text `nextrole` (Courier New Bold, 18px).
-  * Tengah: Pill navigasi terpadu (`Home` aktif, `Roles`, `Kalender`, `Settings`).
+  * Tengah: Pill navigasi terpadu (*Home* aktif, *Roles*, *Analytics*, *Settings*).
   * Kanan: Pill kuota harian `18/20 Klip`, tombol cepat `+`, dan avatar `BS` (32x32).
 * **Banner Slider Tablet (`w: 786, h: 140`, y: 160):** Membentang penuh di atas konten.
-* **Grid 2-Kolom (y: 324 s.d. y: 910):**
-  * **Kolom Kiri (w: 454) — Tindak Lanjut:**
+* **Grid 2-Kolom (y: 324 s.d. y: 866 — Baseline-Locked di Y = 866):**
+  * **Kolom Kiri (w: 454) — Perlu Tindak Lanjut:**
     1. Header "Perlu Tindak Lanjut" + link "Lihat semua ›"
-    2. Hero Card Tokopedia (H+7) (`h: 196`): Padding button CTA $24$ px dari tepi kanan dan bawah, teks tombol rata tengah sempurna.
-    3. Card Bukalapak (H+7) (`h: 160`)
-    4. Card GoTo Financial (Follow-Up H+6) (`h: 166`, berakhir di **Y = 910**)
-  * **Kolom Kanan (w: 308) — Statistik & Kalender Agenda:**
-    1. Header "Statistik Lamaran" + link "Bulan Ini ›"
-    2. Quick Analytics Bento Card (`h: 200`): 4 kotak metrik simetris dengan ikon 3D squircle (Total Dilamar, Interview Aktif, Perlu Follow-Up, Tingkat Respon), label berjarak aman dari tepi kanan, link "Detail ›" rata kanan presisi.
-    3. Header "Kalender Agenda" + link "Buka ›"
-    4. Mini Calendar Tablet (`h: 306`, berakhir persis di **Y = 910**): Kalender November 2026 + jadwal agenda terpilih.
-* **Pipeline Lamaran Horizontal Row (y: 934 s.d. y: 1134):**
-  * Header "Pipeline Lamaran" + link "Lihat semua ›"
-  * Disusun dalam 2 kartu horizontal berdampingan:
-    * **Grab Indonesia Tablet (`w: 382, h: 160`, x: 24):** Status "Interview Besok" & jadwal interview.
-    * **Shopee Indonesia Tablet (`w: 382, h: 160`, x: 428):** Status "Applied" & review status.
+    2. 4 Kartu Lamaran selaras standar Roles (`h: 116`, gap `15px–16px`, radius `20px`, kotak logo inisial `40x40`, tombol `Detail ↗` pojok kanan atas, tanpa badge warna-warni): Tokopedia (`y: 356`), Bukalapak (`y: 487`), GoTo Financial (`y: 618`), dan Apple (`y: 750`, berakhir tepat di **Y = 866**).
+  * **Kolom Kanan (w: 308) — Statistik Lamaran & Kalender Agenda:**
+    1. Header "Statistik Lamaran" + link "Bulan Ini ›" (sebagai judul tunggal komponen tanpa duplikasi judul internal).
+    2. Quick Analytics Bento Tablet (`h: 178`, `y: 356..534`): 4 kotak metrik simetris dengan ikon 3D squircle (Total Dilamar, Interview Aktif, Perlu Follow-Up, Tingkat Respon).
+    3. Header "Kalender Agenda" + link "Buka ›" (`y: 550`).
+    4. Mini Calendar Tablet (`h: 286`, `y: 580..866`, berakhir persis di **Y = 866**): Kalender November 2026 + jadwal agenda terpilih.
+* **Pipeline Lamaran Grid 2x2 (y: 890 s.d. y: 1170):**
+  * Header "Pipeline Lamaran" + link "Lihat semua ›" (`y: 890`).
+  * Disusun dalam 2 baris x 2 kartu selaras standar kartu Roles (`w: 382, h: 116`):
+    * Baris 1 (`y: 922`): **Grab Indonesia Tablet** (`x: 24`, `Interview: 13 Nov 2026`) & **Shopee Indonesia Tablet** (`x: 428`, `Dilamar: 10 Nov 2026`).
+    * Baris 2 (`y: 1054`): **Traveloka Tablet** (`x: 24`, `Offering • 28 Okt 2026`) & **Dana Indonesia Tablet** (`x: 428`, `Dilamar: 12 Nov 2026`), berakhir simetris di **Y = 1170** (margin bawah 24px).
 
 ---
 
 ### C. Desktop (≥ 1024px / 1440x1000) — 3-Column Balanced Dashboard
 * **Top Floating Pill Navbar (`w: 1344, h: 64`, radius 32px, y: 20):**
   * Kiri: Logo resmi NextRole (36x36) + brand `nextrole` (Courier New Bold, 18px).
-  * Tengah: Segmented pill tabs (`Home`, `Roles`, `Kalender`, `Settings`).
+  * Tengah: Segmented pill tabs (`Home`, `Roles`, `Analytics`, `Settings`).
   * Kanan: Kuota harian `18 / 20 Klip`, tombol utama `+ Catat Lamaran` (`w: 154, h: 36`), dan avatar `BS` (36x36).
 * **Baris Atas (y: 168):**
   * **Banner AI Carousel Desktop (`w: 888, h: 164`, x: 48):** Membentang lebar di atas Kolom 1 dan Kolom 2.
   * **Kolom 3 Kanan Atas (x: 960, w: 432):**
     * Header "Statistik & Kalender"
     * Quick Analytics Bento Card (`h: 220`): 4 tile metrik simetris ($188 \times 72$ px) dengan 4 ikon 3D glassmorphic seimbang, angka `#0F172A`, dan label `#64748B`. Link "Bulan Ini ›" rata kanan sejajar batas bento box ($x = 414$).
-* **Baris Bawah (y: 356 s.d. y: 950 — Terkunci Baseline Y = 950):**
+* **Baris Bawah (y: 356 s.d. y: 950):**
   * **Kolom 1 (x: 48, w: 432) — Perlu Tindak Lanjut:**
     1. Header "Perlu Tindak Lanjut" + link "Lihat semua ›"
-    2. Hero Card Tokopedia (H+7) (`h: 200`): CTA button memiliki padding aman $24$ px kanan & bawah.
-    3. Card Bukalapak (H+7) (`h: 160`)
-    4. Card GoTo Financial (Follow-Up H+6) (`h: 168`, berakhir di **Y = 950**)
+    2. 3 Kartu Lamaran selaras standar Roles (`h: 116`, gap `16px`, kotak inisial `40x40`, link `Detail ↗`, tanpa badge warna-warni/border kuning): Tokopedia (`y: 390`), Bukalapak (`y: 522`), dan GoTo Financial (`y: 654`).
   * **Kolom 2 (x: 504, w: 432) — Pipeline Lamaran:**
     1. Header "Pipeline Lamaran" + link "Lihat semua ›"
-    2. Card Grab Indonesia (`h: 168`)
-    3. Card Shopee Indonesia (`h: 168`)
-    4. Card Traveloka (Offering) (`h: 168`, berakhir di **Y = 950**): Menampilkan tag status Offering dan CTA "Review Offer ↗". Mengeliminasi *white space* kolom tengah.
+    2. 3 Kartu Lamaran selaras standar Roles (`h: 116`, gap `16px`): Grab Indonesia (`y: 390`), Shopee Indonesia (`y: 522`), dan Traveloka (`y: 654`).
   * **Kolom 3 (x: 960, w: 432) — Kalender & Target Mingguan:**
     1. Mini Calendar Card (`h: 510`, berakhir di **Y = 950**):
        - Kalender interaktif November 2026.
@@ -215,7 +210,7 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
 
 ---
 
-### D. Mobile (390x844) — 2-Row Folder Grid Layout & Single-Feed Cards
+### D. Mobile (390x844, `cornerRadius: 36px`, `clip: true`) — 2-Row Folder Grid Layout & Single-Feed Cards
 * **Top Header (y: 18 s.d. 56):**
   * Logo resmi NextRole + brand text di sisi kiri (`x: 20, y: 18`, Poppins Regular 18).
   * Header bernapas lega tanpa tombol lebar yang memadati area atas.
@@ -244,11 +239,21 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
     3. `Dana Indonesia` (`y: 602`, Frontend Engineer, avatar `D`, text action `Detail ↗`).
   * Kartu berakhir di `y: 704`, memberikan jarak aman bernapas `30px` sebelum tombol Raised FAB (`y: 734`) dan dock navigasi (`y: 756`).
 * **Floating Bottom Pill Nav Dock (`h: 68`, y: 756):**
-  * Menu `Roles` aktif dengan soft blue pill highlight (`#E0F2FE` + `#0284C7`) + Raised FAB Catat Lamaran (+) 56x56 di tengah (`y: 734`).
-  * Label navigasi 10px Regular (400) rata tengah.
-* **Floating Bottom Pill Nav Dock (`h: 68`, y: 756):**
-  * Menu `Roles` aktif dengan soft blue pill highlight (`#E0F2FE` + `#0284C7`) + Raised FAB Catat Lamaran (+) 56x56 di tengah (`y: 734`).
-  * Label navigasi 10px Regular (400) rata tengah.
+  * Menu `Roles` aktif dengan soft blue pill highlight (`#E0F2FE` + `#0284C7`) dengan label navigasi 10px Regular rata tengah serta ikon grafik batang untuk `Analytics`.
+  * Raised FAB Catat Lamaran (+) 56x56 di tengah (`y: 734`).
+
+### E. Detail Lamaran — Mobile Bottom Sheet (390x844, `cornerRadius: 36px`)
+* **Raised Company Avatar (`64x64`, `y: -32`):** Menggunakan gradasi biru langit lembut (`#BAE6FD` → `#F0F9FF`) dan inisial perusahaan (`T` untuk Tokopedia).
+* **3-Tab Segmented Control (`w: 350, h: 44`, y: 120):** Memuat 3 tab dengan istilah umum yang lugas: `Ringkasan` (aktif), `Deskripsi`, dan `Follow-Up`.
+* **3-Column Info Strip (`w: 350, h: 66`, y: 174):** Tipe Kerja (`Hybrid`), Lokasi Kerja (`Jakarta Selatan`), Status Kanban (`Applied`).
+* **Sumber Lowongan Bar (`w: 350, h: 40`, y: 250):** Bar dokumentasi sumber portal dan tautan loker asli (`Sumber: LinkedIn` di kiri dan `linkedin.com/jobs/view/3948102 ↗` di kanan).
+* **Deskripsi Pekerjaan (`w: 350, h: 104`, y: 326):** Kontainer abu-abu netral (`#F8FAFC`, border `#E2E8F0`, radius `12px`/`14px`) yang menampilkan poin-poin deskripsi dan tanggung jawab pekerjaan secara langsung tanpa label status redundan.
+* **Kualifikasi Kunci Terdeteksi (`y: 464`):** Chips netral (`#F1F5F9`, border `#E2E8F0`, teks `#334155`) untuk kata kunci utama (*Next.js*, *TypeScript*, *Core Web Vitals*, *REST API*).
+* **Ringkasan Timeline & CTA (`y: 498` s.d. `y: 612`):** Kartu ringkas `Tanggal Melamar` (`7 Hari Lalu`) dan `Tindak Lanjut` (`H+7 Hari Ini`), diikuti tombol utama `Draf Pesan HRD ↗`.
+
+### F. Modal Catat Lamaran Baru — Manual & Smart Clipper (390x844)
+* **Mode Manual (`4073`):** Memuat input Nama Perusahaan, Posisi / Role Lowongan, Tipe Kerja (`Remote`, `Hybrid`, `On-Site`), Perkiraan Rentang Gaji (Opsional), **Sumber Lowongan (Opsional)** berupa 4 pill cepat (`LinkedIn`, `JobStreet`, `Glints`, `Lainnya`) + input **Tautan Lowongan (Opsional)**, dan Deskripsi Pekerjaan & Kualifikasi.
+* **Mode Otomatis AI (`3963`):** Mendukung unggah screenshot gambar maupun tempel URL lowongan; AI/parser mengekstrak sumber portal otomatis dari domain tautan atau petunjuk visual screenshot.
 
 ---
 
@@ -263,7 +268,7 @@ Halaman Analitik dirancang untuk memberikan visibilitas performa pencarian kerja
 * **Actionable & Data-Driven:** Mengeliminasi tips AI generik. Mengutamakan data nyata seperti lead time antar-tahap (rata-rata hari tunggu), conversion rate riil, dan pembaruan log recruiter.
 
 ### B. Desktop (1440x900) — Bento Grid Karir Minimalis
-* **Top Floating Pill Navbar (`w: 1344, h: 64`, y: 20):** Tab `Analitik` aktif dengan kapsul biru (`#0284C7`), logo resmi nextrole, badge kuota AI `18/20 Kuota AI`, tombol `+ Catat Lamaran`, dan avatar profil `BS`.
+* **Top Floating Pill Navbar (`w: 1344, h: 64`, y: 20):** Tab `Analytics` aktif dengan kapsul biru (`#0284C7`), logo resmi nextrole, badge kuota AI `18/20 Kuota AI`, tombol `+ Catat Lamaran`, dan avatar profil `BS`.
 * **Header & Controls (y: 104 s.d. 136):**
   * Judul "Analitik & Performa Karir" (`Plus Jakarta Sans Bold 24px`) + Subtitle "Evaluasi konversi funnel lamaran, efektivitas portal sumber, dan kecepatan respon recruiter".
   * Period Selector Pill (`w: 170, h: 40`, x: 1046): Dropdown pilihan rentang waktu `30 Hari Terakhir ▾`.
@@ -286,7 +291,7 @@ Halaman Analitik dirancang untuk memberikan visibilitas performa pencarian kerja
   * **Card Target & Lead Time Pipeline (`h: 332`, y: 544):** Target mingguan 4/5 lamaran (80%), 2 boks metrik lead time ("Applied ➔ Wawancara: 4.2 Hari", "Wawancara ➔ Keputusan: 5.8 Hari"), kontak aktif recruiter, dan tombol "+ Catat Lamaran Baru".
 
 ### C. Tablet (834x1194) — 2-Kolom Balanced Bento
-* **Top Floating Navbar Tablet (`w: 770, h: 64`, y: 20):** Tab `Analitik` aktif.
+* **Top Floating Navbar Tablet (`w: 770, h: 64`, y: 20):** Tab `Analytics` aktif.
 * **Header & Controls (y: 94 s.d. 122):** Judul "Analitik & Performa Karir" + Subtitle + Period Selector `30 Hari Terakhir ▾` + Tombol `Unduh Laporan`.
 * **Filter Chips Row (y: 150, h: 32):** `Semua Posisi (18)` aktif gelap, `Wawancara (6)`, `Follow-Up (2)`, `Offering (2)` netral.
 * **Card Pipeline & Konversi Tablet (`w: 786, h: 184`, y: 196):** Segmented funnel bar proporsional + 3 blok metrik horizontal.
@@ -299,7 +304,7 @@ Halaman Analitik dirancang untuk memberikan visibilitas performa pencarian kerja
 * **Row 3 — Full-Width Bottom (`w: 786, h: 220`, y: 924):**
   * Card Lamaran dalam Pantauan Intensif dengan 3 baris terstruktur dan badge netral seragam.
 
-### D. Mobile (390x844) — Compact Vertical Bento & Floating Dock
+### D. Mobile (390x844, `cornerRadius: 36px`, `clip: true`) — Compact Vertical Bento & Floating Dock
 * **Top Header Bar (`w: 358, h: 48`, y: 16):** Brand `nextrole` + Period pill `30 Hari Terakhir ▾` + Tombol unduh laporan `⤓`.
 * **Title & Subtitle (y: 74 s.d. 98):** "Analitik & Performa Karir" + "Konversi funnel & kecepatan respon recruiter".
 * **Card Pipeline & Konversi Mobile (`w: 358, h: 136`, y: 124):**
@@ -312,7 +317,7 @@ Halaman Analitik dirancang untuk memberikan visibilitas performa pencarian kerja
 * **Card Lamaran Pantauan Intensif Mobile (`w: 358, h: 186`, y: 558):**
   * 3 baris lamaran ringkas dengan logo inisial, rentang gaji, dan badge netral tanpa warna pelangi.
 * **Floating Bottom Pill Nav Dock (`h: 68`, y: 756):**
-  * Tab `Analitik` aktif dengan highlight pill biru muda (`#E0F2FE` + `#0284C7`).
+  * Tab `Analytics` aktif dengan highlight pill biru muda (`#E0F2FE` + `#0284C7`) beserta ikon grafik batang.
   * Raised Center FAB (64x64) `+` di tengah terangkat `-translate-y-4` untuk aksi cepat catat lamaran.
   * Teks label navigasi 10px Regular rata tengah.
 
