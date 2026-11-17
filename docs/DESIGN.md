@@ -46,14 +46,14 @@ NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, d
 * **Banner AI Carousel (`w: 350, h: 134`):** Promosi fitur Smart AI Clipper dengan ilustrasi 3D.
 * **Perlu Tindak Lanjut Carousel (`y: 354, h: 102`):** Kartu horizontal kompak (`w: 280, h: 102`, selaras standar kartu Roles) memuat kotak inisial perusahaan (`38x38`), nama perusahaan & lokasi, link `Detail ↗`, posisi, rentang gaji biru `#0284C7`, dan keterangan waktu H+7 di kanan bawah (Tokopedia, peek Apple).
 * **Aktivitas Terakhir Feed (`y: 476` s.d. `y: 720`):** Kartu vertikal kompak (`w: 350, h: 102`, selaras standar kartu Roles) untuk Grab Indonesia (`y: 504`) dan Shopee Indonesia (`y: 618`), berakhir aman di atas Floating Bottom Dock.
-* **Floating Bottom Pill Nav Dock (`h: 68`, radius 28px):** 4 menu utama berbahasa Inggris (*Home*, *Roles*, *Analytics*, *Settings*) dengan ikon grafik batang untuk *Analytics* dan **Raised Center FAB (+)** untuk aksi *Catat Lamaran*.
+* **Floating Bottom Pill Nav Dock (`h: 68`, radius 28px):** 4 menu utama berbahasa Inggris (*Home*, *Roles*, *Analytics*, *Profile*) dengan ikon grafik batang untuk *Analytics*, ikon user untuk *Profile*, dan **Raised Center FAB (+)** untuk aksi *Catat Lamaran*.
 
 ---
 
 ### B. Tablet (768px – 1023px / 834x1194) — Top Floating Pill Navbar & 2-Kolom Seimbang
 * **Top Floating Pill Navbar (`w: 786, h: 58`, radius 29px, y: 20):**
   * Kiri: Logo resmi NextRole + brand text `nextrole` (Courier New Bold, 18px).
-  * Tengah: Pill navigasi terpadu (*Home* aktif, *Roles*, *Analytics*, *Settings*).
+  * Tengah: Pill navigasi terpadu (*Home* aktif, *Roles*, *Analytics*, *Profile*).
   * Kanan: Pill kuota harian `18/20 Klip`, tombol cepat `+`, dan avatar `BS` (32x32).
 * **Banner Slider Tablet (`w: 786, h: 140`, y: 160):** Membentang penuh di atas konten.
 * **Grid 2-Kolom (y: 324 s.d. y: 866 — Baseline-Locked di Y = 866):**
@@ -76,7 +76,7 @@ NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, d
 ### C. Desktop (≥ 1024px / 1440x1000) — 3-Column Balanced Dashboard
 * **Top Floating Pill Navbar (`w: 1344, h: 64`, radius 32px, y: 20):**
   * Kiri: Logo resmi NextRole (36x36) + brand `nextrole` (Courier New Bold, 18px).
-  * Tengah: Segmented pill tabs (`Home`, `Roles`, `Analytics`, `Settings`).
+  * Tengah: Segmented pill tabs (`Home`, `Roles`, `Analytics`, `Profile`).
   * Kanan: Kuota harian `18 / 20 Klip`, tombol utama `+ Catat Lamaran` (`w: 154, h: 36`), dan avatar `BS` (36x36).
 * **Baris Atas (y: 168):**
   * **Banner AI Carousel Desktop (`w: 888, h: 164`, x: 48):** Membentang lebar di atas Kolom 1 dan Kolom 2.
@@ -271,7 +271,7 @@ Halaman Analitik dirancang 100% berfokus pada evaluasi performa pencarian kerja 
   * Area spline chart *Kecepatan Respon HRD* dilengkapi *area gradient fill* biru langit lembut (`#38BDF847` $\rightarrow$ `#38BDF800`) dan floating callout pill kuning neon (`#D4FF47`, teks `#0C4A6E`) untuk metrik minggu terbaru (`4.8h (Mg 4)`).
 
 ### B. Desktop (1440x900) — 6-Card Pure Analytics Bento Grid
-* **Top Floating Pill Navbar (`w: 1344, h: 64`, y: 20):** Tab `Analytics` aktif dengan kapsul biru (`#0284C7`), logo resmi `nextrole`, badge kuota AI `18/20 Kuota AI`, tombol `+ Catat Lamaran`, dan avatar profil `BS`.
+* **Top Floating Pill Navbar (`w: 1344, h: 64`, y: 20):** Tab `Analytics` aktif dengan kapsul biru (`#0284C7`), logo resmi `nextrole`, badge kuota AI `18/20 Kuota AI`, tombol `+ Catat Lamaran`, dan avatar profil `BS` (tab ke-4 `Profile`).
 * **Header & Controls:** Judul "Analitik & Performa Karir" (`Poppins Regular 24px`) + subtitle "Analisis efektivitas portal sumber, rasio konversi tahapan, dan tren kualifikasi lowongan", period selector `30 Hari Terakhir ▾`, dan tombol `Unduh Laporan`.
 * **Analytical Filter Chips:** `Semua Lamaran (18)` (aktif gradien biru langit `#38A9E8` $\rightarrow$ `#0284C7`, teks putih), `3 Bulan Terakhir`, `Hybrid & Remote`, `Gaji ≥ 20 Jt`.
 * **Row 1 — 3 Kartu Metrik Proses & Konversi (y: 210, h: 276):**
@@ -294,6 +294,43 @@ Halaman Analitik dirancang 100% berfokus pada evaluasi performa pencarian kerja 
 * **Block 1 — Swipeable KPI Carousel (`y: 170, h: 120`):** Kartu horizontal lapang dengan *right-edge peek* agar bebas sesak: `Konversi Pipeline` (`33.3%`, progress segmented bar, `6 wawancara • 2 offer`), `Respon HRD` (`5.4 Hari`, pill kuning neon `-1.8h vs industri`, `Siklus: 10.0 hari`), dan peek `Target Gaji` (`Rp 18-26 Jt`, `Hybrid 40%`).
 * **Block 2 — Card Efektivitas Portal Sumber (`y: 308, h: 202`):** Spasi vertikal `18px`, padding dalam `20px`, 4 batang portal lega (`LinkedIn`, `JobStreet`, `Glints`, `Direct`) dengan benchmark putus-putus dan pill biru-neon `LinkedIn 50%`.
 * **Block 3 — Card Kualifikasi Paling Diminta (`y: 528, h: 180`):** Menampilkan 3 skill teratas (`TypeScript`, `React / Next.js`, `REST API / GraphQL`) secara lapang dan berhenti aman `48px` di atas dock (`y: 708`).
-* **Floating Bottom Pill Nav Dock (`y: 756`):** Tab `Analytics` aktif dengan highlight pill biru muda (`#E0F2FE` + `#0284C7`) dan Raised Center FAB (64x64) ikon `+` putih untuk akses cepat pencatatan lamaran.
+* **Floating Bottom Pill Nav Dock (`y: 756`):** Tab `Analytics` aktif dengan highlight pill biru muda (`#E0F2FE` + `#0284C7`), ikon user pada tab `Profile`, dan Raised Center FAB (64x64) ikon `+` putih untuk akses cepat pencatatan lamaran.
+
+---
+
+## 7. Spesifikasi Halaman Profile & Pengaturan Akun (Desktop, Tablet, Mobile)
+
+Halaman ke-4 pada navigasi NextRole resmi diubah dari `Settings` menjadi **`Profile`** dengan memadukan kartu identitas pengguna dan daftar pengaturan terstruktur (*Account*, *Preferences*, *Data & Session*) dalam gaya **Soft Sky Glass** (Biru, Putih, Kuning Neon `#D4FF47`, tipografi ringan `Poppins Regular` & `Medium` tanpa `Bold`), seluruh item mengacu langsung pada entitas `User`, `Account`, dan fitur TSD tanpa jargon teknis internal. Foto profil seluruh layar menggunakan avatar karakter 3D berlatar putih bersih ([avatar-profile.jpg](file:///e:/project-nextjs/next-role/docs/avatar-profile.jpg)).
+
+### A. Mobile (`390x844`, `cornerRadius: 36px`)
+* **Header:** Judul terpusat `Profile` (`Poppins Regular 18px`, `y: 16`).
+* **Profile Hero Banner Card (`w: 358, h: 220, y: 50`):**
+  * Cover banner gradien biru langit (`h: 68`, `cornerRadius: 14`) dengan ornamen orb transparan.
+  * Avatar 3D melingkar (`68x68`, ring putih `3.5px`) menimpa tepi bawah cover banner, nama `Budi Santoso` + badge centang biru terverifikasi, posisi `Fullstack Web Developer`, serta tombol ringkas **`Edit`** dengan ikon pensil di kanan.
+  * **Baris Info `flex justify-between` (`y: 132`, jarak 2x di bawah posisi):** `[Pin] Jakarta Selatan, ID` rata kiri dan `[Mail] budi.santoso@gmail.com` rata kanan sejajar lebar kartu.
+  * **Stat Strip 4-Kolom (`y: 170..208`):** Ringkasan metrik berpemisah garis vertikal tipis (`24 Lamaran | 06 Interview | 02 Offer | 68% Respon`).
+* **Grouped Cards (`h: 156` max, baris `52px`, garis pemisah tipis `#F1F5F9`):**
+  * **Account (`y: 300, h: 104`, 2 item):** `Kuota AI Clipper` (dengan pill kuning neon `18 / 20 klip`), `Akun Google & Keamanan` (aksi edit profil langsung lewat tombol **`Edit`** pada kartu hero agar tidak redundan).
+  * **Preferences (`y: 434, h: 104`, 2 item):** `Pengingat Follow-Up H+7` (toggle biru), `Bahasa Draf Pesan` (`ID / EN`).
+  * **Data & Session (`y: 568, h: 156`, 3 item):** `Ekspor & Arsip Data` (`CSV`), `Panduan NextRole`, `Keluar Akun` (`#BE123C`), berakhir rapi di `y: 724` (jarak lega di atas dock).
+* **Floating Bottom Pill Nav Dock (`y: 756`):** Tab `Profile` aktif dengan highlight `#E0F2FE` + `#0284C7` dan ikon user.
+
+### B. Tablet (`834x1194`)
+* **Top Floating Navbar (`w: 786, h: 58`):** Tab `Profile` aktif (`#0284C7`) beserta foto avatar 3D di pojok kanan.
+* **Full-Width Profile Hero Banner Card (`w: 786, h: 296, y: 156`):**
+  * Cover banner gradien biru langit (`h: 102`, `cornerRadius: 14`) dengan ornamen orb transparan.
+  * Avatar profil 3D melingkar (`88x88`, ring putih `4px`) menimpa tepi bawah banner.
+  * Nama `Budi Santoso` + badge centang biru terverifikasi, posisi target `Fullstack Web Developer`, lokasi `Jakarta Selatan, ID`, email `budi.santoso@gmail.com`, serta tombol **`Edit Profile`** di kanan.
+  * **Stat Strip 4-Kolom (`y: 222..286`):** `24 Total Lamaran | 06 Wawancara | 02 Penawaran | 68% Tingkat Respon`.
+* **Grid Simetris 2x2 Grouped Cards (`w: 382` per kolom, `h: 128`, 2 item per kartu, `y: 496` & `y: 670`):** `Account` (`Kuota AI Clipper` & `Akun Google & Keamanan`), `Preferences` (`Pengingat Follow-Up H+7` & `Bahasa Draf Pesan HRD`), `Data & Privacy` (`Ekspor Riwayat Lamaran` & `Pulihkan / Hapus Arsip`), dan `Session` (`Panduan NextRole` & `Keluar Akun`).
+* **Banner Slider Informatif (`w: 786, h: 152, y: 834`):** Banner edukasi ringkas mengenai kesiapan arsip deskripsi pekerjaan saat dihubungi HRD mendadak (*"Arsip Kerja Siap Saat HRD Menelepon"*), lengkap dengan tombol CTA kuning neon `Buka Papan Roles ›`, ilustrasi 3D, dan indikator pagination slide.
+
+### C. Desktop (`1440x900`)
+* **Top Floating Pill Navbar (`w: 1344, h: 64`, `x: 48`):** Tab `Profile` aktif (`#0284C7`) beserta foto avatar 3D di pojok kanan.
+* **50/50 Balanced Grid (`x: 48..1392`, `w: 1344`, sejajar penuh dengan padding horizontal navbar, gap tengah `28px`):**
+  * **Kolom Kiri 1/2 (`x: 48, w: 658`):**
+    1. **Profile Hero Banner Card (`y: 144, h: 352`):** Cover banner gradien biru langit (`h: 118`), avatar 3D (`92x92`, ring putih `4px`) menimpa tepi bawah cover, nama `Budi Santoso` + badge centang biru + pill `Google Terhubung`, posisi target `Fullstack Web Developer`, lokasi & email, tombol **`Edit Profile`** di kanan (`x: 508`), serta **Stat Strip 4-Kolom (`24 Total Lamaran | 06 Wawancara | 02 Penawaran | 68% Tingkat Respon`)**.
+    2. **Banner Slider Informatif (`y: 524, h: 224`):** Banner tips persiapan panggilan HRD (*"Arsip Kerja Siap Saat HRD Menelepon"*), tombol kuning neon `Buka Papan Roles ›`, ilustrasi 3D, dan indikator pagination slide, rata bawah tepat di `y: 748`.
+  * **Kolom Kanan 1/2 (`x: 734, w: 658`):** Seluruh 4 kelompok kartu terstruktur bertumpuk rapi (`h: 116`, baris `58px`, rata bawah tepat di `y: 748`): `Account` (`Kuota Smart AI Clipper` + pill kuning neon `18 / 20 klip` & `Akun Google & Keamanan`), `Preferences` (`Pengingat Follow-Up Otomatis (H+7)` & `Bahasa Default Draf Pesan HRD`), `Data & Privacy` (`Ekspor Riwayat Lamaran & Arsip JD` & `Pulihkan / Bersihkan Arsip Terhapus`), dan `Session` (`Panduan Penggunaan NextRole` & `Keluar Akun`).
 
 
