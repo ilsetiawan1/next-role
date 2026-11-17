@@ -1,172 +1,150 @@
 # NextRole — Intelligent Job Hunt Assistant
 
-> **Platform Asisten Karir Cerdas:** Otomatisasi pelacakan lamaran kerja, pengarsipan permanen persyaratan lowongan (*JD Snapshot*), etika *follow-up* HRD cerdas (H+7), dan persiapan interview berbasis AI.
+Platform asisten pelacakan lamaran kerja untuk mengotomatisasi pencatatan lowongan berbasis AI, mengarsipkan deskripsi pekerjaan (*Job Description Snapshot*) secara utuh, memantau tindak lanjut HRD (*Follow-Up H+7*), serta mengevaluasi efektivitas pencarian karier dalam satu ruang kerja terstruktur.
 
 ---
 
-## 📌 Gambaran Umum (Overview)
+## Ringkasan Masalah & Solusi
 
-Mencari pekerjaan sering kali menjadi pengalaman yang melelahkan dan kacau:
-1. **Kehilangan Deskripsi Pekerjaan (*Ghosted Job Postings*):** Lowongan di LinkedIn/Glints dihapus sebelum pelamar sempat membaca ulang kualifikasi untuk persiapan wawancara.
-2. **Kelelahan Input Manual:** Menulis detail perusahaan ke spreadsheet satu per satu menghabiskan waktu dan energi.
-3. **Canggung Follow-Up:** Bingung menyusun kata-kata sopan saat follow-up ke HRD setelah seminggu tanpa kabar.
-4. **Data Terhapus Permanen:** Menghapus kartu lamaran yang ditolak merusak histori statistik evaluasi pencarian kerja.
+Proses melamar kerja sering terhambat oleh empat kendala utama:
+1. **Lowongan Dihapus Sebelum Wawancara:** Iklan lowongan di portal kerja kerap ditutup ketika HRD baru menghubungi kandidat secara mendadak, sehingga pelamar kehilangan detail kualifikasi dan rentang gaji.
+2. **Input Manual yang Melelahkan:** Menyalin nama perusahaan, posisi, sumber portal, dan persyaratan ke spreadsheet satu per satu menyita waktu.
+3. **Sulit Menjaga Ritme Follow-Up:** Pelamar kerap lupa menindaklanjuti lamaran yang sudah melewati batas wajar tanpa respon atau bingung menyusun pesan yang tepat.
+4. **Histori Statistik Rusak:** Menghapus data lamaran yang ditolak menghilangkan metrik evaluasi konversi portal dan tingkat respon perusahaan.
 
-**NextRole** hadir menyelesaikan masalah tersebut dengan pendekatan cerdas, bersih, dan terstruktur:
-* **Smart Job Clipper (URL & Raw Text):** Cukup tempel tautan atau teks iklan lowongan kerja, AI (*Google Gemini 1.5 Flash*) otomatis mengekstrak posisi, nama perusahaan, kualifikasi kunci, dan mengarsipkan deskripsi pekerjaan secara permanen (*Permanent JD Snapshot*).
-* **Interactive 6-Column Kanban Pipeline:** Papan alur lamaran visual dengan 6 status: `Wishlist`, `Applied`, `Follow-Up Needed`, `Interview Scheduled`, `Offered`, dan `Rejected / Ghosted`.
-* **Smart Follow-Up Engine (H+7):** Peringatan otomatis saat lamaran mencapai hari ke-7 tanpa kabar, lengkap dengan generator draf pesan tindak lanjut profesional dalam Bahasa Indonesia & Bahasa Inggris.
-* **Soft-Delete Protection:** Menghapus lamaran tanpa merusak riwayat statistik (*audit trail* aman).
-* **1-Click Guest / Demo Mode:** Akses instan bagi peninjau atau pengguna baru tanpa kewajiban mendaftar terlebih dahulu.
+**NextRole** menjawab kendala tersebut melalui kapabilitas inti berikut:
+* **Smart Job Clipper (Otomatis AI & Manual):** Mendukung ekstraksi terstruktur dari tautan iklan, tangkapan layar (*screenshot*), maupun teks mentah menggunakan Google Gemini 1.5 Flash, lengkap dengan pencatatan sumber portal (`jobSource`, `jobUrl`) dan penyimpanan deskripsi pekerjaan secara utuh. Mode input manual juga tersedia dengan kolom sumber bersifat opsional.
+* **5-Column Kanban Pipeline:** Papan visual progres lamaran langsung tanpa daftar tunggu (*Wishlist*), meliputi `Applied`, `Follow-Up Needed`, `Interview Scheduled`, `Offered`, dan `Rejected / Ghosted`.
+* **Detail Lamaran & Generator Follow-Up Dwi-Bahasa:** Drawer detail yang memuat ringkasan riwayat, arsip deskripsi pekerjaan untuk persiapan wawancara mendadak, indikator H+7, serta pembuat draf pesan follow-up ke HRD dalam Bahasa Indonesia dan Bahasa Inggris.
+* **Career Analytics Dashboard:** Evaluasi data riil meliputi kecepatan respon HRD, konversi antar-tahap pipeline, rata-rata *lead time*, distribusi gaji & tipe kerja, efektivitas portal sumber, hingga daftar kualifikasi teknis yang paling sering diminta.
+* **Soft-Delete Protection:** Arsip lamaran yang dihapus tetap menjaga integritas statistik dan dapat dipulihkan dari halaman Profile.
+* **1-Click Guest / Demo Mode:** Opsi uji coba instan di halaman autentikasi berdampingan dengan login Google OAuth.
 
 ---
 
-## 🏛️ Fondasi Arsitektur Sistem
+## Struktur Modul & Navigasi Aplikasi
 
-NextRole dibangun dengan standar arsitektur monolit modern yang modular, aman, dan siap produksi:
+### Antarmuka Pengguna (Desktop 1440px, Tablet 834px, Mobile 390px)
+* **Home:** Ringkasan harian, *search & quick filter*, daftar lamaran yang memerlukan tindak lanjut H+7, status pipeline terkini, statistik ringkas, serta kalender agenda.
+* **Roles:** Papan Kanban interaktif 5 kolom dengan pembaruan status *drag-and-drop* dan akses cepat ke drawer detail lamaran.
+* **Analytics:** Evaluasi performa pencarian kerja (*Kecepatan Respon HRD*, *Konversi Pipeline*, *Lead Time Tahapan*, *Preferensi & Gaji*, *Efektivitas Portal Sumber*, dan *Kualifikasi Diminta*).
+* **Profile:** Kartu identitas pengguna dengan statistik karier ringkas (`Total Lamaran`, `Wawancara`, `Penawaran`, `Tingkat Respon`) serta pengelompokan menu **Account** (kuota AI Clipper 20 klip/hari, koneksi Google), **Preferences** (toggle pengingat H+7, bahasa draf pesan), **Data & Privacy** (ekspor CSV/JSON, pemulihan arsip), dan **Session**.
+
+### Bahasa Visual (*Soft Sky Glass*)
+* **Palet Warna:** Latar gradien biru langit lembut (`#F4F9FF` ke `#E3F1FD`), permukaan kartu kaca putih semi-transparan (`#FFFFFFE0`), aksen utama biru (`#0284C7` / `#0369A1`), serta sorotan fungsional kuning neon (`#D4FF47`) pada CTA utama dan indikator kuota.
+* **Tipografi:** `Poppins` dan `Plus Jakarta Sans` dengan bobot ringan (`Regular` dan `Medium`) tanpa penggunaan `Bold` berlebih.
+
+---
+
+## Arsitektur Sistem
+
+NextRole dirancang menggunakan arsitektur monolit modular dengan pemisahan tanggung jawab yang jelas antara lapisan antarmuka dan layanan backend.
 
 ### 1. Frontend: Feature-Driven Architecture (FDA)
-Seluruh kode antarmuka dikelompokkan berdasarkan **domain fitur bisnis**, bukan tipe file teknis:
 ```text
 src/
 ├── components/ui/             # Komponen atomik bersama (Button, Input, Modal, Drawer, Badge)
 ├── features/
-│   ├── auth/                  # Autentikasi (Google OAuth, 1-Click Guest Mode)
-│   ├── clipper/               # Smart Job Clipper (Modal input link/teks & ekstraksi AI)
-│   ├── kanban/                # Papan visual 6 kolom drag-and-drop (DnD-Kit)
-│   ├── application-detail/    # Drawer detail, arsip JD Snapshot, & follow-up generator
-│   └── analytics/             # Kartu metrik statistik lamaran
-└── app/                       # Next.js App Router (Halaman & Layouts)
+│   ├── auth/                  # Autentikasi (Google OAuth & Guest Demo Session)
+│   ├── clipper/               # Modal Smart Job Clipper (AI Extract Link/Gambar & Input Manual)
+│   ├── kanban/                # Papan visual Kanban 5 kolom drag-and-drop (DnD-Kit)
+│   ├── application-detail/    # Drawer detail, arsip deskripsi pekerjaan, & follow-up generator
+│   └── analytics/             # Visualisasi metrik performa karier
+└── app/                       # Next.js App Router (Pages, Layouts, API Route Handlers)
 ```
 
-### 2. Backend: Modular Layered Architecture dengan Repository Pattern
-Setiap modul domain backend berdiri mandiri (*vertical slice*) dengan pemisahan aliran data 4 lapis yang ketat:
+### 2. Backend: Modular Layered Architecture & Repository Pattern
 ```text
 src/
-├── config/                    # Inisialisasi Prisma Client (db.ts) & Google AI SDK
-├── constants/                 # Enum ApplicationStatus & pesan baku
-├── middlewares/               # Auth guard, error handling, input sanitization
+├── config/                    # Singleton Prisma Client & klien Google AI SDK
+├── constants/                 # Enum ApplicationStatus & pesan standar
+├── middlewares/               # Auth guard, error handler, input sanitizer
+├── utils/                     # Fungsi helper murni (tanggal & formatter)
 └── modules/
-    ├── auth/                  # Modul login, sesi, dan akun tamu
-    ├── job-parser/            # Ekstraksi lowongan via Gemini 1.5 Flash (Vercel AI SDK)
-    ├── applications/          # CRUD lamaran, transisi status kanban, soft delete
-    └── follow-up/             # Hitung waktu H+7 & draf pesan tindak lanjut
-        ├── <modul>.routes.ts       # Definisi endpoint & metode HTTP
-        ├── <modul>.controller.ts   # Handler request/response & validasi Zod
-        ├── <modul>.service.ts      # Logika bisnis & aturan domain
-        ├── <modul>.repository.ts   # Interaksi langsung Prisma ORM
-        ├── <modul>.openapi.ts      # Kontrak dokumentasi OpenAPI (Colocated)
-        └── __tests__/              # Unit & integration test khusus modul
+    ├── auth/                  # Manajemen sesi akun & Guest Mode
+    ├── job-parser/            # Ekstraksi lowongan via Gemini 1.5 Flash
+    ├── applications/          # CRUD lamaran, transisi status, soft delete (deletedAt IS NULL)
+    └── follow-up/             # Perhitungan H+7 & generator draf pesan dwi-bahasa
+        ├── <modul>.routes.ts
+        ├── <modul>.controller.ts
+        ├── <modul>.service.ts
+        ├── <modul>.repository.ts
+        ├── <modul>.openapi.ts
+        └── __tests__/
 ```
 
-* **Aliran Data Baku:**  
-  `Client Request` $\longrightarrow$ `Routes` $\longrightarrow$ `Controller` $\longrightarrow$ `Service` $\longrightarrow$ `Repository` $\longrightarrow$ `Database (Prisma/Neon)`.
-* **Scalar API Documentation:** Seluruh endpoint terdokumentasi secara interaktif di rute `/docs`.
+* **Aliran Eksekusi Data:** `Client Request -> Routes -> Controller -> Service -> Repository -> Prisma / PostgreSQL`.
+* **Dokumentasi API Terintegrasi:** Setiap modul menyertakan kontrak OpenAPI kolokasi (`<modul>.openapi.ts`) yang disajikan secara interaktif melalui Scalar di endpoint `/docs`.
 
 ---
 
-## 🛠️ Tech Stack & Infrastruktur ($0 Cost Tier)
+## Tech Stack
 
-* **Framework Inti:** Next.js (App Router, React 19, TypeScript)
-* **Styling & UI:** Tailwind CSS, Lucide React, DnD-Kit
-* **Autentikasi:** Auth.js (NextAuth v5) dengan Google OAuth + 1-Click Demo Mode
-* **Database & ORM:** PostgreSQL di Neon Serverless via Prisma ORM v6+ (Koneksi pooled port 6543)
-* **Mesin AI:** Google Gemini 1.5 Flash via Vercel AI SDK (`ai` & `@ai-sdk/google`)
+* **Framework:** Next.js (App Router, React 19, TypeScript)
+* **Styling & Interaksi:** Tailwind CSS, Lucide Icons, DnD-Kit
+* **Autentikasi:** Auth.js (NextAuth v5) — Google OAuth & Guest Session
+* **Database & ORM:** PostgreSQL (Neon Serverless) melalui Prisma ORM v6+ (koneksi *pooled* port `6543`)
+* **Mesin AI:** Google Gemini 1.5 Flash melalui Vercel AI SDK (`ai` & `@ai-sdk/google`)
 * **Dokumentasi API:** Scalar API Reference (`@scalar/nextjs-api-reference`)
-* **Hosting:** Vercel (Edge/Serverless Platform)
+* **Deployment:** Vercel
+* **Desain Kanvas:** FigCraft
 
 ---
 
-## 🔒 Kebijakan Kualitas & Keamanan Baku
+## Standar Rekayasa & Keamanan
 
-1. **Zero RegEx Policy:**  
-   Dilarang keras menulis atau menerapkan Regular Expression (`RegExp` / `/pattern/`). Seluruh manipulasi string menggunakan metode bawaan (`.includes()`, `.startsWith()`, `.split()`), dan validasi format menggunakan parser resmi (`zod`, `new URL()`) untuk mengeliminasi risiko ReDoS (*Regular Expression Denial of Service*).
-2. **Anti-AI Slop UI/UX:**  
-   Bebas dari badge capsule warna-warni berlebih (*pill-soup*). Menggunakan indikator titik 6px minimalis, tipografi tegas (*Plus Jakarta Sans* untuk branding, *Inter* untuk antarmuka), dan rasio kontras $\ge 4.5:1$.
-3. **Anti-Overengineering (`ponytail`):**  
-   Prinsip *pragmatic senior dev* — tidak membuat lapisan interface kosong jika implementasinya tunggal. Menulis kode yang ringkas dan langsung menyelesaikan masalah.
-4. **Keamanan Produksi (`security-audit`):**  
-   Seluruh kredensial rahasia (`DATABASE_URL`, `AUTH_SECRET`, `GEMINI_API_KEY`) hanya diakses di sisi server. Otorisasi kepemilikan data (`userId`) divalidasi ketat di layer Service.
+1. **Zero RegEx Policy:** Seluruh logika validasi dan pengolahan string dilarang menggunakan Regular Expression (`RegExp` / `/pattern/`) untuk mencegah kerentanan ReDoS dan menjaga keterbacaan kode. Validasi format memanfaatkan `zod` dan parser standar (`new URL()`), sedangkan pengolahan teks memakai metode native string (`.includes()`, `.startsWith()`, `.split()`, `.trim()`).
+2. **Strict Ownership Guard:** Validasi kepemilikan data (`userId`) dan penyaringan arsip terhapus (`deletedAt IS NULL`) ditegakkan di lapisan Service dan Repository.
+3. **Pragmatic Engineering:** Menghindari abstraksi dan wrapper berlebihan di luar kebutuhan nyata.
+4. **Proteksi Kredensial:** Kunci sensitif (`DATABASE_URL`, `AUTH_SECRET`, `GEMINI_API_KEY`) hanya dibaca pada lingkungan server.
 
 ---
 
-## 🗺️ Roadmap Pelaksanaan (5 Sprint Terukur)
+## Dokumen Spesifikasi & Status Pengembangan
 
-Lihat detail lengkap tiket dan acceptance criteria di [docs/ROADMAP.md](file:///e:/project-nextjs/next-role/docs/ROADMAP.md).
+Seluruh cetak biru produk dan desain tersimpan di direktori [docs](docs):
+* [Product Requirements Document (PRD)](docs/PRD.md)
+* [Technical Specification Document (TSD)](docs/TSD.md)
+* [UI/UX Design Guide](docs/DESIGN.md)
+* [Execution Roadmap (5 Sprint)](docs/ROADMAP.md)
+* [Agent & Engineering Rules](AGENTS.md)
 
-* **Sprint 1: Perancangan UI/UX di FigCraft (Canvas Visual)**
-  * *Catatan:* Pengguna membuka aplikasi FigCraft manual terlebih dahulu di `localhost:7979`.
-  * Tiket 1.1: Layar Utama Kanban Board (6 Kolom sesuai TSD) & Kartu Metrik Ringkasan.
-  * Tiket 1.2: Modal Smart Job Clipper (Input Link & Teks Iklan Lowongan).
-  * Tiket 1.3: Detail Drawer (Tab Ringkasan, Tab Arsip JD Snapshot, Generator Follow-Up).
-  * Tiket 1.4: Halaman Login & Tombol 1-Click "Explore as Guest / Mode Demo".
-* **Sprint 2: Inisialisasi Proyek, Dependensi & Setup Struktur Folder**
-  * Setup Next.js, Tailwind, Prisma ORM, Vercel AI SDK, struktur FDA & Backend Modular.
-  * Sinkronisasi repository GitHub (`https://github.com/ilsetiawan1/next-role.git`).
-* **Sprint 3: Backend Core Engine & Dokumentasi API Scalar (API-First)**
-  * Migrasi database PostgreSQL Neon, implementasi 4 modul domain, viewer `/docs` via Scalar.
-* **Sprint 4: Frontend Development & Integrasi UI/UX (FDA)**
-  * Konversi rancangan FigCraft ke komponen FDA, drag-and-drop Kanban, dan integrasi API.
-* **Sprint 5: Demo Mode Seeding, Polishing & Deployment Vercel**
-  * Seeder 6 kartu data realistis, audit keamanan akhir Zero RegEx, deployment ke Vercel.
+**Status Saat Ini:** Penyelesaian desain antarmuka *multi-device* (Mobile, Tablet, Desktop) pada [docs/next-role.figcraft](docs/next-role.figcraft) serta sinkronisasi dokumen spesifikasi (**Sprint 1**) sebelum masuk ke tahap inisialisasi proyek Next.js dan implementasi backend (**Sprint 2–5**).
 
 ---
 
-## 🚀 Panduan Memulai Cepat (Local Development)
+## Persiapan Lingkungan Lokal (Tahap Implementasi)
 
-### 1. Kloning Repository
 ```bash
 git clone https://github.com/ilsetiawan1/next-role.git
 cd next-role
 ```
 
-### 2. Konfigurasi Environment Variables
-Buat file `.env` di root direktori proyek:
-```env
-# Database Neon (PostgreSQL)
-DATABASE_URL="postgresql://user:password@ep-sample-pooler.us-east-2.aws.neon.tech/nextrole?sslmode=require&pgbouncer=true"
-DIRECT_URL="postgresql://user:password@ep-sample.us-east-2.aws.neon.tech/nextrole?sslmode=require"
+Konfigurasi variabel `.env` saat inisialisasi aplikasi Next.js di Sprint 2:
 
-# Auth.js / NextAuth v5
+```env
+DATABASE_URL="postgresql://user:password@ep-sample-pooler.region.aws.neon.tech/nextrole?sslmode=require&pgbouncer=true"
+DIRECT_URL="postgresql://user:password@ep-sample.region.aws.neon.tech/nextrole?sslmode=require"
+
 AUTH_SECRET="your-super-secret-key-min-32-chars"
 AUTH_URL="http://localhost:3000"
 
-# Google OAuth
 GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
-# Google Gemini AI SDK
 GEMINI_API_KEY="your-google-gemini-api-key"
 ```
 
-### 3. Instalasi Dependensi & Migrasi Database
-```bash
-npm install
-npx prisma db push
-```
+---
 
-### 4. Menjalankan Server Pengembangan
-```bash
-npm run dev
-```
-Buka browser di `http://localhost:3000` untuk aplikasi dan `http://localhost:3000/docs` untuk dokumentasi API Scalar.
+## Standar Git Workflow
+
+* **Branch Utama:** Dilarang melakukan commit langsung ke `main`.
+* **Isolasi Perubahan:** Gunakan penamaan branch terpisah sesuai konteks (`feat/<fitur>`, `fix/<bug>`, `refactor/<modul>`).
+* **Conventional Commits:** Gunakan awalan standar (`feat:`, `fix:`, `refactor:`, `style:`, `test:`, `docs:`).
 
 ---
 
-## 🌿 Standar Kontribusi & Git Branching
+## Lisensi
 
-* **Larangan Commit Langsung ke `main`:** Seluruh pengerjaan fitur wajib melalui branch terisolasi.
-* **Format Penamaan Branch:**
-  * Fitur baru: `feat/<nama-fitur>`
-  * Perbaikan bug: `fix/<nama-bug>`
-  * Refaktorisasi: `refactor/<nama-modul>`
-* **Konvensi Pesan Commit:** Mengikuti format [Conventional Commits](https://www.conventionalcommits.org/):
-  * `feat: add smart job clipper modal with raw text parsing`
-  * `fix: correct H+7 date calculation in follow-up service`
-  * `docs: update roadmap and technical specs for sprint 1`
-
----
-
-## 📄 Lisensi
-
-Proyek ini berada di bawah lisensi terbuka untuk keperluan pengembangan profesional, personal, maupun portofolio.
+Proyek ini dikembangkan untuk keperluan portofolio profesional dan penggunaan personal.
