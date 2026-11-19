@@ -1,5 +1,5 @@
 # NextRole — Dokumen Desain & Panduan Gaya UI/UX
-*Versi: 3.2.0 (Glassmorphic Bento & Symmetrical Balance Refactor)*
+*Versi: 3.3.0 (Glassmorphic Bento, CV Semantic Matching & R2 Preview Sync)*
 
 ---
 
@@ -171,7 +171,7 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
     * Header lamaran: Logo bulat Shopee Indonesia dengan inisial `S` + Judul Posisi (Software Engineer - Web • Jakarta Selatan) + Badge `Status: Applied`.
     * 3-Kolom Properties Grid: Rentang Gaji (Rp 15 - 20 Jt), Tipe Kerja (Full-time On-Site), Tanggal Dilamar (10 Nov 2026), Sumber Lamaran (LinkedIn Jobs), Kontak Recruiter (recruiter@shopee.co.id), Lokasi Kantor (Jakarta Selatan).
     * Arsip Snapshot JD Permanen: Kontainer teks abu-abu lembut memuat ringkasan deskripsi tugas Shopee.
-    * Kualifikasi Kunci Terdeteksi: Chips badge (`React`, `Next.js`, `TypeScript`, `REST API`).
+    * Kualifikasi Kunci Terdeteksi & Skor Kecocokan CV: Header `Kualifikasi Kunci Terdeteksi` dilengkapi pill kontekstual **`Kecocokan CV: 84%`** (gaya Soft Sky `#E0F2FE`, border `#BAE6FD`, teks `#0369A1`) sejajar kanan, diikuti chips badge (`React`, `Next.js`, `TypeScript`, `REST API`). Skor dihitung oleh `pgvector` dari CV tersimpan (0 token AI), sedangkan kartu daftar di sisi kiri tetap bersih tanpa badge skor.
     * **Komponen Radio Selector Transisi Status (`y: 400, h: 56`):**
       - Judul `Ubah Status Lamaran:` dalam warna slate gelap `#0F172A` (tidak ikut biru).
       - Pilihan radio status didistribusikan secara rata (**justify-between**) sepanjang kontainer: `(•) Applied` (warna biru `#0284C7`), `( ) Interview`, `( ) Offered`, `( ) Rejected` (warna netral slate), mengeliminasi area kosong di sisi kanan.
@@ -204,7 +204,7 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
   * **Sisi Kanan (x: 460, w: 350) — Persistent Inspector Panel (`y: 324, h: 640`):**
     * Header perusahaan Shopee dengan inisial `S` + badge Applied.
     * 2-Kolom Properti Data (Gaji, Tipe Kerja, Tanggal Dilamar, Sumber, Kontak HR, Lokasi Kantor).
-    * Arsip Snapshot JD permanen + Chips kualifikasi (`React`, `Next.js`, `TypeScript`).
+    * Arsip Snapshot JD permanen + header `Kualifikasi Kunci Terdeteksi` disertai pill **`Kecocokan CV: 84%`** sejajar kanan + Chips kualifikasi (`React`, `Next.js`, `TypeScript`).
     * Komponen Radio Group Status: Judul `Ubah Status Lamaran:` dalam slate gelap `#0F172A`, radio `(•) Applied` biru `#0284C7`, opsi `Interview`, `Offered`, `Rejected` terdistribusi seimbang (**justify-between**) rata margin kiri-kanan.
     * Tombol aksi: `Edit` (Primary blue) dan `Salin Draf Follow-Up ↗`.
 
@@ -248,12 +248,12 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
 * **3-Column Info Strip (`w: 350, h: 66`, y: 174):** Tipe Kerja (`Hybrid`), Lokasi Kerja (`Jakarta Selatan`), Status Kanban (`Applied`).
 * **Sumber Lowongan Bar (`w: 350, h: 40`, y: 250):** Bar dokumentasi sumber portal dan tautan loker asli (`Sumber: LinkedIn` di kiri dan `linkedin.com/jobs/view/3948102 ↗` di kanan).
 * **Deskripsi Pekerjaan (`w: 350, h: 104`, y: 326):** Kontainer abu-abu netral (`#F8FAFC`, border `#E2E8F0`, radius `12px`/`14px`) yang menampilkan poin-poin deskripsi dan tanggung jawab pekerjaan secara langsung tanpa label status redundan.
-* **Kualifikasi Kunci Terdeteksi (`y: 464`):** Chips netral (`#F1F5F9`, border `#E2E8F0`, teks `#334155`) untuk kata kunci utama (*Next.js*, *TypeScript*, *Core Web Vitals*, *REST API*).
+* **Kualifikasi Kunci Terdeteksi (`y: 464`):** Header `Kualifikasi Kunci Terdeteksi` disertai pill **`Kecocokan CV: 84%`** (`bg: #E0F2FE`, border `#BAE6FD`, teks `#0369A1`), diikuti chips netral (`#F1F5F9`, border `#E2E8F0`, teks `#334155`) untuk kata kunci utama (*Next.js*, *TypeScript*, *Core Web Vitals*, *REST API*).
 * **Ringkasan Timeline & CTA (`y: 498` s.d. `y: 612`):** Kartu ringkas `Tanggal Melamar` (`7 Hari Lalu`) dan `Tindak Lanjut` (`H+7 Hari Ini`), diikuti tombol utama `Draf Pesan HRD ↗`.
 
 ### F. Modal Catat Lamaran Baru — Manual & Smart Clipper (390x844)
 * **Mode Manual (`4073`):** Memuat input Nama Perusahaan, Posisi / Role Lowongan, Tipe Kerja (`Remote`, `Hybrid`, `On-Site`), Perkiraan Rentang Gaji (Opsional), **Sumber Lowongan (Opsional)** berupa 4 pill cepat (`LinkedIn`, `JobStreet`, `Glints`, `Lainnya`) + input **Tautan Lowongan (Opsional)**, dan Deskripsi Pekerjaan & Kualifikasi.
-* **Mode Otomatis AI (`3963`):** Mendukung unggah screenshot gambar maupun tempel URL lowongan; AI/parser mengekstrak sumber portal otomatis dari domain tautan atau petunjuk visual screenshot.
+* **Mode Otomatis AI (`3963`):** Mendukung unggah screenshot gambar maupun PDF serta tempel URL lowongan; AI/parser mengekstrak sumber portal otomatis dari domain tautan atau petunjuk visual screenshot. Status pill kuota menampilkan `Sisa Kuota: 18 / 20 klip hari ini • Gemini 3.5 Flash Lite`.
 
 ---
 
@@ -310,9 +310,9 @@ Halaman ke-4 pada navigasi NextRole resmi diubah dari `Settings` menjadi **`Prof
   * **Baris Info `flex justify-between` (`y: 132`, jarak 2x di bawah posisi):** `[Pin] Jakarta Selatan, ID` rata kiri dan `[Mail] budi.santoso@gmail.com` rata kanan sejajar lebar kartu.
   * **Stat Strip 4-Kolom (`y: 170..208`):** Ringkasan metrik berpemisah garis vertikal tipis (`24 Lamaran | 06 Interview | 02 Offer | 68% Respon`).
 * **Grouped Cards (`h: 156` max, baris `52px`, garis pemisah tipis `#F1F5F9`):**
-  * **Account (`y: 300, h: 104`, 2 item):** `Kuota AI Clipper` (dengan pill kuning neon `18 / 20 klip`), `Akun Google & Keamanan` (aksi edit profil langsung lewat tombol **`Edit`** pada kartu hero agar tidak redundan).
-  * **Preferences (`y: 434, h: 104`, 2 item):** `Pengingat Follow-Up H+7` (toggle biru), `Bahasa Draf Pesan` (`ID / EN`).
-  * **Data & Session (`y: 568, h: 156`, 3 item):** `Ekspor & Arsip Data` (`CSV`), `Panduan NextRole`, `Keluar Akun` (`#BE123C`), berakhir rapi di `y: 724` (jarak lega di atas dock).
+  * **Account (`y: 300`, 3 item atau sub-baris ringkas di `Account`):** `Kuota AI Clipper` (pill kuning neon `18 / 20 klip`), **`Profil CV & Skill (PDF)`** (status file e.g. `CV_Budi.pdf` dengan aksi cepat `Preview` via Presigned URL R2 atau `Ubah`), serta `Akun Google & Keamanan` (aksi edit profil langsung lewat tombol **`Edit`** pada kartu hero agar tidak redundan).
+  * **Preferences:** `Pengingat Follow-Up H+7` (toggle biru), `Bahasa Draf Pesan` (`ID / EN`).
+  * **Data & Session:** `Ekspor & Arsip Data` (`CSV`), `Panduan NextRole`, `Keluar Akun` (`#BE123C`), tetap berhenti aman di atas Floating Bottom Pill Nav Dock (`y: 756`).
 * **Floating Bottom Pill Nav Dock (`y: 756`):** Tab `Profile` aktif dengan highlight `#E0F2FE` + `#0284C7` dan ikon user.
 
 ### B. Tablet (`834x1194`)
@@ -322,7 +322,7 @@ Halaman ke-4 pada navigasi NextRole resmi diubah dari `Settings` menjadi **`Prof
   * Avatar profil 3D melingkar (`88x88`, ring putih `4px`) menimpa tepi bawah banner.
   * Nama `Budi Santoso` + badge centang biru terverifikasi, posisi target `Fullstack Web Developer`, lokasi `Jakarta Selatan, ID`, email `budi.santoso@gmail.com`, serta tombol **`Edit Profile`** di kanan.
   * **Stat Strip 4-Kolom (`y: 222..286`):** `24 Total Lamaran | 06 Wawancara | 02 Penawaran | 68% Tingkat Respon`.
-* **Grid Simetris 2x2 Grouped Cards (`w: 382` per kolom, `h: 128`, 2 item per kartu, `y: 496` & `y: 670`):** `Account` (`Kuota AI Clipper` & `Akun Google & Keamanan`), `Preferences` (`Pengingat Follow-Up H+7` & `Bahasa Draf Pesan HRD`), `Data & Privacy` (`Ekspor Riwayat Lamaran` & `Pulihkan / Hapus Arsip`), dan `Session` (`Panduan NextRole` & `Keluar Akun`).
+* **Grid Simetris 2x2 Grouped Cards (`w: 382` per kolom, `y: 496` & `y: 670`):** `Account` (`Kuota AI Clipper`, **`Profil CV & Skill (PDF)`** dengan aksi `Preview` / `Ubah`, & `Akun Google & Keamanan`), `Preferences` (`Pengingat Follow-Up H+7` & `Bahasa Draf Pesan HRD`), `Data & Privacy` (`Ekspor Riwayat Lamaran` & `Pulihkan / Hapus Arsip`), dan `Session` (`Panduan NextRole` & `Keluar Akun`).
 * **Banner Slider Informatif (`w: 786, h: 152, y: 834`):** Banner edukasi ringkas mengenai kesiapan arsip deskripsi pekerjaan saat dihubungi HRD mendadak (*"Arsip Kerja Siap Saat HRD Menelepon"*), lengkap dengan tombol CTA kuning neon `Buka Papan Roles ›`, ilustrasi 3D, dan indikator pagination slide.
 
 ### C. Desktop (`1440x900`)
@@ -331,6 +331,7 @@ Halaman ke-4 pada navigasi NextRole resmi diubah dari `Settings` menjadi **`Prof
   * **Kolom Kiri 1/2 (`x: 48, w: 658`):**
     1. **Profile Hero Banner Card (`y: 144, h: 352`):** Cover banner gradien biru langit (`h: 118`), avatar 3D (`92x92`, ring putih `4px`) menimpa tepi bawah cover, nama `Budi Santoso` + badge centang biru + pill `Google Terhubung`, posisi target `Fullstack Web Developer`, lokasi & email, tombol **`Edit Profile`** di kanan (`x: 508`), serta **Stat Strip 4-Kolom (`24 Total Lamaran | 06 Wawancara | 02 Penawaran | 68% Tingkat Respon`)**.
     2. **Banner Slider Informatif (`y: 524, h: 224`):** Banner tips persiapan panggilan HRD (*"Arsip Kerja Siap Saat HRD Menelepon"*), tombol kuning neon `Buka Papan Roles ›`, ilustrasi 3D, dan indikator pagination slide, rata bawah tepat di `y: 748`.
-  * **Kolom Kanan 1/2 (`x: 734, w: 658`):** Seluruh 4 kelompok kartu terstruktur bertumpuk rapi (`h: 116`, baris `58px`, rata bawah tepat di `y: 748`): `Account` (`Kuota Smart AI Clipper` + pill kuning neon `18 / 20 klip` & `Akun Google & Keamanan`), `Preferences` (`Pengingat Follow-Up Otomatis (H+7)` & `Bahasa Default Draf Pesan HRD`), `Data & Privacy` (`Ekspor Riwayat Lamaran & Arsip JD` & `Pulihkan / Bersihkan Arsip Terhapus`), dan `Session` (`Panduan Penggunaan NextRole` & `Keluar Akun`).
+  * **Kolom Kanan 1/2 (`x: 734, w: 658`):** Seluruh 4 kelompok kartu terstruktur bertumpuk rapi (`Account`, `Preferences`, `Data & Privacy`, dan `Session`) rata bawah tepat di `y: 748`: `Account` memuat `Kuota Smart AI Clipper` + pill kuning neon `18 / 20 klip`, **`Profil CV & Skill (PDF)`** (`CV_Budi.pdf • Preview` + tombol ubah untuk R2 Private Bucket & `Gemini Embedding 2`), serta `Akun Google & Keamanan`; `Preferences` memuat `Pengingat Follow-Up Otomatis (H+7)` & `Bahasa Default Draf Pesan HRD`; `Data & Privacy` memuat `Ekspor Riwayat Lamaran & Arsip JD` & `Pulihkan / Bersihkan Arsip Terhapus`; dan `Session` memuat `Panduan Penggunaan NextRole` & `Keluar Akun`.
+* **Modal / Sheet Kelola & Preview CV PDF (`Modal Kelola CV - Mobile 390x844`):** Memuat dropzone unggah PDF CV (maks 5 MB ke Private Bucket Cloudflare R2), kartu file aktif dengan tombol `Preview` (membuka PDF via Presigned URL sementara), pratinjau `Ringkasan Teks Terdeteksi` untuk pembaruan vektor `Gemini Embedding 2 (768d)`, serta tombol `Simpan & Perbarui`.
 
 
