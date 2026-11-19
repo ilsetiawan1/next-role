@@ -1,5 +1,5 @@
 # NextRole — Dokumen Desain & Panduan Gaya UI/UX
-*Versi: 3.3.0 (Glassmorphic Bento, CV Semantic Matching & R2 Preview Sync)*
+*Versi: 3.4.0 (Color Triad Home & Roles Harmony Refactor)*
 
 ---
 
@@ -20,10 +20,11 @@ NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, d
 * **Background Kanvas:** Gradasi linear halus `#F4F9FF` $\rightarrow$ `#E3F1FD` (180deg).
 * **Primary Sky:** `#0284C7` (Sky-600) untuk aksi utama, link interaktif, dan highlight aktif.
 * **Primary Deep:** `#0369A1` (Sky-700) / `#075985` (Sky-800) untuk hover dan penekanan.
+* **Neon Lime Accent:** `#D4FF47` (berpasangan dengan teks `#0C4A6E`) untuk CTA banner, pill kuota harian navbar (`18 / 20 Klip`), micro-pill prioritas `H+7`/`H+8`, badge target mingguan, pill `12 lamaran` folder aktif, dan pill `Kecocokan CV: 84%`.
 * **Neutral Slate:**
   * Title/Headings: `#0F172A` (Slate-900)
-  * Body/Text: `#334155` (Slate-700)
-  * Secondary/Muted: `#64748B` (Slate-500)
+  * Body/Text & Rentang Gaji Kartu: `#334155` (Slate-700) — menjaga fokus link biru hanya pada tombol `Detail ↗`
+  * Secondary/Muted & Tautan Seksi: `#475569` / `#64748B` (Slate-600/500)
   * Borders/Dividers: `#E2E8F0` (Slate-200) atau `#FFFFFF` semi-transparan
 * **Status Badges (Soft Pastel with Dark Text):**
   * `Applied`: `bg-blue-50 text-blue-700 border-blue-100` (`#EFF6FF` / `#1D4ED8`)
@@ -44,8 +45,8 @@ NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, d
 * **Top Bar:** Brand mark + `nextrole` + search bar pill + filter modal trigger.
 * **Horizontal Filters:** Pill scroll horizontal (*Semua*, *Full-time*, *Hybrid*, *Follow-Up*).
 * **Banner AI Carousel (`w: 350, h: 134`):** Promosi fitur Smart AI Clipper dengan ilustrasi 3D.
-* **Perlu Tindak Lanjut Carousel (`y: 354, h: 102`):** Kartu horizontal kompak (`w: 280, h: 102`, selaras standar kartu Roles) memuat kotak inisial perusahaan (`38x38`), nama perusahaan & lokasi, link `Detail ↗`, posisi, rentang gaji biru `#0284C7`, dan keterangan waktu H+7 di kanan bawah (Tokopedia, peek Apple).
-* **Aktivitas Terakhir Feed (`y: 476` s.d. `y: 720`):** Kartu vertikal kompak (`w: 350, h: 102`, selaras standar kartu Roles) untuk Grab Indonesia (`y: 504`) dan Shopee Indonesia (`y: 618`), berakhir aman di atas Floating Bottom Dock.
+* **Perlu Tindak Lanjut Carousel (`y: 354, h: 102`):** Kartu horizontal kompak (`w: 280, h: 102`, selaras standar kartu Roles) memuat kotak inisial perusahaan (`38x38`), nama perusahaan & lokasi, link `Detail ↗` biru `#0284C7`, posisi, rentang gaji slate `#334155`, serta tombol CTA ringkas kuning neon `#D4FF47` (`Follow-Up ↗`, teks `#0C4A6E`) di pojok kanan bawah (Tokopedia, peek Apple). Tautan seksi `Lihat semua ›` memakai slate `#475569`.
+* **Aktivitas Terakhir Feed (`y: 476` s.d. `y: 720`):** Kartu vertikal kompak (`w: 350, h: 102`, selaras standar kartu Roles) untuk Grab Indonesia (`y: 504`, penanda dot 6px ungu `#7E22CE` + teks netral `Interview • 13 Nov` tanpa kapsul pill) dan Shopee Indonesia (`y: 618`), berakhir aman di atas Floating Bottom Dock.
 * **Floating Bottom Pill Nav Dock (`h: 68`, radius 28px):** 4 menu utama berbahasa Inggris (*Home*, *Roles*, *Analytics*, *Profile*) dengan ikon grafik batang untuk *Analytics*, ikon user untuk *Profile*, dan **Raised Center FAB (+)** untuk aksi *Catat Lamaran*.
 
 ---
@@ -54,12 +55,12 @@ NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, d
 * **Top Floating Pill Navbar (`w: 786, h: 58`, radius 29px, y: 20):**
   * Kiri: Logo resmi NextRole + brand text `nextrole` (Courier New Bold, 18px).
   * Tengah: Pill navigasi terpadu (*Home* aktif, *Roles*, *Analytics*, *Profile*).
-  * Kanan: Pill kuota harian `18/20 Klip`, tombol cepat `+`, dan avatar `BS` (32x32).
+  * Kanan: Pill kuota harian kuning neon `#D4FF47` (`18/20 Klip`, teks `#0C4A6E`), tombol cepat `+`, dan avatar `BS` (32x32).
 * **Banner Slider Tablet (`w: 786, h: 140`, y: 160):** Membentang penuh di atas konten.
 * **Grid 2-Kolom (y: 324 s.d. y: 866 — Baseline-Locked di Y = 866):**
   * **Kolom Kiri (w: 454) — Perlu Tindak Lanjut:**
     1. Header "Perlu Tindak Lanjut" + link "Lihat semua ›"
-    2. 4 Kartu Lamaran selaras standar Roles (`h: 116`, gap `15px–16px`, radius `20px`, kotak logo inisial `40x40`, tombol `Detail ↗` pojok kanan atas, tanpa badge warna-warni): Tokopedia (`y: 356`), Bukalapak (`y: 487`), GoTo Financial (`y: 618`), dan Apple (`y: 750`, berakhir tepat di **Y = 866**).
+    2. 4 Kartu Lamaran selaras standar Roles (`h: 116`, gap `15px–16px`, radius `20px`, kotak logo inisial `40x40`, tombol `Detail ↗` pojok kanan atas, rentang gaji slate `#334155`, keterangan waktu ringkas (`7 hari lalu` / `8 hari lalu` / `6 hari lalu`), serta tombol CTA singkat 2 kata di pojok kanan bawah tanpa pengulangan: `Follow-Up ↗` kuning neon `#D4FF47` untuk kartu jatuh tempo dan `Buat Draf ↗` biru muda `#F0F9FF` untuk kartu mendekati batas): Tokopedia (`y: 356`), Bukalapak (`y: 487`), GoTo Financial (`y: 618`), dan Apple (`y: 750`, berakhir tepat di **Y = 866**). Tautan seksi (`Lihat semua ›`, `Bulan Ini ›`, `Buka ›`) menggunakan slate `#475569`.
   * **Kolom Kanan (w: 308) — Statistik Lamaran & Kalender Agenda:**
     1. Header "Statistik Lamaran" + link "Bulan Ini ›" (sebagai judul tunggal komponen tanpa duplikasi judul internal).
     2. Quick Analytics Bento Tablet (`h: 178`, `y: 356..534`): 4 kotak metrik simetris dengan ikon 3D squircle (Total Dilamar, Interview Aktif, Perlu Follow-Up, Tingkat Respon).
@@ -68,8 +69,8 @@ NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, d
 * **Pipeline Lamaran Grid 2x2 (y: 890 s.d. y: 1170):**
   * Header "Pipeline Lamaran" + link "Lihat semua ›" (`y: 890`).
   * Disusun dalam 2 baris x 2 kartu selaras standar kartu Roles (`w: 382, h: 116`):
-    * Baris 1 (`y: 922`): **Grab Indonesia Tablet** (`x: 24`, `Interview: 13 Nov 2026`) & **Shopee Indonesia Tablet** (`x: 428`, `Dilamar: 10 Nov 2026`).
-    * Baris 2 (`y: 1054`): **Traveloka Tablet** (`x: 24`, `Offering • 28 Okt 2026`) & **Dana Indonesia Tablet** (`x: 428`, `Dilamar: 12 Nov 2026`), berakhir simetris di **Y = 1170** (margin bawah 24px).
+    * Baris 1 (`y: 922`): **Grab Indonesia Tablet** (`x: 24`, dot 6px ungu `#7E22CE` + teks netral `Interview • 13 Nov` tanpa pill) & **Shopee Indonesia Tablet** (`x: 428`, `Dilamar: 10 Nov 2026`).
+    * Baris 2 (`y: 1054`): **Traveloka Tablet** (`x: 24`, dot 6px emerald `#047857` + teks netral `Offering • 28 Okt` tanpa pill) & **Dana Indonesia Tablet** (`x: 428`, `Dilamar: 12 Nov 2026`), berakhir simetris di **Y = 1170** (margin bawah 24px).
 
 ---
 
@@ -77,7 +78,7 @@ NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, d
 * **Top Floating Pill Navbar (`w: 1344, h: 64`, radius 32px, y: 20):**
   * Kiri: Logo resmi NextRole (36x36) + brand `nextrole` (Courier New Bold, 18px).
   * Tengah: Segmented pill tabs (`Home`, `Roles`, `Analytics`, `Profile`).
-  * Kanan: Kuota harian `18 / 20 Klip`, tombol utama `+ Catat Lamaran` (`w: 154, h: 36`), dan avatar `BS` (36x36).
+  * Kanan: Kuota harian pill kuning neon `#D4FF47` (`18 / 20 Klip`, teks `#0C4A6E`), tombol utama `+ Catat Lamaran` (`w: 154, h: 36`), dan avatar `BS` (36x36).
 * **Baris Atas (y: 168):**
   * **Banner AI Carousel Desktop (`w: 888, h: 164`, x: 48):** Membentang lebar di atas Kolom 1 dan Kolom 2.
   * **Kolom 3 Kanan Atas (x: 960, w: 432):**
@@ -89,12 +90,13 @@ NextRole mengadopsi estetika **Soft Sky Glass Elevation** yang modern, bersih, d
     2. 3 Kartu Lamaran selaras standar Roles (`h: 116`, gap `16px`, kotak inisial `40x40`, link `Detail ↗`, tanpa badge warna-warni/border kuning): Tokopedia (`y: 390`), Bukalapak (`y: 522`), dan GoTo Financial (`y: 654`).
   * **Kolom 2 (x: 504, w: 432) — Pipeline Lamaran:**
     1. Header "Pipeline Lamaran" + link "Lihat semua ›"
-    2. 3 Kartu Lamaran selaras standar Roles (`h: 116`, gap `16px`): Grab Indonesia (`y: 390`), Shopee Indonesia (`y: 522`), dan Traveloka (`y: 654`).
+    2. 3 Kartu Lamaran selaras standar Roles (`h: 116`, gap `16px`): Grab Indonesia (`y: 390`, dot 6px `#7E22CE` + teks `Interview • 13 Nov`), Shopee Indonesia (`y: 522`, `Dilamar: 10 Nov 2026`), dan Traveloka (`y: 654`, dot 6px `#047857` + teks `Offering • 28 Okt`).
   * **Kolom 3 (x: 960, w: 432) — Kalender & Target Mingguan:**
     1. Mini Calendar Card (`h: 510`, berakhir di **Y = 950**):
        - Kalender interaktif November 2026.
        - Agenda & Wawancara Mendatang (Grab, Shopee, Tokopedia, Traveloka).
-       - Widget Deterministik **"Target Lamaran Minggu Ini"**: Progress bar $80\%$ ($8/10$ lamaran tercapai), 0 token AI.
+       - Widget Deterministik **"Target Lamaran Minggu Ini"**: Progress bar $80\%$ dengan pill neon kuning `#D4FF47` (`8 / 10`, teks `#0C4A6E`), 0 token AI.
+       - Kartu Home & Roles menggunakan rentang gaji slate `#334155`; kartu pada seksi `Perlu Tindak Lanjut` memadukan keterangan hari (`7 hari lalu` / `8 hari lalu` / `6 hari lalu`) dengan tombol CTA singkat (`Follow-Up ↗` kuning neon `#D4FF47` dan `Buat Draf ↗` biru muda `#F0F9FF`) tanpa pengulangan label `H+...`.
 
 ---
 
@@ -140,15 +142,15 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
 ---
 
 ### B. Desktop (1440x900) — 5-Folder Hub & 2-Column Split-View
-* **Top Floating Pill Navbar (`w: 1344, h: 64`, y: 20):** Tab `Roles` aktif dengan kapsul biru (`#0284C7`), brand text `nextrole` (Poppins Regular).
+* **Top Floating Pill Navbar (`w: 1344, h: 64`, y: 20):** Tab `Roles` aktif dengan kapsul biru (`#0284C7`) dan teks putih `#FFFFFF`, brand text `nextrole` (Poppins Regular).
 * **Header Bar (y: 102):**
   * Judul "Papan Lamaran" (`fontSize: 26, fontStyle: Regular, #0F172A`).
   * Subtitle "Kelola 18 lamaran aktif terstruktur dalam 5 tahapan pipeline" (`fontSize: 14, #64748B`).
   * **Tombol `⤓ PDF` (`w: 88, h: 44`, x: 924, y: 104):** Tombol ringkas kaca putih dengan border `#BAE6FD` dan teks `#0284C7` format icon unduh + PDF.
   * Search bar pill (`w: 312, h: 44`, x: 1024) + filter square button (`w: 44, h: 44`, x: 1348), **sejajar presisi pada garis batas kanan $X = 1392$ px** bersama Navbar, Folder Rejected, dan Inspector Panel.
 * **5 Folder Status Cards Ikigai (y: 168 s.d. 324, w: 252 masing-masing, gap: 21, h: 156):**
-  * `Applied` (12 lamaran • Tahap terkirim — **Aktif** dengan gradasi langit `#38BDF8` → `#0284C7`, teks putih, dokumen mengintip di saku atas)
-  * `Follow-Up Needed` (3 lamaran • 2 tepat H+7 • Inactive White `#F8FAFC`)
+  * `Applied` (`Tahap terkirim` tepat di bawah judul, diikuti pill kuning neon `#D4FF47` `12 lamaran` teks `#0C4A6E` di bagian bawah — **Aktif** dengan gradasi langit `#38BDF8` → `#0284C7`, teks judul putih, dokumen mengintip di saku atas)
+  * `Follow-Up Needed` (3 lamaran • micro-dot neon `#D4FF47` + `2 tepat H+7` • Inactive White `#F8FAFC`)
   * `Interview` (3 lamaran • Tahap berjalan • Inactive White `#F8FAFC`)
   * `Offered` (2 penawaran • Tahap Penawaran • Inactive White `#F8FAFC`)
   * `Rejected / Ghosted` (5 arsip • Terarsip rapi • Inactive White `#F8FAFC`)
@@ -160,7 +162,7 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
       - Avatar foto otomatis berbasis inisial nama perusahaan (`S`, `B`, `D`, `T`) dengan background gradasi langit-ke-awan (`#BAE6FD` → `#F0F9FF`) dan border `#BAE6FD`.
       - **Tombol CTA Pojok Kanan Atas:** Text button bersih `Detail ↗` (`fontSize: 12, Plus Jakarta Sans Medium, #0284C7`, tanpa background fill) di pojok kanan atas kartu (`x: 334, y: 14`), selaras dengan Mobile.
       - Posisi kerja membentang di baris 2 (`x: 16, y: 56, w: 378`).
-      - Baris bawah seimbang (*flex-between*): Rentang gaji di kiri bawah (`Rp 15.000.000 - 20.000.000`, teks biru `#0284C7`) sejajar dengan tanggal dilamar di kanan bawah (`Dilamar: 10 Nov 2026`, `textAlign: right`).
+      - Baris bawah seimbang (*flex-between*): Rentang gaji di kiri bawah (`Rp 15.000.000 - 20.000.000`, teks slate `#334155`) sejajar dengan tanggal dilamar di kanan bawah (`Dilamar: 10 Nov 2026`, `textAlign: right`).
       1. `Shopee Indonesia` (Selected — border biru `#0284C7`, avatar inisial `S`, tombol `Detail ↗` pojok kanan atas, badge "Sedang Dibaca" ditiadakan).
       2. `Blibli` (UI Engineer, avatar inisial `B`, tombol `Detail ↗`).
       3. `Dana Indonesia` (Frontend Engineer, avatar inisial `D`, tombol `Detail ↗`).
@@ -170,8 +172,7 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
     * Kartu kaca solid (`bg-white/85, backdrop-blur-xl, border border-white/90, rounded-3xl`).
     * Header lamaran: Logo bulat Shopee Indonesia dengan inisial `S` + Judul Posisi (Software Engineer - Web • Jakarta Selatan) + Badge `Status: Applied`.
     * 3-Kolom Properties Grid: Rentang Gaji (Rp 15 - 20 Jt), Tipe Kerja (Full-time On-Site), Tanggal Dilamar (10 Nov 2026), Sumber Lamaran (LinkedIn Jobs), Kontak Recruiter (recruiter@shopee.co.id), Lokasi Kantor (Jakarta Selatan).
-    * Arsip Snapshot JD Permanen: Kontainer teks abu-abu lembut memuat ringkasan deskripsi tugas Shopee.
-    * Kualifikasi Kunci Terdeteksi & Skor Kecocokan CV: Header `Kualifikasi Kunci Terdeteksi` dilengkapi pill kontekstual **`Kecocokan CV: 84%`** (gaya Soft Sky `#E0F2FE`, border `#BAE6FD`, teks `#0369A1`) sejajar kanan, diikuti chips badge (`React`, `Next.js`, `TypeScript`, `REST API`). Skor dihitung oleh `pgvector` dari CV tersimpan (0 token AI), sedangkan kartu daftar di sisi kiri tetap bersih tanpa badge skor.
+    * Arsip Snapshot JD Permanen: Judul `Deskripsi Pekerjaan` dilengkapi pill kuning neon **`Kecocokan CV: 84%`** (`bg: #D4FF47`, teks `#0C4A6E`) sejajar kanan di atas kontainer deskripsi tugas Shopee (dihitung oleh `pgvector`, 0 token AI), sehingga area `Kualifikasi Kunci Terdeteksi` dan chips (`React`, `Next.js`, `TypeScript`, `REST API`) tetap bersih, dan kartu daftar di sisi kiri tetap tanpa badge skor.
     * **Komponen Radio Selector Transisi Status (`y: 400, h: 56`):**
       - Judul `Ubah Status Lamaran:` dalam warna slate gelap `#0F172A` (tidak ikut biru).
       - Pilihan radio status didistribusikan secara rata (**justify-between**) sepanjang kontainer: `(•) Applied` (warna biru `#0284C7`), `( ) Interview`, `( ) Offered`, `( ) Rejected` (warna netral slate), mengeliminasi area kosong di sisi kanan.
@@ -196,7 +197,7 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
       - Avatar foto otomatis berbasis inisial (`S`, `B`, `D`) dengan bg gradasi langit-ke-awan (`#BAE6FD` → `#F0F9FF`).
       - **Tombol CTA Pojok Kanan Atas:** Text button bersih `Detail ↗` (`fontSize: 12, Plus Jakarta Sans Medium, #0284C7`, tanpa background fill) di pojok kanan atas kartu (`x: 344, y: 14`), selaras dengan Mobile.
       - Posisi kerja membentang di baris 2 (`x: 16, y: 56, w: 388`).
-      - Baris bawah seimbang (*flex-between*): Rentang gaji di kiri bawah (`Rp 15.000.000 - 20.000.000`, teks biru `#0284C7`) sejajar dengan tanggal dilamar di kanan bawah (`Dilamar: 10 Nov 2026`, `textAlign: right`).
+      - Baris bawah seimbang (*flex-between*): Rentang gaji di kiri bawah (`Rp 15.000.000 - 20.000.000`, teks slate `#334155`) sejajar dengan tanggal dilamar di kanan bawah (`Dilamar: 10 Nov 2026`, `textAlign: right`).
       1. `Shopee Indonesia` (Selected — border biru `#0284C7`, avatar inisial `S`, tombol `Detail ↗` pojok kanan atas, badge "Sedang Dibaca" ditiadakan).
       2. `Blibli` (avatar inisial `B`, tombol CTA `Detail ↗`).
       3. `Dana Indonesia` (avatar inisial `D`, tombol CTA `Detail ↗`).
@@ -204,7 +205,7 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
   * **Sisi Kanan (x: 460, w: 350) — Persistent Inspector Panel (`y: 324, h: 640`):**
     * Header perusahaan Shopee dengan inisial `S` + badge Applied.
     * 2-Kolom Properti Data (Gaji, Tipe Kerja, Tanggal Dilamar, Sumber, Kontak HR, Lokasi Kantor).
-    * Arsip Snapshot JD permanen + header `Kualifikasi Kunci Terdeteksi` disertai pill **`Kecocokan CV: 84%`** sejajar kanan + Chips kualifikasi (`React`, `Next.js`, `TypeScript`).
+    * Judul `Deskripsi Pekerjaan` disertai pill kuning neon **`Kecocokan CV: 84%`** (`bg: #D4FF47`, teks `#0C4A6E`) sejajar kanan di atas Arsip Snapshot JD permanen + Chips kualifikasi (`React`, `Next.js`, `TypeScript`).
     * Komponen Radio Group Status: Judul `Ubah Status Lamaran:` dalam slate gelap `#0F172A`, radio `(•) Applied` biru `#0284C7`, opsi `Interview`, `Offered`, `Rejected` terdistribusi seimbang (**justify-between**) rata margin kiri-kanan.
     * Tombol aksi: `Edit` (Primary blue) dan `Salin Draf Follow-Up ↗`.
 
@@ -247,8 +248,8 @@ Berdasarkan tinjauan arsitektur antarmuka dan penyelarasan kebutuhan produk:
 * **3-Tab Segmented Control (`w: 350, h: 44`, y: 120):** Memuat 3 tab dengan istilah umum yang lugas: `Ringkasan` (aktif), `Deskripsi`, dan `Follow-Up`.
 * **3-Column Info Strip (`w: 350, h: 66`, y: 174):** Tipe Kerja (`Hybrid`), Lokasi Kerja (`Jakarta Selatan`), Status Kanban (`Applied`).
 * **Sumber Lowongan Bar (`w: 350, h: 40`, y: 250):** Bar dokumentasi sumber portal dan tautan loker asli (`Sumber: LinkedIn` di kiri dan `linkedin.com/jobs/view/3948102 ↗` di kanan).
-* **Deskripsi Pekerjaan (`w: 350, h: 104`, y: 326):** Kontainer abu-abu netral (`#F8FAFC`, border `#E2E8F0`, radius `12px`/`14px`) yang menampilkan poin-poin deskripsi dan tanggung jawab pekerjaan secara langsung tanpa label status redundan.
-* **Kualifikasi Kunci Terdeteksi (`y: 464`):** Header `Kualifikasi Kunci Terdeteksi` disertai pill **`Kecocokan CV: 84%`** (`bg: #E0F2FE`, border `#BAE6FD`, teks `#0369A1`), diikuti chips netral (`#F1F5F9`, border `#E2E8F0`, teks `#334155`) untuk kata kunci utama (*Next.js*, *TypeScript*, *Core Web Vitals*, *REST API*).
+* **Deskripsi Pekerjaan (`w: 350, h: 104`, y: 326):** Judul `Deskripsi Pekerjaan` disertai pill kuning neon **`Kecocokan CV: 84%`** (`bg: #D4FF47`, teks `#0C4A6E`) sejajar kanan di atas kontainer abu-abu netral (`#F8FAFC`, border `#E2E8F0`, radius `12px`/`14px`).
+* **Kualifikasi Kunci Terdeteksi (`y: 464`):** Chips netral (`#F1F5F9`, border `#E2E8F0`, teks `#334155`) untuk kata kunci utama (*Next.js*, *TypeScript*, *Core Web Vitals*, *REST API*).
 * **Ringkasan Timeline & CTA (`y: 498` s.d. `y: 612`):** Kartu ringkas `Tanggal Melamar` (`7 Hari Lalu`) dan `Tindak Lanjut` (`H+7 Hari Ini`), diikuti tombol utama `Draf Pesan HRD ↗`.
 
 ### F. Modal Catat Lamaran Baru — Manual & Smart Clipper (390x844)
