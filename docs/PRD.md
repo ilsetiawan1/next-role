@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD) — NextRole
 
 > **Status:** Approved / Ready for Architecture  
-> **Versi:** 1.1.0  
+> **Versi:** 1.2.0  
 > **Target Rilis:** Q4 2026  
 > **Owner:** Fullstack Product Engineering
 
@@ -39,6 +39,7 @@ Mengubah proses pencarian kerja yang sebelumnya kacau, serba manual (spreadsheet
   * Ingin mencatat lamaran instan hanya dengan upload screenshot atau tempel link/teks lowongan.
   * Ingin diingatkan secara otomatis kapan harus follow-up (H+7).
   * Ingin arsip persyaratan kerja asli tetap tersimpan aman meski iklannya sudah terhapus di internet.
+  * Ingin menyimpan CV PDF agar tetap bisa dibuka kapan saja dan langsung melihat tingkat kecocokan CV terhadap lowongan tanpa menghabiskan kuota AI.
   * Ingin satu tampilan papan terpadu tanpa menu berulang.
 
 ---
@@ -53,26 +54,27 @@ Mengubah proses pencarian kerja yang sebelumnya kacau, serba manual (spreadsheet
 
 1. **Penemuan:** Pengguna menemukan lowongan kerja di internet (LinkedIn, Glints, Jobstreet, WhatsApp info loker) dan melamar.
 2. **Pencatatan Instan (Multimodal):** Pengguna membuka NextRole, mengunggah screenshot gambar, menempelkan URL, atau raw text lowongan.
-3. **Ekstraksi Otomatis & Kuota Protektif:** AI (Gemini 1.5 Flash) mengekstrak seluruh data kunci secara terstruktur dan mengisi form review otomatis. Jatah ekstraksi AI dibatasi **20 kali/hari per akun** untuk menjaga kehandalan tier gratis.
-4. **Alur Langsung (*Direct Pipeline*):** Lamaran langsung tersimpan di kolom Kanban **`Applied`** (tanpa tahapan *Wishlist* yang menambah friksi).
+3. **Ekstraksi Otomatis & Kuota Protektif:** AI (**Gemini 3.5 Flash Lite**) mengekstrak seluruh data kunci secara terstruktur dengan validasi skema ketat dan cache deduplikasi SHA-256. Jatah ekstraksi AI baru dibatasi **20 kali/hari per akun** untuk menjaga kehandalan tier gratis.
+4. **Alur Langsung (*Direct Pipeline*):** Lamaran langsung tersimpan di kolom Kanban **`Applied`** (tanpa tahapan *Wishlist* yang menambah friksi), sekaligus men-generate vektor deskripsi pekerjaan 1x (`Gemini Embedding 2`).
 5. **Pengingat Cerdas:** Pada hari ke-7 tanpa kabar respons, sistem otomatis menandai kartu dan men-generate draf pesan *follow-up* sopan siap salin (Bahasa Indonesia & Inggris).
-6. **Persiapan Wawancara:** Saat dipanggil wawancara, pengguna membuka *JD Snapshot* langsung dari kartu untuk mempelajari kembali kualifikasi asli perusahaan.
+6. **Persiapan Wawancara & Skor Kecocokan CV:** Saat dipanggil wawancara atau meninjau kartu, pengguna membuka *JD Snapshot* serta melihat skor **`Kecocokan CV (%)`** yang dihitung lokal oleh `pgvector` terhadap profil CV yang tersimpan aman di **Cloudflare R2** (PDF tetap bisa di-preview kapan saja).
 
 ---
 
 ## 5. Fitur Utama & Prioritas (MoSCoW)
 
 ### Must Have (Wajib Ada di MVP)
-* **Smart Job Clipper (Multimodal: Screenshot Image / URL / Raw Text):** Ekstraksi otomatis data (Perusahaan, Posisi, Lokasi, Tipe Kerja, Rentang Gaji, Skill Kunci, dan Teks Lengkap JD) menggunakan Gemini 1.5 Flash (*Structured Output*).
-* **AI Daily Quota Guard (20 Klip/Hari Per Akun):** Batasan protektif 20 ekstraksi AI per hari untuk menjaga operasional 100% gratis ($0 cost) dan mencegah abuse/spam bot. Input manual tetap tersedia gratis tanpa batas.
+* **Smart Job Clipper (Multimodal: Screenshot Image / PDF / URL / Raw Text):** Ekstraksi otomatis data (Perusahaan, Posisi, Lokasi, Tipe Kerja, Rentang Gaji, Sumber Portal, Skill Kunci, dan Teks Lengkap JD) menggunakan **Gemini 3.5 Flash Lite** (*Structured Output* + cache deduplikasi SHA-256).
+* **AI Daily Quota Guard (20 Klip/Hari Per Akun):** Batasan protektif 20 ekstraksi AI baru per hari untuk menjaga operasional 100% gratis ($0 cost) dan mencegah abuse/spam bot. Cache hit dan input manual tetap tersedia gratis tanpa memotong kuota.
 * **Direct 5-Column Kanban Pipeline (Tanpa Wishlist):** Papan visual alur lamaran kerja langsung berorientasi tindakan:
   1. `Applied` (Dilamar)
   2. `Follow-Up Needed` (Perlu Follow-Up H+7)
-  3. `Interview Scheduled` (Wawancara Terjadwal)
+  3. `Interview` (Tahap Wawancara / `INTERVIEW_SCHEDULED`)
   4. `Offered` (Mendapat Penawaran)
   5. `Rejected / Ghosted` (Ditolak / Ghosting)
-* **Single Unified Workspace (Anti-Duplikasi Menu):** Papan Kanban menjadi pusat kendali tunggal. Arsip JD dan Follow-Up H+7 tidak dibuatkan halaman menu terpisah di navbar, melainkan terintegrasi kontekstual via **Application Detail Drawer** (panel geser).
+* **Single Unified Workspace (Anti-Duplikasi Menu):** Navigasi ringkas 4 tab (`Home`, `Roles`, `Analytics`, `Profile`). Papan `Roles` menjadi pusat kendali lamaran dengan Arsip JD, Follow-Up H+7, dan skor kecocokan CV terintegrasi kontekstual melalui **Persistent Inspector / Detail Bottom Sheet**.
 * **Permanent JD Snapshot:** Penyimpanan permanen teks lengkap iklan lowongan ke database agar bisa dibaca kapan saja meski iklan asli di internet sudah terhapus.
+* **Profil CV PDF & Pencocokan Semantik (`pgvector`):** Pengguna dapat mengunggah file PDF CV (maks 2–5 MB) di halaman **`Profile`** ke **Private Bucket Cloudflare R2** sehingga file PDF tetap bisa di-preview/dibuka kembali kapan saja via *Presigned URL* aman, sementara vektor semantiknya (`Gemini Embedding 2`, `768d`) disimpan di PostgreSQL Neon untuk menghitung persentase kecocokan CV vs JD secara instan dengan **0 token AI saat membaca**.
 * **Smart Follow-Up Engine (H+7):** Penandaan otomatis pada hari ke-7 dan generator pesan tindak lanjut profesional dalam 2 bahasa (Bahasa Indonesia & Bahasa Inggris) siap 1-click copy.
 * **Soft-Delete Protection:** Menjaga keutuhan riwayat data saat pengguna menghapus kartu.
 
@@ -94,7 +96,7 @@ Mengubah proses pencarian kerja yang sebelumnya kacau, serba manual (spreadsheet
 ## 6. Kebutuhan Non-Fungsional (NFR)
 
 * **Kecepatan Ekstraksi AI:** Proses pemrosesan teks atau gambar screenshot lowongan via AI selesai dalam waktu $\le 2$ detik.
-* **Zero Cost Infrastructure:** Berjalan 100% di atas tier gratis (Next.js di Vercel, PostgreSQL di Neon, Gemini 1.5 Flash di Google AI Studio).
+* **Zero Cost Infrastructure:** Berjalan 100% di atas tier gratis (Next.js di Vercel Singapore, PostgreSQL + `pgvector` di Neon, Cloudflare R2 `Standard` untuk arsip PDF CV, serta `Gemini 3.5 Flash Lite` & `Gemini Embedding 2` di Google AI Studio).
 * **Proteksi Konsumsi API:** Rate limiting 20 request/hari per akun pengguna untuk ekstraksi AI.
 * **Keamanan Data:** Bebas dari kerentanan ReDoS (*Zero RegEx Policy*) dan isolasi data per akun pengguna.
 * **Responsif:** Antarmuka optimal diakses dari desktop, tablet, dan smartphone.

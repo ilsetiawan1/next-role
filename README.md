@@ -13,8 +13,9 @@ Proses melamar kerja sering terhambat oleh empat kendala utama:
 4. **Histori Statistik Rusak:** Menghapus data lamaran yang ditolak menghilangkan metrik evaluasi konversi portal dan tingkat respon perusahaan.
 
 **NextRole** menjawab kendala tersebut melalui kapabilitas inti berikut:
-* **Smart Job Clipper (Otomatis AI & Manual):** Mendukung ekstraksi terstruktur dari tautan iklan, tangkapan layar (*screenshot*), maupun teks mentah menggunakan Google Gemini 1.5 Flash, lengkap dengan pencatatan sumber portal (`jobSource`, `jobUrl`) dan penyimpanan deskripsi pekerjaan secara utuh. Mode input manual juga tersedia dengan kolom sumber bersifat opsional.
-* **5-Column Kanban Pipeline:** Papan visual progres lamaran langsung tanpa daftar tunggu (*Wishlist*), meliputi `Applied`, `Follow-Up Needed`, `Interview Scheduled`, `Offered`, dan `Rejected / Ghosted`.
+* **Smart Job Clipper (Otomatis AI & Manual):** Mendukung ekstraksi terstruktur dari tautan iklan, tangkapan layar (*screenshot*), PDF, maupun teks mentah menggunakan **Google Gemini 3.5 Flash Lite** dengan cache deduplikasi SHA-256, lengkap dengan pencatatan sumber portal (`jobSource`, `jobUrl`) dan penyimpanan deskripsi pekerjaan secara utuh. Mode input manual juga tersedia dengan kolom sumber bersifat opsional.
+* **Profil CV PDF & Pencocokan Semantik (`pgvector`):** Pengguna dapat mengunggah file PDF CV di halaman `Profile` (disimpan aman di **Cloudflare R2 Private Bucket** dengan *Presigned URL* agar tetap bisa di-preview kapan saja) sementara vektor `768d` dari **Gemini Embedding 2** disimpan di PostgreSQL Neon untuk menghitung persentase kecocokan CV vs lowongan secara instan dengan 0 token AI saat membaca.
+* **5-Column Kanban Pipeline:** Papan visual progres lamaran langsung tanpa daftar tunggu (*Wishlist*), meliputi `Applied`, `Follow-Up Needed`, `Interview`, `Offered`, dan `Rejected / Ghosted`.
 * **Detail Lamaran & Generator Follow-Up Dwi-Bahasa:** Drawer detail yang memuat ringkasan riwayat, arsip deskripsi pekerjaan untuk persiapan wawancara mendadak, indikator H+7, serta pembuat draf pesan follow-up ke HRD dalam Bahasa Indonesia dan Bahasa Inggris.
 * **Career Analytics Dashboard:** Evaluasi data riil meliputi kecepatan respon HRD, konversi antar-tahap pipeline, rata-rata *lead time*, distribusi gaji & tipe kerja, efektivitas portal sumber, hingga daftar kualifikasi teknis yang paling sering diminta.
 * **Soft-Delete Protection:** Arsip lamaran yang dihapus tetap menjaga integritas statistik dan dapat dipulihkan dari halaman Profile.
@@ -48,7 +49,8 @@ src/
 │   ├── auth/                  # Autentikasi (Google OAuth & Guest Demo Session)
 │   ├── clipper/               # Modal Smart Job Clipper (AI Extract Link/Gambar & Input Manual)
 │   ├── kanban/                # Papan visual Kanban 5 kolom drag-and-drop (DnD-Kit)
-│   ├── application-detail/    # Drawer detail, arsip deskripsi pekerjaan, & follow-up generator
+│   ├── application-detail/    # Drawer detail, arsip JD, follow-up generator, & skor kecocokan CV
+│   ├── profile/               # Manajemen akun, kuota AI, upload & preview PDF CV (Cloudflare R2)
 │   └── analytics/             # Visualisasi metrik performa karier
 └── app/                       # Next.js App Router (Pages, Layouts, API Route Handlers)
 ```
@@ -56,14 +58,15 @@ src/
 ### 2. Backend: Modular Layered Architecture & Repository Pattern
 ```text
 src/
-├── config/                    # Singleton Prisma Client & klien Google AI SDK
+├── config/                    # Singleton Prisma Client, Google AI SDK, Cloudflare R2 S3 Client
 ├── constants/                 # Enum ApplicationStatus & pesan standar
 ├── middlewares/               # Auth guard, error handler, input sanitizer
-├── utils/                     # Fungsi helper murni (tanggal & formatter)
+├── utils/                     # Fungsi helper murni (tanggal, SHA-256 hash, & formatter)
 └── modules/
     ├── auth/                  # Manajemen sesi akun & Guest Mode
-    ├── job-parser/            # Ekstraksi lowongan via Gemini 1.5 Flash
-    ├── applications/          # CRUD lamaran, transisi status, soft delete (deletedAt IS NULL)
+    ├── profile/               # Upload/hapus PDF CV di R2, Presigned URL preview, & CV embedding (768d)
+    ├── job-parser/            # Ekstraksi lowongan via Gemini 3.5 Flash Lite + cache SHA-256
+    ├── applications/          # CRUD lamaran, JD embedding, match score pgvector, soft delete
     └── follow-up/             # Perhitungan H+7 & generator draf pesan dwi-bahasa
         ├── <modul>.routes.ts
         ├── <modul>.controller.ts
@@ -73,7 +76,7 @@ src/
         └── __tests__/
 ```
 
-* **Aliran Eksekusi Data:** `Client Request -> Routes -> Controller -> Service -> Repository -> Prisma / PostgreSQL`.
+* **Aliran Eksekusi Data:** `Client Request -> Routes -> Controller -> Service -> Repository -> Prisma / Neon (pgvector)` (didukung AI SDK & Cloudflare R2 di lapisan Service).
 * **Dokumentasi API Terintegrasi:** Setiap modul menyertakan kontrak OpenAPI kolokasi (`<modul>.openapi.ts`) yang disajikan secara interaktif melalui Scalar di endpoint `/docs`.
 
 ---
@@ -83,10 +86,11 @@ src/
 * **Framework:** Next.js (App Router, React 19, TypeScript)
 * **Styling & Interaksi:** Tailwind CSS, Lucide Icons, DnD-Kit
 * **Autentikasi:** Auth.js (NextAuth v5) — Google OAuth & Guest Session
-* **Database & ORM:** PostgreSQL (Neon Serverless) melalui Prisma ORM v6+ (koneksi *pooled* port `6543`)
-* **Mesin AI:** Google Gemini 1.5 Flash melalui Vercel AI SDK (`ai` & `@ai-sdk/google`)
+* **Database & ORM:** PostgreSQL + `pgvector` (Neon Serverless) melalui Prisma ORM v6+ (koneksi *pooled* port `6543`)
+* **Penyimpanan File (PDF CV):** Cloudflare R2 (`Standard`, Private Bucket + Presigned URL) melalui `@aws-sdk/client-s3`
+* **Mesin AI:** Google Gemini 3.5 Flash Lite & Gemini Embedding 2 (`768d`) melalui Vercel AI SDK (`ai` & `@ai-sdk/google`)
 * **Dokumentasi API:** Scalar API Reference (`@scalar/nextjs-api-reference`)
-* **Deployment:** Vercel
+* **Deployment:** Vercel (region Singapore)
 * **Desain Kanvas:** FigCraft
 
 ---
@@ -94,9 +98,9 @@ src/
 ## Standar Rekayasa & Keamanan
 
 1. **Zero RegEx Policy:** Seluruh logika validasi dan pengolahan string dilarang menggunakan Regular Expression (`RegExp` / `/pattern/`) untuk mencegah kerentanan ReDoS dan menjaga keterbacaan kode. Validasi format memanfaatkan `zod` dan parser standar (`new URL()`), sedangkan pengolahan teks memakai metode native string (`.includes()`, `.startsWith()`, `.split()`, `.trim()`).
-2. **Strict Ownership Guard:** Validasi kepemilikan data (`userId`) dan penyaringan arsip terhapus (`deletedAt IS NULL`) ditegakkan di lapisan Service dan Repository.
+2. **Strict Ownership Guard:** Validasi kepemilikan data (`userId`), akses PDF CV via Presigned URL terbatas waktu, dan penyaringan arsip terhapus (`deletedAt IS NULL`) ditegakkan di lapisan Service dan Repository.
 3. **Pragmatic Engineering:** Menghindari abstraksi dan wrapper berlebihan di luar kebutuhan nyata.
-4. **Proteksi Kredensial:** Kunci sensitif (`DATABASE_URL`, `AUTH_SECRET`, `GEMINI_API_KEY`) hanya dibaca pada lingkungan server.
+4. **Proteksi Kredensial:** Kunci sensitif (`DATABASE_URL`, `AUTH_SECRET`, `GEMINI_API_KEY`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`) hanya dibaca pada lingkungan server.
 
 ---
 
@@ -133,6 +137,11 @@ GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
 GEMINI_API_KEY="your-google-gemini-api-key"
+
+R2_ACCOUNT_ID="your-cloudflare-account-id"
+R2_ACCESS_KEY_ID="your-r2-access-key-id"
+R2_SECRET_ACCESS_KEY="your-r2-secret-access-key"
+R2_BUCKET_NAME="nextrole-storage"
 ```
 
 ---

@@ -4,8 +4,9 @@
 > - **Nama Aplikasi:** NextRole (Intelligent Job Hunt Assistant)
 > - **Dokumen Rujukan:** `docs/PRD.md` (Product Requirements), `docs/TSD.md` (Technical Specifications), & `docs/ROADMAP.md` (Execution Roadmap)
 > - **Pola Arsitektur:** Frontend (Feature-Driven Architecture) • Backend (Modular Layered Repository Pattern)
-> - **Basis Data:** PostgreSQL (Neon Serverless) via Prisma ORM v6+ (Koneksi Pooled Port 6543)
-> - **Mesin AI:** Google Gemini 1.5 Flash via Vercel AI SDK (`ai` & `@ai-sdk/google`)
+> - **Basis Data:** PostgreSQL (Neon Serverless + `pgvector`) via Prisma ORM v6+ (Koneksi Pooled Port 6543)
+> - **Penyimpanan Objek:** Cloudflare R2 (`Standard`, Private Bucket + Presigned URL)
+> - **Mesin AI:** Google Gemini 3.5 Flash Lite & Gemini Embedding 2 (`768d`) via Vercel AI SDK (`ai` & `@ai-sdk/google`)
 > - **Alat Desain:** FigCraft (Canvas Control via Localhost 7979)
 > - **Remote Repository:** `https://github.com/ilsetiawan1/next-role.git`
 
@@ -46,7 +47,7 @@ Untuk menjaga kode tetap terisolasi, stabil, dan bersih:
 Aturan ini aktif saat Agent diminta membuat, merancang, atau merevisi visual di kanvas FigCraft.
 
 ### A.0. Protokol Keselamatan Server FigCraft
-* ⚠️ **Pencegahan Crash Server:** Pengguna (*User*) **wajib membuka aplikasi FigCraft secara manual terlebih dahulu di `localhost:7979`** sebelum Agent mengirim perintah canvas apa pun. Jangan memanggil MCP FigCraft jika server belum aktif.
+* **[PERINGATAN] Pencegahan Crash Server:** Pengguna (*User*) **wajib membuka aplikasi FigCraft secara manual terlebih dahulu di `localhost:7979`** sebelum Agent mengirim perintah canvas apa pun. Jangan memanggil MCP FigCraft jika server belum aktif.
 * **Perintah Menjalankan FigCraft di Command Prompt (CMD):**
   ```cmd
   "D:\ArtCraft\FigCraft\figcraft.exe" --control 7979 "E:\project-nextjs\next-role\docs\next-role.figcraft"
@@ -81,24 +82,24 @@ Aturan ini aktif saat Agent diminta membuat, merancang, atau merevisi visual di 
 * **Tipografi & Hirarki Brand:**
   * Font terpadu: `Plus Jakarta Sans` untuk judul dan body (ukuran teks minimum absolut **12px**).
 * **Struktur Navigasi Responsif:**
-  * **Desktop (≥1024px / 1280px+):** Left Floating Glass Sidebar (`w-64`, `m-4 rounded-[28px]`, `bg-white/75 backdrop-blur-xl`), tombol utama `+ Catat Lamaran` (gradient sky), menu vertikal (Home, Lamaran, Kalender, Settings), widget kuota 18/20, dan profil footer.
-  * **Tablet (768px - 1023px):** Slim Glass Sidebar (`w-20`, `m-3 rounded-3xl`) dengan FAB Catat Lamaran 56x56 di tengah-atas, grid 2 kolom untuk kartu (Hero Card `col-span-2`), dan Detail sebagai Modal Sheet tengah (`max-w-[560px] rounded-[32px]`).
-  * **Mobile (<768px):** Floating Pill Nav Dock (`h-[68px] rounded-[28px]`, `bg-white/85 backdrop-blur-xl border border-white shadow-lg`) dengan **Raised Center FAB (64x64)** `sky-400→sky-600` terangkat `-translate-y-4` untuk aksi **Catat Lamaran**. Seluruh 4 tab (Home, Lamaran, Kalender, Settings) **selalu menampilkan label teks 12px**.
+  * **Desktop (≥1024px / 1280px+):** Top Floating Glass Pill Navbar (`Home`, `Roles`, `Analytics`, `Profile`), badge kuota harian `18 / 20 Klip`, tombol utama `+ Catat Lamaran`, dan avatar profil.
+  * **Tablet (768px - 1023px):** Top Floating Pill Navbar (`Home`, `Roles`, `Analytics`, `Profile`), grid 2 kolom seimbang untuk kartu & inspektor, dan Detail sebagai Persistent Inspector / Modal Sheet.
+  * **Mobile (<768px):** Floating Pill Nav Dock (`h-[68px] rounded-[28px]`, `bg-white/85 backdrop-blur-xl border border-white shadow-lg`) dengan **Raised Center FAB** untuk aksi **Catat Lamaran**. Seluruh 4 tab (`Home`, `Roles`, `Analytics`, `Profile`) menampilkan label teks yang terbaca jelas.
 * **Detail Lamaran Berbasis Sheet:**
   * Format: Bottom Sheet 88% di Mobile, Modal Sheet di Tablet, dan Right Drawer `w-[480px]` di Desktop.
   * Komponen Detail: Logo bulat 72x72 menimpa tepi atas sheet (`-mt-9` center), judul posisi center H1 + gaji, segmented tabs (`Deskripsi` | `Perusahaan` | `Draf Pesan`), 3-kolom Info Strip, Job Details, dan **Slide-to-Action** CTA slider (`h-14 rounded-full` dengan animasi chevrons `›››››` dan fallback tap untuk keyboard).
 
 ### A.3. Pemetaan Visual Persis PRD & TSD (Anti-Melenceng)
-* **5 Kolom Pipeline Kanban Langsung (Tanpa Wishlist):** Wajib persis mencerminkan enum `ApplicationStatus` di TSD:
+* **5 Kolom Pipeline Kanban Langsung (Tanpa Wishlist):** Wajib mencerminkan tahap pipeline di TSD (`ApplicationStatus`):
   1. `Applied`
   2. `Follow-Up Needed`
-  3. `Interview Scheduled`
+  3. `Interview` (`INTERVIEW_SCHEDULED`)
   4. `Offered`
   5. `Rejected / Ghosted`
-* **Detail Drawer:** Wajib memuat tab kontekstual sesuai spesifikasi:
-  1. Tab Ringkasan & Riwayat (*Overview & Timeline*)
-  2. Tab Arsip JD Snapshot (*Permanent Job Description Text*)
-  3. Tab Follow-Up Generator (Draf dwi-bahasa ID/EN + indikator H+7)
+* **Detail Lamaran (Inspector / Sheet):** Wajib memuat tab atau blok kontekstual sesuai spesifikasi:
+  1. Ringkasan & Riwayat (*Overview & Timeline*)
+  2. Arsip JD Snapshot (*Permanent Job Description Text*) + `Kualifikasi Kunci Terdeteksi` + pill **`Kecocokan CV: XX%`** (`pgvector`)
+  3. Follow-Up Generator (Draf dwi-bahasa ID/EN + indikator H+7)
 * **Halaman Login:** Wajib menyediakan opsi Google OAuth dan tombol 1-Click "Explore as Guest / Mode Demo".
 * **Penamaan Frame Kanvas:**  
   Format: `[Nama Layar] - (Desktop 1440x900)` atau `[Nama Layar] - (Mobile 390x844)`.
@@ -132,10 +133,15 @@ src/
 │   │   ├── hooks/              # useKanbanDnD.ts (DnD-Kit integration & optimistic updates)
 │   │   └── types/              # kanban.types.ts
 │   │
-│   ├── application-detail/     # Drawer Detail Lamaran & Arsip JD
-│   │   ├── components/         # DetailDrawer.tsx, JdSnapshotTab.tsx, FollowUpTab.tsx
+│   ├── application-detail/     # Drawer Detail Lamaran, Arsip JD, & CV Match Score
+│   │   ├── components/         # DetailDrawer.tsx, JdSnapshotTab.tsx, FollowUpTab.tsx, MatchScoreBadge.tsx
 │   │   ├── hooks/              # useFollowUpGenerator.ts
 │   │   └── types/              # detail.types.ts
+│   │
+│   ├── profile/                # Halaman Profile, Kuota AI, Upload & Preview PDF CV
+│   │   ├── components/         # ProfileView.tsx, CvProfileModal.tsx, CvPdfPreviewModal.tsx
+│   │   ├── api/                # profileApi.ts
+│   │   └── types/              # profile.types.ts
 │   │
 │   └── analytics/              # Kartu Ringkasan Metrik
 │       └── components/         # MetricsCards.tsx (Total Applied, Response Rate, H+7 Pending)
@@ -149,10 +155,10 @@ Seluruh kode backend dikelompokkan berdasarkan **modul domain NextRole** di dala
 
 ```text
 src/
-├── config/                     # Singleton Prisma Client (db.ts), Google AI SDK client
+├── config/                     # Singleton Prisma Client (db.ts), Google AI SDK, Cloudflare R2 S3 Client (r2.ts)
 ├── constants/                  # ApplicationStatus enum, pesan error baku
 ├── middlewares/                # Auth guard, error handler, sanitizer
-├── utils/                      # Helper murni (date manipulation, string formatters)
+├── utils/                      # Helper murni (date manipulation, SHA-256 hash, string formatters)
 └── modules/
     ├── auth/                   # Autentikasi akun & session guest
     │   ├── auth.routes.ts
@@ -162,22 +168,31 @@ src/
     │   ├── auth.openapi.ts
     │   └── __tests__/
     │
-    ├── job-parser/             # Ekstraksi AI terstruktur (Gemini 1.5 Flash via AI SDK)
+    ├── profile/                # Manajemen CV PDF (R2 Private Bucket + Presigned URL) & CV Embedding (768d)
+    │   ├── profile.routes.ts
+    │   ├── profile.controller.ts
+    │   ├── profile.service.ts
+    │   ├── profile.repository.ts
+    │   ├── profile.openapi.ts
+    │   └── __tests__/
+    │
+    ├── job-parser/             # Ekstraksi AI (Gemini 3.5 Flash Lite), Cache SHA-256, & Zod Retry Guard
     │   ├── job-parser.routes.ts
     │   ├── job-parser.controller.ts
     │   ├── job-parser.service.ts
+    │   ├── job-parser.repository.ts # Akses JobParseCache (SHA-256 deduplication)
     │   ├── job-parser.openapi.ts
     │   └── __tests__/
     │
-    ├── applications/           # CRUD Lamaran, Soft-Delete, dan Transisi Status
+    ├── applications/           # CRUD Lamaran, Soft-Delete, JD Embedding, & pgvector Match Score
     │   ├── applications.routes.ts
     │   ├── applications.controller.ts
     │   ├── applications.service.ts
-    │   ├── applications.repository.ts # Prisma queries (filter otomatis deletedAt IS NULL)
+    │   ├── applications.repository.ts # Prisma queries + pgvector <=> similarity (filter deletedAt IS NULL)
     │   ├── applications.openapi.ts
     │   └── __tests__/
     │
-    └── follow-up/              # Penghitungan H+7 & Generator Draf Pesan
+    └── follow-up/              # Penghitungan H+7 & Generator Draf Pesan (Gemini 3.5 Flash Lite)
         ├── follow-up.routes.ts
         ├── follow-up.controller.ts
         ├── follow-up.service.ts
@@ -186,15 +201,17 @@ src/
 ```
 
 * **Entitas Database Prisma (Model Inti):**
-  1. `User` — Identitas pengguna (id, name, email, passwordHash, dailyAiClipsCount, lastClipResetAt, createdAt, updatedAt).
+  1. `User` — Identitas pengguna, kuota harian AI, dan profil CV semantik (`id`, `name`, `email`, `passwordHash`, `dailyAiClipsCount`, `lastClipResetAt`, `cvFileKey`, `cvFileName`, `cvText`, `cvHash`, `cvEmbedding` (`vector(768)`), `cvUpdatedAt`, `createdAt`, `updatedAt`).
   2. `Account` & `Session` — Integrasi NextAuth / Auth.js untuk Google OAuth.
-  3. `Application` — Entitas sentral lamaran kerja (userId, companyName, position, location, employmentType, salaryRange, keyRequirements, **jdSnapshot**, status, appliedAt, followUpAt, interviewAt, recruiterName, recruiterContact, **deletedAt**).
-  4. `ActivityLog` — Catatan riwayat status dan follow-up per lamaran (applicationId, actionType, notes, createdAt).
+  3. `Application` — Entitas sentral lamaran kerja (`userId`, `companyName`, `position`, `location`, `employmentType`, `salaryRange`, `jobSource`, `jobUrl`, `keyRequirements`, **`jdSnapshot`**, **`jdEmbedding`** (`vector(768)`), `status`, `appliedAt`, `followUpAt`, `interviewAt`, `recruiterName`, `recruiterContact`, **`deletedAt`**).
+  4. `ActivityLog` — Catatan riwayat status dan follow-up per lamaran (`applicationId`, `actionType`, `notes`, `createdAt`).
+  5. `JobParseCache` — Cache deduplikasi hasil ekstraksi Smart Job Clipper berbasis SHA-256 (`id`, `contentHash`, `inputType`, `parsedPayload`, `modelVersion`, `createdAt`).
 * **Alur Eksekusi Data (Strict Layering):**
   ```text
-  Client Request ──> Route ──> Controller ──> Service ──> Repository ──> Prisma/Neon
+  Client Request ──> Route ──> Controller ──> Service ──> Repository ──> Prisma / Neon (pgvector)
                                                   │
-                                                  └──> Google Gemini Flash (AI SDK)
+                                                  ├──> Gemini 3.5 Flash Lite & Gemini Embedding 2
+                                                  └──> Cloudflare R2 (Private Bucket + Presigned URL)
   ```
 * **Colocation Spesifikasi API:** Skema dokumentasi API (`<modul>.openapi.ts`) wajib diletakkan langsung di dalam modul bersangkutan dan terdaftar pada viewer Scalar di `/docs`.
 * **Larangan Ketat:**
@@ -213,7 +230,8 @@ Terapkan prinsip *pragmatic senior dev* dari skill **`ponytail`**:
 Patuhi standar skill **`security-audit`**:
 * **Sanitasi Input:** Validasi tipe dan sanitasi seluruh payload di Controller & Service menggunakan `zod` (cegah SQLi, XSS, injection).
 * **Otorisasi Ketat:** Validasi kepemilikan data (`userId`) di lapisan Service, bukan hanya mengandalkan frontend.
-* **Proteksi Rahasia:** Kunci API (`GEMINI_API_KEY`, `AUTH_SECRET`, `DATABASE_URL`) hanya boleh diakses di sisi server melalui environment variables.
+* **Proteksi Rahasia:** Kunci API (`GEMINI_API_KEY`, `AUTH_SECRET`, `DATABASE_URL`, `DIRECT_URL`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`) hanya boleh diakses di sisi server melalui environment variables.
+* **Proteksi PII Dokumen CV:** File PDF CV disimpan di Private Bucket Cloudflare R2 dan hanya boleh diakses via Presigned URL sementara setelah verifikasi kepemilikan `session.user.id`.
 * **Error Handling Aman:** Jangan mengekspos *stack trace* database internal ke response client.
 
 ### B.5. Larangan Keras Penggunaan RegEx (Zero RegEx Policy)
