@@ -1,5 +1,5 @@
 # NextRole — Dokumen Desain & Panduan Gaya UI/UX
-*Versi: 3.4.0 (Color Triad Home & Roles Harmony Refactor)*
+*Versi: 3.6.0 (Soft Sky Glass Landing & Analytics Harmonization)*
 
 ---
 
@@ -327,5 +327,53 @@ Halaman ke-4 pada navigasi NextRole resmi diubah dari `Settings` menjadi **`Prof
     2. **Banner Slider Informatif (`y: 524, h: 224`):** Banner tips persiapan panggilan HRD (*"Arsip Kerja Siap Saat HRD Menelepon"*), tombol kuning neon `Buka Papan Roles ›`, ilustrasi 3D, dan indikator pagination slide, rata bawah tepat di `y: 748`.
   * **Kolom Kanan 1/2 (`x: 734, w: 658`):** Seluruh 4 kelompok kartu terstruktur bertumpuk rapi (`Account`, `Preferences`, `Data & Privacy`, dan `Session`) rata bawah tepat di `y: 748`: `Account` memuat `Kuota Smart AI Clipper` + pill kuning neon `18 / 20 klip`, **`Profil CV & Skill (PDF)`** (`CV_Budi.pdf • Preview` + tombol ubah untuk R2 Private Bucket & `Gemini Embedding 2`), serta `Akun Google & Keamanan`; `Preferences` memuat `Pengingat Follow-Up Otomatis (H+7)` & `Bahasa Default Draf Pesan HRD`; `Data & Privacy` memuat `Ekspor Riwayat Lamaran & Arsip JD` & `Pulihkan / Bersihkan Arsip Terhapus`; dan `Session` memuat `Panduan Penggunaan NextRole` & `Keluar Akun`.
 * **Modal / Sheet Kelola & Preview CV PDF (`Modal Kelola CV - Mobile 390x844`):** Memuat dropzone unggah PDF CV (maks 5 MB ke Private Bucket Cloudflare R2), kartu file aktif dengan tombol `Preview` (membuka PDF via Presigned URL sementara), pratinjau `Ringkasan Teks Terdeteksi` untuk pembaruan vektor `Gemini Embedding 2 (768d)`, serta tombol `Simpan & Perbarui`.
+
+---
+
+## 8. Spesifikasi Landing Page & Terms of Service NextRole (v5.2.0)
+
+Halaman arahan publik (*Landing Page*) pada `383` (`Desktop 1440x2406`), `859` (`Tablet 834x2122`), dan `769` (`Mobile 390x2226`) — beserta 4 halaman legal satu layar tanpa gulir **`Terms & Policies - (Desktop 1440x900)`** (`9986`, `9812`, `10017`, `10048`) — mengusung **Minimalist Soft-Sky Glassmorphism** dengan aksen **Kuning Neon (`#D4FF47`)** di atas latar *Ice-Sky Mist* `#EFF6FF -> #DBEAFE -> #E0F2FE`.
+
+### A. Floating Glass Navbar & Detached Cloudless Sky Hero
+* **Floating Spatial Glass Navbar (`388` Desktop / `864` Tablet / `773` Mobile / 4 Halaman Legal):**
+  * Kapsul kaca melayang (*detached rounded pill*, `fill: #FFFFFF` `16%`, stroke specular `#FFFFFF` `38%`) yang konsisten di atas gradien langit Hero maupun 4 halaman `Terms & Policies`.
+  * **Concentric Rounded Logo di Semua Breakpoint:** `App Logo Mark` menggunakan sudut melingkar konsentris mengikuti lengkungan kapsul navbar (`36x36`, `r: 18`, `pad: 10px` pada Desktop; `32x32`, `r: 16`, `pad: 9px` pada Tablet; `40x40`, `r: 20` pada Mobile).
+  * **Desktop & Tablet:** Logo konsentris + `nextrole` di kiri, 3 menu inti **`Home`** • **`Features`** • **`How It Works`** di tengah, serta **`Sign In`** + pill **`Try Demo`** (`#D4FF47`) di kanan.
+  * **Mobile (`390px`):** Logo konsentris + `nextrole` di kiri dan tombol **Hamburger Menu lingkaran konsentris (`44x44`, `r: 22`)** di kanan.
+* **Detached Hero dengan Open Cool-Gray Paper Envelope & Multi-Layer Shadows:**
+  * Latar langit futuristik tanpa awan (**Cerulean-to-Ice-Mist `#075985 -> #0284C7 -> #38BDF8 -> #E0F2FE -> #F4F9FF`**) dengan lingkaran orbital kaca ultra-tipis.
+  * Headline 2 baris murni **`Satu ruang tenang untuk / kelola lamaranmu`** tanpa tombol CTA di Hero pada seluruh breakpoint.
+  * Amplop kertas abu lembut terbuka (V-notch, back flap, bottom crease, bayangan kertas berlapis) berisi kartu mutiara *off-white* (`Spreadsheet Manual` vs `PT Telkom Digital • Cocok CV: 88%`) dengan callout **`Cara Manual`** -> **`Dengan NextRole`**.
+
+### B. `#features` — Interactive Mini UI Product Preview (`Features`, Gaya Linear / Raycast)
+Alih-alih ilustrasi 3D (yang menjadi fokus `How It Works`), `#features` menampilkan **cuplikan mini UI aplikasi NextRole** di dalam jendela kaca *frosted* berpadu aksen **Kuning Neon (`#D4FF47`)**:
+* **Header & Segmented Pill Tab Bar Lurus:** Judul **`Features`** (`#0F172A`) + subjudul **`Lihat langsung cara NextRole merapikan setiap tahap lamaranmu`**, diikuti 1 kapsul tab horizontal lurus (`Smart Clipper` • `Skor CV` • `Arsip JD` • `5 Kolom Kanban` • `Follow-Up H+7`) dengan tab aktif berlatar **`#D4FF47`** (`#0C4A6E` SemiBold).
+* **Frosted Glass Product Window (`1120x446` Desktop / `742x396` Tablet / `358x386` Mobile):**
+  * Dibingkai *ambient glow* biru langit (`#38BDF8`) di kiri dan kuning neon (`#D4FF47`) di kanan, dilengkapi chrome bar tipis (`3 dots`, URL pill `app.nextrole.id/...`, dan badge kuota `18 / 20 Klip Hari Ini`).
+  * **Kolom Kiri (Pitch Produk):** Eyebrow pill bernuansa lime-neon, headline singkat, deskripsi 2 baris (bahasa produk murni), dan 3 poin centang berlingkaran **`#D4FF47`**.
+  * **Kolom Kanan (Live Mini UI Canvas):** Pratinjau antarmuka asli NextRole per fitur (`Smart Clipper` aktif default di Landing Page Desktop/Tablet/Mobile).
+* **4 Frame State Fitur Terpisah di Atas Desktop (`x: 0`, `1440x680`):**
+  * **`Features State 02 - Skor CV`** (`ID 10742`, `y: -740`) — Kartu skor lingkaran neon `88%` + bar kesesuaian skill.
+  * **`Features State 03 - Arsip JD`** (`ID 10743`, `y: -1480`) — Banner arsip permanen utuh meski link asli ditutup + highlight kualifikasi kunci.
+  * **`Features State 04 - 5 Kolom Kanban`** (`ID 10744`, `y: -2220`) — Papan 5 kolom langsung (`Applied`, `Follow-Up`, `Interview`, `Offered`, `Ghosted`, tanpa Wishlist) dengan tag neon `H+7 Hari Ini`.
+  * **`Features State 05 - Follow-Up H+7`** (`ID 10745`, `y: -2960`) — Strip pengingat `H+7` + digit jam `[09][:][45]` + draf pesan dwi-bahasa (`Bahasa ID` / `English EN`) & tombol neon `Salin Draf Pesan`.
+
+### C. `#how-it-works` — 3-Step Tilted Cards dengan Ikon 3D Transparan Overhanging (`How It Works`)
+Menyajikan 3 langkah kronologis tanpa penomoran `01/02/03`, berlatar gradien lembut putih-ke-biru-es (`#FFFFFF -> #EFF6FF`):
+* **Header Section:** Judul utama **`How It Works`** (`#0F172A`) di atas subjudul **`Tiga langkah tenang untuk kelola seluruh lamaranmu`** (`#64748B`).
+* **Ikon 3D Isometrik Transparan Overhanging:** Masing-masing kartu memuat aset PNG 3D transparan tanpa background ([how-01-upload.png](file:///e:/project-nextjs/next-role/docs/assets/how-01-upload.png), [how-02-track.png](file:///e:/project-nextjs/next-role/docs/assets/how-02-track.png), [how-03-followup.png](file:///e:/project-nextjs/next-role/docs/assets/how-03-followup.png)) yang melayang menembus tepi kanan atas kartu.
+* **Alur Panah Melengkung:** Di Desktop & Tablet memakai panah atas (`1 -> 2`) dan panah bawah (`2 -> 3`); di Mobile memakai panah melengkung sisi kanan (`1 -> 2`) dan sisi kiri (`2 -> 3`) dengan kepala panah segitiga solid (`#0284C7`).
+* **Luminous Sky CTA Banner & Compact Single-Row Footer (`9900` Desktop / `9930` Tablet / `9958` Mobile):**
+  * **CTA Banner Gradien Cerulean-to-Sky (`#075985 -> #0284C7 -> #38BDF8`):** Kartu kaca bercahaya dengan judul **`Mulai kelola lamaranmu dengan lebih tenang`** dan tombol pill putih **`Coba Mode Demo ›`**.
+  * **Compact Single-Row Navigation & Hairline Copyright:** Kiri `nextrole • Asisten pencarian kerja cerdas`, kanan `Home   Features   How It Works   Try Demo`, dan baris bawah `© 2026 NextRole. All rights reserved.` | `Privacy Policy   Terms of Service   Security   Cookie`.
+
+### D. 4 Frame Halaman `Terms & Policies` (`Desktop 1440x900` — Satu Layar Tanpa Scroll)
+Berjajar rapi di sebelah kanan Desktop Landing (`y: 0`, jarak `80px`, urut sesuai sidebar & footer) dengan gradien langit Hero identik, Floating Glass Navbar berlogo konsentris, dan **kartu 2-panel terpadu (`1160x696`)** yang memuat **Sidebar `Terms & Policies` (`w: 244`) berlatar corak abstrak lembut biru muda (`#38BDF8`, `#7DD3FC`) & kuning neon (`#D4FF47`) dengan pill aktif kaca putih (`#FFFFFF 90%`)**, serta panel konten editorial putih di kanan (judul biru `#0284C7`, tanggal `Diperbarui November 2026`, pembuka resmi, dan **4 pasal bernomor terstruktur**):
+1. **`Privacy Policy - (Desktop 1440x900)`** (`ID 9986`, `x: 1520`) — 1. Data Akun dan Autentikasi, 2. Penyimpanan Privat Dokumen CV, 3. Pemrosesan Kecocokan Profil, 4. Kendali Data dan Mode Demo.
+2. **`Terms of Service - (Desktop 1440x900)`** (`ID 9812`, `x: 3040`) — 1. Ruang Lingkup Layanan, 2. Akses Akun dan Mode Demo, 3. Batasan Penggunaan Wajar (`20 klip/hari`), 4. Kepemilikan dan Keberlanjutan Data.
+3. **`Security - (Desktop 1440x900)`** (`ID 10017`, `x: 4560`) — 1. Proteksi Dokumen Privat (Cloudflare R2), 2. Otorisasi Kepemilikan di Sisi Server, 3. Validasi Input dan Perlindungan Aplikasi, 4. Isolasi Kredensial dan Audit Aktivitas.
+4. **`Cookie Policy - (Desktop 1440x900)`** (`ID 10048`, `x: 6080`) — 1. Cookie Autentikasi Sesi, 2. Cookie Sesi Mode Demo, 3. Token Keamanan CSRF, 4. Tanpa Pelacak Iklan dan Pengelolaan Browser.
+
+
 
 
