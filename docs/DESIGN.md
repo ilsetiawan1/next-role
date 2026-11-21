@@ -374,6 +374,23 @@ Berjajar rapi di sebelah kanan Desktop Landing (`y: 0`, jarak `80px`, urut sesua
 3. **`Security - (Desktop 1440x900)`** (`ID 10017`, `x: 4560`) — 1. Proteksi Dokumen Privat (Cloudflare R2), 2. Otorisasi Kepemilikan di Sisi Server, 3. Validasi Input dan Perlindungan Aplikasi, 4. Isolasi Kredensial dan Audit Aktivitas.
 4. **`Cookie Policy - (Desktop 1440x900)`** (`ID 10048`, `x: 6080`) — 1. Cookie Autentikasi Sesi, 2. Cookie Sesi Mode Demo, 3. Token Keamanan CSRF, 4. Tanpa Pelacak Iklan dan Pengelolaan Browser.
 
+---
+
+## 9. Spesifikasi Halaman Authentication & Register (v5.3.0)
+
+Halaman autentikasi NextRole (`10991` Desktop Login, `10992` Desktop Register, `10993` Tablet Login, dan `10994` Mobile Login) dirancang ulang mengusung pola **Floating Split-Card Minimalist** di atas kanvas *Ice-Sky Mist* (`#F4F9FF -> #E3F1FD`), memadukan gradien biru langit, tipografi ringan (`SemiBold`/`Regular`), dan aksen kuning neon (`#D4FF47`) yang halus, selaras penuh dengan Auth.js (Google OAuth + Credentials) dan 1-Click Mode Demo pada `PRD.md` & `TSD.md`:
+
+* **Desktop Login (`Authentication - (Desktop 1440x900)`, `ID 10991`, `x: 0, y: 3120`):**
+  * **Outer Floating White Card (`1120x740`, `cornerRadius: 34`):** Terpusat dengan bayangan biru difus lembut.
+  * **Panel Kiri Gradien Cerulean-to-Sky (`488x692`, `cornerRadius: 26`, inset `24px`):** Memuat pill kaca `← Kembali ke Beranda`, headline 3 baris **`Kelola lamaran / kerja lebih tenang / di satu ruang.`** dengan **garis bawah kurva kuning neon `#D4FF47`**, subjudul fitur inti, dan ilustrasi 3D transparan 2 karakter pencari kerja ([auth-characters.png](file:///e:/project-nextjs/next-role/docs/assets/auth-characters.png)) menempel bersih di tepi bawah.
+  * **Panel Kanan Form Minimalis (`w: 396` terpusat):** Logo lingkaran konsentris (`40x40, r: 20`) + `nextrole`, judul **`Selamat Datang`**, 2 input soft-fill tanpa border (`Alamat Email` & `Kata Sandi` dengan ikon mata + `Lupa kata sandi?`), tombol solid biru langit **`Masuk`** (`#0EA5E9 -> #0284C7`), divider `Atau lanjutkan dengan`, 2 tombol outline sejajar **`Google`** dan **`Mode Demo`** (titik neon `#D4FF47`), serta tautan **`Belum punya akun? Daftar`**.
+* **Desktop Register (`Register - (Desktop 1440x900)`, `ID 10992`, `x: 1520, y: 3120`):**
+  * Frame mandiri dengan layout identik khusus alur pendaftaran (`Nama Lengkap`, `Alamat Email`, `Kata Sandi (min. 8 karakter)`, tombol **`Buat Akun`**, opsi `Google` & `Mode Demo`, dan tautan `Sudah punya akun? Masuk`) sehingga halaman Login tetap bersih tanpa kolom `Nama Lengkap`.
+* **Tablet (`Authentication - (Tablet 834x1194)`, `ID 10993`, `x: -894, y: 3120`):**
+  * Kartu putih mengambang (`660x980`) dengan banner gradien biru ringkas di atas (headline 2 baris + kurva neon + ilustrasi 3D karakter di kanan) dan form minimalis terpusat di bawahnya.
+* **Mobile (`Authentication - (Mobile 390x844)`, `ID 10994`, `x: -1350, y: 3120`):**
+  * Tautan `← Kembali ke Beranda` di atas kartu putih mengambang (`358x696`, target sentuh `>= 48px` per `antislop-layoutmobile`), memuat logo konsentris + `nextrole`, `Selamat Datang`, 2 input soft-fill, tombol `Masuk`, tombol sejajar `Google` & `Mode Demo`, tautan `Daftar`, serta catatan privasi singkat.
+
 
 
 
