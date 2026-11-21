@@ -33,7 +33,7 @@ Mengubah proses pencarian kerja yang sebelumnya kacau, serba manual (spreadsheet
 
 ## 3. Profil Pengguna (User Persona)
 
-* **Nama Persona:** Budi, The Active Job Seeker
+* **Nama Persona:** Ilham Setiawan, The Active Job Seeker
 * **Karakteristik:** Fresh graduate atau developer berpengalaman yang sedang aktif melamar ke 30–80 perusahaan per bulan di berbagai platform.
 * **Kebutuhan Utama:**
   * Ingin mencatat lamaran instan hanya dengan upload screenshot atau tempel link/teks lowongan.
