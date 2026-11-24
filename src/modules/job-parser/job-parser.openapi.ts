@@ -11,13 +11,15 @@ export const jobParserOpenApiPaths = {
           "application/json": {
             schema: {
               type: "object",
-              required: ["inputType", "content"],
+              required: ["inputType"],
               properties: {
-                inputType: { type: "string", enum: ["RAW_TEXT", "JOB_URL"] },
+                inputType: { type: "string", enum: ["RAW_TEXT", "JOB_URL", "POSTER_IMAGE"] },
                 content: {
                   type: "string",
                   example: "PT Teknologi Nusantara membuka lowongan Frontend Engineer (Next.js, TypeScript) di Jakarta, gaji Rp 15-20 juta.",
                 },
+                imageBase64: { type: "string", description: "Base64 poster/screenshot lowongan (untuk POSTER_IMAGE)" },
+                mimeType: { type: "string", enum: ["image/png", "image/jpeg", "image/webp"] },
               },
             },
           },

@@ -1,6 +1,16 @@
 export const MAX_DAILY_AI_CLIPS = 20;
+export const MAX_GUEST_AI_CLIPS = 3;
+export const GUEST_EMAIL_DOMAIN = "@guest.nextrole.local";
 export const MAX_CV_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 export const FOLLOW_UP_DAYS_THRESHOLD = 7;
+
+export function isGuestEmail(email: string): boolean {
+  return email.toLowerCase().endsWith(GUEST_EMAIL_DOMAIN);
+}
+
+export function getClipQuotaLimitForEmail(email: string): number {
+  return isGuestEmail(email) ? MAX_GUEST_AI_CLIPS : MAX_DAILY_AI_CLIPS;
+}
 
 export const APPLICATION_STATUSES = [
   "APPLIED",

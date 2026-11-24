@@ -1,7 +1,12 @@
 import { generateObject } from "ai";
 import { Prisma } from "@prisma/client";
 import { AI_MODELS, getGoogleAI } from "@/config/ai";
-import { ERROR_MESSAGES, MAX_DAILY_AI_CLIPS } from "@/constants/application";
+import {
+  ERROR_MESSAGES,
+  getClipQuotaLimitForEmail,
+  isGuestEmail,
+  MAX_DAILY_AI_CLIPS,
+} from "@/constants/application";
 import { AppError } from "@/middlewares/error-handler";
 import { isSameUtcDay } from "@/utils/date";
 import { normalizeWhitespace } from "@/utils/format";
@@ -20,7 +25,11 @@ export interface JobParserRepositoryPort {
   updateUserQuota: typeof jobParserRepository.updateUserQuota;
 }
 
-export type JobAiExtractor = (rawText: string, sourceUrl?: string) => Promise<ParsedJobPayload>;
+export type JobAiExtractor = (params: {
+  rawText?: string;
+  sourceUrl?: string;
+  image?: { base64: string; mimeType: "image/png" | "image/jpeg" | "image/webp" };
+}) => Promise<ParsedJobPayload>;
 export type JobUrlFetcher = (url: string) => Promise<string>;
 
 /**
@@ -139,23 +148,56 @@ async function defaultFetchJobUrl(url: string): Promise<string> {
   }
 }
 
-async function defaultAiExtract(rawText: string, sourceUrl?: string): Promise<ParsedJobPayload> {
+async function defaultAiExtract(params: {
+  rawText?: string;
+  sourceUrl?: string;
+  image?: { base64: string; mimeType: "image/png" | "image/jpeg" | "image/webp" };
+}): Promise<ParsedJobPayload> {
   const google = getGoogleAI();
-  const prompt = [
+  const baseInstructions = [
     "Ekstrak informasi lowongan kerja berikut ke format JSON terstruktur.",
     "Jangan mengarang data. Jika informasi tidak disebutkan (misal gaji atau lokasi), isi null.",
     "Isi keyRequirements dengan maksimal 8 poin syarat/keahlian utama yang singkat.",
     "Isi jdSnapshot dengan arsip teks deskripsi lowongan yang bersih dan rapi.",
-    sourceUrl ? `URL Sumber: ${sourceUrl}` : "",
-    "--- TEKS LOWONGAN ---",
-    rawText.slice(0, 18000),
-  ]
-    .filter(Boolean)
-    .join("\n");
+  ].join("\n");
 
   let lastError: unknown;
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
+      if (params.image) {
+        const imageBuffer = Buffer.from(params.image.base64, "base64");
+        const { object } = await generateObject({
+          model: google(AI_MODELS.PARSER_AND_DRAFT),
+          schema: parsedJobPayloadSchema,
+          messages: [
+            {
+              role: "user",
+              content: [
+                {
+                  type: "text",
+                  text: `${baseInstructions}\nBaca teks dan informasi pada gambar poster/screenshot lowongan kerja ini.`,
+                },
+                {
+                  type: "image",
+                  image: imageBuffer,
+                  mediaType: params.image.mimeType,
+                },
+              ],
+            },
+          ],
+        });
+        return parsedJobPayloadSchema.parse(object);
+      }
+
+      const prompt = [
+        baseInstructions,
+        params.sourceUrl ? `URL Sumber: ${params.sourceUrl}` : "",
+        "--- TEKS LOWONGAN ---",
+        (params.rawText ?? "").slice(0, 18000),
+      ]
+        .filter(Boolean)
+        .join("\n");
+
       const { object } = await generateObject({
         model: google(AI_MODELS.PARSER_AND_DRAFT),
         schema: parsedJobPayloadSchema,
@@ -197,7 +239,10 @@ export function createJobParserService(deps?: {
 
   return {
     async extract(userId: string, input: ExtractJobInput): Promise<ExtractJobResult> {
-      const normalizedContent = normalizeWhitespace(input.content);
+      const normalizedContent =
+        input.inputType === "POSTER_IMAGE"
+          ? (input.imageBase64 ?? "")
+          : normalizeWhitespace(input.content ?? "");
       const contentHash = sha256Hex(`${input.inputType}:${normalizedContent}`);
       const now = getNow();
 
@@ -206,6 +251,9 @@ export function createJobParserService(deps?: {
         throw new AppError(401, ERROR_MESSAGES.UNAUTHORIZED, "UNAUTHORIZED");
       }
 
+      const quotaLimit = quotaRecord.email
+        ? getClipQuotaLimitForEmail(quotaRecord.email)
+        : MAX_DAILY_AI_CLIPS;
       const sameDay = isSameUtcDay(quotaRecord.lastClipResetAt, now);
       const currentQuotaUsed = sameDay ? quotaRecord.dailyAiClipsCount : 0;
 
@@ -219,23 +267,35 @@ export function createJobParserService(deps?: {
             meta: {
               cached: true,
               quotaUsed: currentQuotaUsed,
-              quotaLimit: MAX_DAILY_AI_CLIPS,
+              quotaLimit,
             },
           };
         }
       }
 
-      // 2. Cek batas kuota harian 20 klip/hari
-      if (currentQuotaUsed >= MAX_DAILY_AI_CLIPS) {
-        throw new AppError(429, ERROR_MESSAGES.QUOTA_EXCEEDED, "RATE_LIMITED");
+      // 2. Cek batas kuota harian (3 klip untuk Mode Demo, 20 klip/hari untuk akun terdaftar)
+      if (currentQuotaUsed >= quotaLimit) {
+        const message =
+          quotaRecord.email && isGuestEmail(quotaRecord.email)
+            ? `Kuota Mode Demo (${quotaLimit} klip AI) telah tercapai. Masuk dengan Google untuk mendapatkan 20 klip/hari.`
+            : ERROR_MESSAGES.QUOTA_EXCEEDED;
+        throw new AppError(429, message, "RATE_LIMITED");
       }
 
-      // 3. Siapkan teks mentah (jika URL, fetch teks secara aman)
-      const sourceUrl = input.inputType === "JOB_URL" ? validateSafeJobUrl(input.content).toString() : undefined;
-      const rawText = sourceUrl ? await fetchUrl(sourceUrl) : normalizedContent;
-
-      // 4. Ekstraksi AI dengan retry guard
-      const extracted = await aiExtract(rawText, sourceUrl);
+      // 3. Ekstraksi AI sesuai tipe input (POSTER_IMAGE / JOB_URL / RAW_TEXT)
+      let extracted: ParsedJobPayload;
+      if (input.inputType === "POSTER_IMAGE" && input.imageBase64 && input.mimeType) {
+        extracted = await aiExtract({
+          image: { base64: input.imageBase64, mimeType: input.mimeType },
+        });
+      } else {
+        const sourceUrl =
+          input.inputType === "JOB_URL"
+            ? validateSafeJobUrl(input.content ?? "").toString()
+            : undefined;
+        const rawText = sourceUrl ? await fetchUrl(sourceUrl) : normalizedContent;
+        extracted = await aiExtract({ rawText, sourceUrl });
+      }
 
       // 5. Simpan ke JobParseCache dan perbarui kuota harian user
       await repo.saveCache({
@@ -257,7 +317,7 @@ export function createJobParserService(deps?: {
         meta: {
           cached: false,
           quotaUsed: nextQuotaUsed,
-          quotaLimit: MAX_DAILY_AI_CLIPS,
+          quotaLimit,
         },
       };
     },
