@@ -35,9 +35,10 @@ scratch/
 # Local Infrastructure & Account Notes
 docs/INFRA.md
 
-# Private Internal Docs & Design Binary
+# Private Internal Docs, Plans & Design Binary
 AGENTS.md
 docs/ROADMAP.md
 docs/next-role.figcraft
+docs/plans/
 
 
