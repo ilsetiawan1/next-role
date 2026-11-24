@@ -1,28 +1,66 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Modal } from "@/components/ui/modal";
-import { ApplicationDetailPanel } from "@/features/application-detail";
+import { ApplicationDetailSheet } from "@/features/application-detail";
 import {
   formatShortDateId,
   getCompanyInitial,
   getDaysSince,
   type ApplicationDto,
 } from "@/features/shared/workspace-types";
+import { cn } from "@/lib/cn";
+import { animateCountUp, ensureGsapRegistered, gsap, useGSAP } from "@/lib/gsap";
+import { HomeBannerSlider } from "./HomeBannerSlider";
+import { MiniCalendarCard } from "./MiniCalendarCard";
+
+const MOBILE_FILTERS = ["Semua", "Full-time", "Hybrid", "Follow-Up", "Remote"] as const;
+type MobileFilter = (typeof MOBILE_FILTERS)[number];
 
 interface HomeOverviewProps {
   userName: string;
+  isGuest?: boolean;
   initialApplications: ApplicationDto[];
 }
 
-export function HomeOverview({ userName, initialApplications }: HomeOverviewProps) {
+export function HomeOverview({
+  userName,
+  isGuest = false,
+  initialApplications,
+}: HomeOverviewProps) {
+  ensureGsapRegistered();
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [applications, setApplications] = useState<ApplicationDto[]>(initialApplications);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState<MobileFilter>("Semua");
   const [selectedApp, setSelectedApp] = useState<ApplicationDto | null>(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.from(".home-stagger-card", {
+          y: 16,
+          opacity: 0,
+          duration: 0.45,
+          stagger: 0.05,
+          ease: "power2.out",
+          clearProps: "transform,opacity",
+        });
+
+        const statNodes = containerRef.current?.querySelectorAll<HTMLElement>("[data-home-stat]");
+        statNodes?.forEach((node) => {
+          const target = Number(node.dataset.target ?? "0");
+          const suffix = node.dataset.suffix ?? "";
+          animateCountUp(node, target, { suffix, duration: 0.85 });
+        });
+      });
+    },
+    { scope: containerRef }
+  );
 
   useEffect(() => {
     function handleCreated(event: Event) {
@@ -35,14 +73,21 @@ export function HomeOverview({ userName, initialApplications }: HomeOverviewProp
   }, []);
 
   const q = searchQuery.trim().toLowerCase();
-  const filtered = q
-    ? applications.filter(
-        (a) =>
-          a.companyName.toLowerCase().includes(q) ||
-          a.position.toLowerCase().includes(q) ||
-          (a.location ?? "").toLowerCase().includes(q)
-      )
-    : applications;
+  const filtered = applications.filter((a) => {
+    if (activeFilter === "Follow-Up") {
+      const isFu = a.status === "FOLLOW_UP_NEEDED" || getDaysSince(a.appliedAt) >= 7;
+      if (!isFu) return false;
+    } else if (activeFilter !== "Semua") {
+      const hay = `${a.employmentType ?? ""} ${a.location ?? ""}`.toLowerCase();
+      if (!hay.includes(activeFilter.toLowerCase())) return false;
+    }
+    if (!q) return true;
+    return (
+      a.companyName.toLowerCase().includes(q) ||
+      a.position.toLowerCase().includes(q) ||
+      (a.location ?? "").toLowerCase().includes(q)
+    );
+  });
 
   const followUpCandidates = filtered
     .filter(
@@ -66,22 +111,192 @@ export function HomeOverview({ userName, initialApplications }: HomeOverviewProp
   ).length;
   const responseRate = totalApplied > 0 ? Math.round((respondedCount / totalApplied) * 100) : 0;
 
-  const weeklyTarget = 10;
-  const weeklyCount = applications.filter((a) => getDaysSince(a.appliedAt) <= 7).length;
-  const weeklyPct = Math.min(100, Math.round((weeklyCount / weeklyTarget) * 100));
+  const statsBento = (
+    <div className="glass-surface rounded-3xl p-4 sm:p-5 space-y-3.5">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-medium text-slate-900">Ringkasan Lamaran</h2>
+        <Link
+          href="/analytics"
+          className="text-xs font-normal text-slate-500 hover:text-slate-900"
+        >
+          Bulan Ini ›
+        </Link>
+      </div>
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+        {[
+          {
+            label: "Total Dilamar",
+            value: String(totalApplied),
+            num: totalApplied,
+            suffix: "",
+            icon: "/images/dashboard/icon-total-applied.png",
+          },
+          {
+            label: "Interview Aktif",
+            value: String(interviewCount),
+            num: interviewCount,
+            suffix: "",
+            icon: "/images/dashboard/icon-interview.png",
+          },
+          {
+            label: "Perlu Follow-Up",
+            value: String(followUpDueCount),
+            num: followUpDueCount,
+            suffix: "",
+            icon: "/images/dashboard/icon-follow-up.png",
+          },
+          {
+            label: "Tingkat Respon",
+            value: `${responseRate}%`,
+            num: responseRate,
+            suffix: "%",
+            icon: "/images/dashboard/icon-response-rate.png",
+          },
+        ].map((stat) => (
+          <div
+            key={stat.label}
+            className="rounded-2xl bg-sky-50/55 border border-sky-100/80 p-3 flex items-center gap-2.5"
+          >
+            <Image
+              src={stat.icon}
+              alt={stat.label}
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-xl object-contain shrink-0"
+            />
+            <div className="min-w-0">
+              <p
+                data-home-stat
+                data-target={stat.num}
+                data-suffix={stat.suffix}
+                className="text-base sm:text-lg font-medium text-slate-900 leading-none"
+              >
+                {stat.value}
+              </p>
+              <p className="text-[11px] font-normal text-slate-500 mt-1 truncate">{stat.label}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 
-  return (
-    <div className="space-y-6">
-      {/* Greeting + Search Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            {userName}
-          </h1>
-          <p className="text-sm text-slate-500">Ringkasan ruang kerja pencarian kerjamu</p>
+  function renderFollowUpCard(app: ApplicationDto, compactHorizontal = false) {
+    const days = getDaysSince(app.appliedAt);
+    const isDue = days >= 7 || app.status === "FOLLOW_UP_NEEDED";
+    return (
+      <div
+        key={app.id}
+        onClick={() => setSelectedApp(app)}
+        className={cn(
+          "home-stagger-card glass-surface rounded-2xl p-4 hover:border-sky-200 transition cursor-pointer",
+          compactHorizontal && "w-[280px] shrink-0"
+        )}
+      >
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="h-10 w-10 rounded-xl bg-sky-100 text-sky-700 font-medium text-sm flex items-center justify-center shrink-0">
+              {getCompanyInitial(app.companyName)}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-slate-900 truncate">{app.companyName}</p>
+              <p className="text-xs font-normal text-slate-500 truncate">
+                {app.location ?? app.employmentType ?? "-"}
+              </p>
+            </div>
+          </div>
+          <span className="text-xs font-normal text-[#0284C7] shrink-0">Detail ↗</span>
         </div>
 
-        <div className="relative w-full sm:w-80">
+        <p className="mt-2.5 text-sm font-normal text-slate-900 truncate">{app.position}</p>
+
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <span className="text-xs font-normal text-slate-600 truncate">
+            {app.salaryRange ?? `${days} hari lalu`}
+          </span>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="hidden sm:inline text-[11px] font-normal text-slate-400">
+              {days} hari lalu
+            </span>
+            <span
+              className={
+                isDue
+                  ? "rounded-xl bg-[#D4FF47] text-[#0C4A6E] px-3 py-1 text-xs font-medium"
+                  : "rounded-xl bg-sky-50 text-sky-800 px-3 py-1 text-xs font-medium"
+              }
+            >
+              {isDue ? "Follow-Up ↗" : "Buat Draf ↗"}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function renderPipelineCard(app: ApplicationDto) {
+    const statusDot =
+      app.status === "INTERVIEW_SCHEDULED"
+        ? { color: "bg-purple-600", text: `Interview • ${formatShortDateId(app.appliedAt)}` }
+        : app.status === "OFFERED"
+          ? { color: "bg-emerald-600", text: `Offering • ${formatShortDateId(app.appliedAt)}` }
+          : null;
+
+    return (
+      <div
+        key={app.id}
+        onClick={() => setSelectedApp(app)}
+        className="home-stagger-card glass-surface rounded-2xl p-4 hover:border-sky-200 transition cursor-pointer"
+      >
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="h-10 w-10 rounded-xl bg-sky-100 text-sky-700 font-medium text-sm flex items-center justify-center shrink-0">
+              {getCompanyInitial(app.companyName)}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-slate-900 truncate">{app.companyName}</p>
+              <p className="text-xs font-normal text-slate-500 truncate">
+                {app.location ?? app.employmentType ?? "-"}
+              </p>
+            </div>
+          </div>
+          <span className="text-xs font-normal text-[#0284C7] shrink-0">Detail ↗</span>
+        </div>
+
+        <p className="mt-2.5 text-sm font-normal text-slate-900 truncate">{app.position}</p>
+
+        <div className="mt-2 flex items-center justify-between gap-2 text-xs">
+          <span className="text-slate-600 font-normal truncate">{app.salaryRange ?? "-"}</span>
+          {statusDot ? (
+            <span className="inline-flex items-center gap-1.5 text-slate-600 font-normal shrink-0">
+              <span className={cn("h-1.5 w-1.5 rounded-full", statusDot.color)} />
+              {statusDot.text}
+            </span>
+          ) : (
+            <span className="text-slate-500 font-normal shrink-0">
+              Dilamar: {formatShortDateId(app.appliedAt)}
+            </span>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div ref={containerRef} className="space-y-5 sm:space-y-6">
+      {/* Header + Search Bar (Desktop/Tablet: Greeting left + Search right; Mobile: Search + Filter chips) */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
+        <div className="hidden md:block">
+          <h1 className="text-2xl sm:text-[28px] font-normal text-slate-900 tracking-tight">
+            {userName}
+          </h1>
+          {!isGuest ? (
+            <p className="text-sm font-normal text-slate-500 mt-0.5">
+              Ringkasan ruang kerja pencarian kerjamu
+            </p>
+          ) : null}
+        </div>
+
+        <div className="relative w-full md:w-80">
           <Search className="h-4 w-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <Input
             type="search"
@@ -93,281 +308,151 @@ export function HomeOverview({ userName, initialApplications }: HomeOverviewProp
         </div>
       </div>
 
-      {/* Main 3-Column Balanced Grid (sesuai FigCraft Home Desktop) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        <div className="lg:col-span-8 space-y-6">
-          {/* AI Clipper Hero Banner */}
-          <div className="sky-hero-gradient rounded-[28px] p-6 sm:p-7 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-lg shadow-sky-700/15 relative overflow-hidden">
-            <div className="max-w-md z-10">
-              <h2 className="text-xl sm:text-2xl font-bold leading-snug">
-                Catat Lowongan Cepat dengan Smart AI Clipper
-              </h2>
-              <p className="mt-2 text-xs sm:text-sm text-sky-100 leading-relaxed">
-                Tempel teks atau link lowongan, arsipkan JD permanen, dan dapatkan draf follow-up
-                H+7 secara otomatis.
-              </p>
-              <button
-                type="button"
-                onClick={() => window.dispatchEvent(new Event("nextrole:open-clipper"))}
-                className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#D4FF47] text-[#0C4A6E] px-5 py-2.5 text-xs font-bold hover:brightness-95 transition cursor-pointer"
-              >
-                Coba Sekarang
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </button>
-            </div>
+      {/* Mobile Horizontal Filter Chips (EXACT FigCraft Mobile 390x844) */}
+      <div className="md:hidden flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5">
+        {MOBILE_FILTERS.map((chip) => {
+          const active = activeFilter === chip;
+          return (
+            <button
+              key={chip}
+              type="button"
+              onClick={() => setActiveFilter(chip)}
+              className={cn(
+                "h-9 px-4 rounded-full text-xs font-normal whitespace-nowrap transition shrink-0 cursor-pointer",
+                active
+                  ? "bg-[#0284C7] text-white shadow-xs"
+                  : "bg-white text-slate-700 border border-sky-100"
+              )}
+            >
+              {chip}
+            </button>
+          );
+        })}
+      </div>
 
-            <Image
-              src="/images/dashboard/banner-clipper-1.png"
-              alt="Ilustrasi Smart Job Clipper"
-              width={180}
-              height={140}
-              className="w-36 sm:w-44 h-auto object-contain shrink-0 self-end sm:self-center"
-              priority
-            />
+      {/* MOBILE LAYOUT (< md): Banner -> Horizontal Follow-Up Carousel -> Vertical Aktivitas Terakhir */}
+      <div className="md:hidden space-y-5">
+        <HomeBannerSlider />
+
+        <section className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-medium text-slate-900">Perlu Tindak Lanjut</h2>
+            <Link href="/roles" className="text-xs font-normal text-slate-500 hover:text-slate-900">
+              Lihat semua ›
+            </Link>
           </div>
+          {followUpCandidates.length > 0 ? (
+            <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4">
+              {followUpCandidates.map((app) => renderFollowUpCard(app, true))}
+            </div>
+          ) : (
+            <div className="glass-surface rounded-2xl p-5 text-center text-xs text-slate-500">
+              Belum ada lamaran yang melewati ambang H+7.
+            </div>
+          )}
+        </section>
 
-          {/* Perlu Tindak Lanjut & Pipeline Lamaran */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Kolom 1: Perlu Tindak Lanjut */}
+        <section className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-medium text-slate-900">Aktivitas Terakhir</h2>
+            <Link href="/roles" className="text-xs font-normal text-slate-500 hover:text-slate-900">
+              Lihat semua ›
+            </Link>
+          </div>
+          <div className="space-y-3">
+            {pipelineRecent.map((app) => renderPipelineCard(app))}
+          </div>
+        </section>
+      </div>
+
+      {/* TABLET LAYOUT (md..xl): Full Banner -> 2-Col (Follow-Up | Stats+Calendar) -> 2x2 Pipeline */}
+      <div className="hidden md:block xl:hidden space-y-6">
+        <HomeBannerSlider />
+
+        <div className="grid grid-cols-12 gap-5 items-start">
+          <section className="col-span-7 space-y-3.5">
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-bold text-slate-900">Perlu Tindak Lanjut</h2>
+              <Link href="/roles" className="text-xs font-semibold text-slate-600">
+                Lihat semua ›
+              </Link>
+            </div>
+            <div className="space-y-3">
+              {followUpCandidates.map((app) => renderFollowUpCard(app))}
+            </div>
+          </section>
+
+          <aside className="col-span-5 space-y-5">
+            {statsBento}
+            <MiniCalendarCard applications={applications} showWeeklyTarget={false} />
+          </aside>
+        </div>
+
+        <section className="space-y-3.5">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-medium text-slate-900">Pipeline Lamaran</h2>
+            <Link href="/roles" className="text-xs font-normal text-slate-500 hover:text-slate-900">
+              Lihat semua ›
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            {pipelineRecent.map((app) => renderPipelineCard(app))}
+          </div>
+        </section>
+      </div>
+
+      {/* DESKTOP LAYOUT (xl+): 3-Column Balanced Grid persis FigCraft Home 1440x900 */}
+      <div className="hidden xl:grid xl:grid-cols-12 gap-6 items-start">
+        <div className="col-span-8 space-y-6">
+          <HomeBannerSlider />
+
+          <div className="grid grid-cols-2 gap-6">
             <section className="space-y-3.5">
               <div className="flex items-center justify-between">
-                <h2 className="text-base font-bold text-slate-900">Perlu Tindak Lanjut</h2>
-                <Link
-                  href="/roles"
-                  className="text-xs font-semibold text-slate-600 hover:text-slate-900"
-                >
+                <h2 className="text-base font-medium text-slate-900">Perlu Tindak Lanjut</h2>
+                <Link href="/roles" className="text-xs font-normal text-slate-500 hover:text-slate-900">
                   Lihat semua ›
                 </Link>
               </div>
-
-              {followUpCandidates.length > 0 ? (
-                <div className="space-y-3">
-                  {followUpCandidates.map((app) => {
-                    const days = getDaysSince(app.appliedAt);
-                    const isDue = days >= 7 || app.status === "FOLLOW_UP_NEEDED";
-                    return (
-                      <div
-                        key={app.id}
-                        onClick={() => setSelectedApp(app)}
-                        className="glass-surface rounded-2xl p-4 hover:border-sky-200 transition cursor-pointer"
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex items-center gap-3 min-w-0">
-                            <div className="h-10 w-10 rounded-xl bg-sky-100 text-sky-700 font-bold text-sm flex items-center justify-center shrink-0">
-                              {getCompanyInitial(app.companyName)}
-                            </div>
-                            <div className="min-w-0">
-                              <p className="text-sm font-bold text-slate-900 truncate">
-                                {app.companyName}
-                              </p>
-                              <p className="text-xs text-slate-500 truncate">
-                                {app.location ?? app.employmentType ?? "-"}
-                              </p>
-                            </div>
-                          </div>
-                          <span className="text-xs font-semibold text-[#0284C7] shrink-0">
-                            Detail ↗
-                          </span>
-                        </div>
-
-                        <p className="mt-2.5 text-sm font-bold text-slate-900 truncate">
-                          {app.position}
-                        </p>
-
-                        <div className="mt-2 flex items-center justify-between gap-2">
-                          <span className="text-xs text-slate-600 truncate">
-                            {app.salaryRange ?? `${days} hari lalu`}
-                          </span>
-                          <span
-                            className={
-                              isDue
-                                ? "rounded-xl bg-[#D4FF47] text-[#0C4A6E] px-3 py-1 text-xs font-bold shrink-0"
-                                : "rounded-xl bg-sky-50 text-sky-800 px-3 py-1 text-xs font-semibold shrink-0"
-                            }
-                          >
-                            {isDue ? "Follow-Up ↗" : "Buat Draf ↗"}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="glass-surface rounded-2xl p-6 text-center">
-                  <p className="text-xs font-semibold text-slate-800">Semua lamaran aman</p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Belum ada lamaran yang melewati ambang H+7.
-                  </p>
-                </div>
-              )}
+              <div className="space-y-3.5">
+                {followUpCandidates.slice(0, 3).map((app) => renderFollowUpCard(app))}
+              </div>
             </section>
 
-            {/* Kolom 2: Pipeline Lamaran */}
             <section className="space-y-3.5">
               <div className="flex items-center justify-between">
-                <h2 className="text-base font-bold text-slate-900">Pipeline Lamaran</h2>
-                <Link
-                  href="/roles"
-                  className="text-xs font-semibold text-slate-600 hover:text-slate-900"
-                >
+                <h2 className="text-base font-medium text-slate-900">Pipeline Lamaran</h2>
+                <Link href="/roles" className="text-xs font-normal text-slate-500 hover:text-slate-900">
                   Lihat semua ›
                 </Link>
               </div>
-
-              {pipelineRecent.length > 0 ? (
-                <div className="space-y-3">
-                  {pipelineRecent.map((app) => (
-                    <div
-                      key={app.id}
-                      onClick={() => setSelectedApp(app)}
-                      className="glass-surface rounded-2xl p-4 hover:border-sky-200 transition cursor-pointer"
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="h-10 w-10 rounded-xl bg-sky-100 text-sky-700 font-bold text-sm flex items-center justify-center shrink-0">
-                            {getCompanyInitial(app.companyName)}
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-sm font-bold text-slate-900 truncate">
-                              {app.companyName}
-                            </p>
-                            <p className="text-xs text-slate-500 truncate">
-                              {app.location ?? app.employmentType ?? "-"}
-                            </p>
-                          </div>
-                        </div>
-                        <span className="text-xs font-semibold text-[#0284C7] shrink-0">
-                          Detail ↗
-                        </span>
-                      </div>
-
-                      <p className="mt-2.5 text-sm font-bold text-slate-900 truncate">
-                        {app.position}
-                      </p>
-
-                      <div className="mt-2 flex items-center justify-between gap-2 text-xs">
-                        <span className="text-slate-700 font-medium truncate">
-                          {app.salaryRange ?? "-"}
-                        </span>
-                        <span className="text-slate-500 shrink-0">
-                          {formatShortDateId(app.appliedAt)}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="glass-surface rounded-2xl p-6 text-center">
-                  <p className="text-xs font-semibold text-slate-800">Belum ada lamaran tercatat</p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Klik tombol Catat Lamaran untuk mulai menyimpan lamaran pertamamu.
-                  </p>
-                </div>
-              )}
+              <div className="space-y-3.5">
+                {pipelineRecent.slice(0, 3).map((app) => renderPipelineCard(app))}
+              </div>
             </section>
           </div>
         </div>
 
-        {/* Kolom 3: Statistik & Target Mingguan */}
-        <aside className="lg:col-span-4 space-y-5">
-          <div className="glass-surface rounded-3xl p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold text-slate-900">Ringkasan Lamaran</h2>
-              <Link
-                href="/analytics"
-                className="text-xs font-semibold text-slate-500 hover:text-slate-900"
-              >
-                Analitik ›
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                {
-                  label: "Total Dilamar",
-                  value: String(totalApplied),
-                  icon: "/images/dashboard/icon-total-applied.png",
-                },
-                {
-                  label: "Interview Aktif",
-                  value: String(interviewCount),
-                  icon: "/images/dashboard/icon-interview.png",
-                },
-                {
-                  label: "Perlu Follow-Up",
-                  value: String(followUpDueCount),
-                  icon: "/images/dashboard/icon-follow-up.png",
-                },
-                {
-                  label: "Tingkat Respon",
-                  value: `${responseRate}%`,
-                  icon: "/images/dashboard/icon-response-rate.png",
-                },
-              ].map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-2xl bg-white/85 border border-sky-100/80 p-3 flex items-center gap-3"
-                >
-                  <Image
-                    src={stat.icon}
-                    alt={stat.label}
-                    width={36}
-                    height={36}
-                    className="h-9 w-9 rounded-xl object-contain shrink-0"
-                  />
-                  <div className="min-w-0">
-                    <p className="text-lg font-extrabold text-slate-900 leading-none">
-                      {stat.value}
-                    </p>
-                    <p className="text-[11px] text-slate-500 mt-1 truncate">{stat.label}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Target Lamaran Minggu Ini (Deterministik 0 token AI) */}
-          <div className="glass-surface rounded-3xl p-5 space-y-3">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-bold text-slate-900">Target Lamaran Minggu Ini</p>
-              <span className="rounded-full bg-[#D4FF47] px-2.5 py-0.5 text-xs font-bold text-[#0C4A6E]">
-                {weeklyCount} / {weeklyTarget}
-              </span>
-            </div>
-            <div className="h-2.5 w-full rounded-full bg-sky-100 overflow-hidden">
-              <div
-                className="h-full rounded-full bg-[#0284C7] transition-all"
-                style={{ width: `${weeklyPct}%` }}
-              />
-            </div>
-            <p className="text-xs text-slate-500">
-              {weeklyPct}% tercapai •{" "}
-              {weeklyCount >= weeklyTarget
-                ? "Target minggu ini sudah tercapai!"
-                : `Sisa ${weeklyTarget - weeklyCount} lamaran lagi minggu ini`}
-            </p>
-          </div>
+        <aside className="col-span-4 space-y-5">
+          {statsBento}
+          <MiniCalendarCard applications={applications} showWeeklyTarget />
         </aside>
       </div>
 
-      {/* Modal Detail dari Home */}
-      <Modal
+      {/* Detail Sheet Lamaran dari Home */}
+      <ApplicationDetailSheet
         open={selectedApp !== null}
         onClose={() => setSelectedApp(null)}
-        title={selectedApp ? `${selectedApp.companyName} — ${selectedApp.position}` : "Detail Lamaran"}
-      >
-        <ApplicationDetailPanel
-          application={selectedApp}
-          onStatusUpdated={(updated) => {
-            setApplications((prev) => prev.map((a) => (a.id === updated.id ? updated : a)));
-            setSelectedApp(updated);
-          }}
-          onDeleted={(id) => {
-            setApplications((prev) => prev.filter((a) => a.id !== id));
-            setSelectedApp(null);
-          }}
-        />
-      </Modal>
+        application={selectedApp}
+        onStatusUpdated={(updated) => {
+          setApplications((prev) => prev.map((a) => (a.id === updated.id ? updated : a)));
+          setSelectedApp(updated);
+        }}
+        onDeleted={(id) => {
+          setApplications((prev) => prev.filter((a) => a.id !== id));
+          setSelectedApp(null);
+        }}
+      />
     </div>
   );
 }

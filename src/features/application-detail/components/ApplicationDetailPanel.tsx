@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Check, Copy, ExternalLink, Mail, Trash2 } from "lucide-react";
+import { Check, Copy, ExternalLink, Mail, Pencil, Trash2 } from "lucide-react";
 import type { ApplicationStatusType } from "@/constants/application";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/primitives";
@@ -13,6 +13,7 @@ import {
   type ApplicationDto,
 } from "@/features/shared/workspace-types";
 import { cn } from "@/lib/cn";
+import { ensureGsapRegistered, gsap, useGSAP } from "@/lib/gsap";
 import {
   deleteApplicationApi,
   fetchApplicationDetail,
@@ -20,6 +21,7 @@ import {
   updateApplicationStatusApi,
   type FollowUpResultDto,
 } from "../api/detailApi";
+import { InlineApplicationEditForm } from "./InlineApplicationEditForm";
 
 const RADIO_STATUSES: Array<{ value: ApplicationStatusType; label: string }> = [
   { value: "APPLIED", label: "Applied" },
@@ -40,10 +42,13 @@ export function ApplicationDetailPanel({
   onStatusUpdated,
   onDeleted,
 }: ApplicationDetailPanelProps) {
+  ensureGsapRegistered();
+  const panelRef = useRef<HTMLDivElement | null>(null);
   const [fetchedDetail, setFetchedDetail] = useState<ApplicationDto | null>(null);
   const [activeTab, setActiveTab] = useState<"overview" | "jd" | "followup">("overview");
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [language, setLanguage] = useState<"id" | "en">("id");
   const [tone, setTone] = useState<"formal" | "casual">("formal");
   const [generatingDraft, setGeneratingDraft] = useState(false);
@@ -77,9 +82,26 @@ export function ApplicationDetailPanel({
   const followUpResult =
     detail && followUpState?.appId === detail.id ? followUpState.result : null;
 
+  useGSAP(
+    () => {
+      if (!panelRef.current) return;
+      const target = panelRef.current.querySelector(".detail-tab-body");
+      if (!target) return;
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          target,
+          { y: 8, opacity: 0.25 },
+          { y: 0, opacity: 1, duration: 0.26, ease: "power2.out", clearProps: "transform" }
+        );
+      });
+    },
+    { scope: panelRef, dependencies: [activeTab, detail?.id] }
+  );
+
   if (!detail) {
     return (
-      <div className="glass-surface rounded-3xl p-8 text-center flex flex-col items-center justify-center min-h-[360px]">
+      <div className="glass-surface rounded-3xl p-8 text-center flex flex-col items-center justify-center min-h-90">
         <p className="text-sm font-semibold text-slate-800">Pilih kartu lamaran</p>
         <p className="mt-1.5 text-xs text-slate-500 max-w-xs">
           Klik salah satu kartu lamaran untuk membaca arsip JD permanen, skor kecocokan CV, atau
@@ -147,7 +169,7 @@ export function ApplicationDetailPanel({
   }
 
   return (
-    <div className="glass-surface rounded-3xl p-5 sm:p-6 space-y-5">
+    <div ref={panelRef} className="glass-surface rounded-3xl p-5 sm:p-6 space-y-5">
       {/* Header Lamaran */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3.5 min-w-0">
@@ -195,9 +217,21 @@ export function ApplicationDetailPanel({
       ) : null}
 
       {activeTab === "overview" ? (
-        <div className="space-y-5">
-          {/* 3-Kolom Info Strip (sesuai desain FigCraft Inspector) */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 rounded-2xl bg-sky-50/60 border border-sky-100/80 p-3.5 text-xs">
+        <div className="detail-tab-body space-y-5">
+          {/* 3-Kolom Info Strip atau Form Edit Inline */}
+          {editing ? (
+            <InlineApplicationEditForm
+              key={detail.id}
+              application={detail}
+              onSaved={(updated) => {
+                setFetchedDetail(updated);
+                onStatusUpdated?.(updated);
+                setEditing(false);
+              }}
+              onCancel={() => setEditing(false)}
+            />
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 rounded-2xl bg-sky-50/60 border border-sky-100/80 p-3.5 text-xs">
             <div>
               <p className="text-slate-500">Rentang Gaji</p>
               <p className="mt-0.5 font-semibold text-slate-900">{detail.salaryRange ?? "Belum diisi"}</p>
@@ -233,6 +267,7 @@ export function ApplicationDetailPanel({
               )}
             </div>
           </div>
+          )}
 
           {/* Kontrol Ubah Status Langsung */}
           <div className="rounded-2xl border border-slate-200/80 bg-white/80 p-3.5">
@@ -303,16 +338,26 @@ export function ApplicationDetailPanel({
               <span />
             )}
 
-            <Button variant="danger" size="sm" onClick={handleDelete} disabled={deleting}>
-              <Trash2 className="h-3.5 w-3.5" />
-              {deleting ? "Menghapus..." : "Arsipkan"}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setEditing((v) => !v)}
+              >
+                <Pencil className="h-3.5 w-3.5" />
+                {editing ? "Tutup Edit" : "Edit"}
+              </Button>
+              <Button variant="danger" size="sm" onClick={handleDelete} disabled={deleting}>
+                <Trash2 className="h-3.5 w-3.5" />
+                {deleting ? "Menghapus..." : "Arsipkan"}
+              </Button>
+            </div>
           </div>
         </div>
       ) : null}
 
       {activeTab === "jd" ? (
-        <div className="space-y-4">
+        <div className="detail-tab-body space-y-4">
           <div className="flex items-center justify-between gap-2">
             <p className="text-xs font-bold text-slate-800">Arsip Deskripsi Pekerjaan</p>
             {detail.matchScore !== null ? (
@@ -347,7 +392,7 @@ export function ApplicationDetailPanel({
       ) : null}
 
       {activeTab === "followup" ? (
-        <div className="space-y-4">
+        <div className="detail-tab-body space-y-4">
           <div className="flex items-center justify-between rounded-2xl bg-sky-50/80 border border-sky-100 px-4 py-3">
             <div>
               <p className="text-xs font-bold text-slate-900">Status Tindak Lanjut (H+7)</p>

@@ -9,8 +9,10 @@ export interface UserProfileRecord {
   lastClipResetAt: Date;
   cvFileKey: string | null;
   cvFileName: string | null;
+  cvText?: string | null;
   cvHash: string | null;
   cvUpdatedAt: Date | null;
+  createdAt?: Date;
 }
 
 export const profileRepository = {
@@ -26,8 +28,10 @@ export const profileRepository = {
         lastClipResetAt: true,
         cvFileKey: true,
         cvFileName: true,
+        cvText: true,
         cvHash: true,
         cvUpdatedAt: true,
+        createdAt: true,
       },
     });
   },
@@ -54,8 +58,10 @@ export const profileRepository = {
         lastClipResetAt: true,
         cvFileKey: true,
         cvFileName: true,
+        cvText: true,
         cvHash: true,
         cvUpdatedAt: true,
+        createdAt: true,
       },
     });
   },

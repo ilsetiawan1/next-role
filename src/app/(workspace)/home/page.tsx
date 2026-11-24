@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { HomeOverview } from "@/features/kanban";
 import type { ApplicationDto } from "@/features/shared/workspace-types";
 import { auth } from "@/modules/auth/auth.config";
@@ -7,6 +8,7 @@ import { applicationsService } from "@/modules/applications/applications.service
 export const instant = false;
 
 export default async function HomePage() {
+  await connection();
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
@@ -24,6 +26,7 @@ export default async function HomePage() {
   return (
     <HomeOverview
       userName={session.user.name ?? session.user.email ?? "Pengguna NextRole"}
+      isGuest={Boolean(session.user.isGuest)}
       initialApplications={initialApplications}
     />
   );

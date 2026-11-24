@@ -44,7 +44,7 @@ export function LegalDocumentLayout({
         <main className="mx-auto max-w-5xl px-4 sm:px-6 mt-8 sm:mt-10">
           <div className="rounded-[28px] bg-white shadow-[0_24px_60px_-15px_rgba(2,132,199,0.2)] border border-white overflow-hidden grid grid-cols-1 md:grid-cols-12">
             {/* Left Sidebar with Soft Sky-Lime Wave Accent (EXACT FigCraft) */}
-            <aside className="md:col-span-3 relative overflow-hidden bg-gradient-to-b from-[#EAF5FF] via-[#F2F9FF] to-[#EAF9E0] p-5 sm:p-6 flex flex-col justify-between">
+            <aside className="md:col-span-3 relative overflow-hidden bg-linear-to-b from-[#EAF5FF] via-[#F2F9FF] to-[#EAF9E0] p-5 sm:p-6 flex flex-col justify-between">
               <div className="relative z-10">
                 <p className="text-sm font-bold text-slate-900 px-3 mb-4">Terms &amp; Policies</p>
                 <nav aria-label="Dokumen kebijakan" className="flex md:flex-col gap-1.5 overflow-x-auto no-scrollbar">

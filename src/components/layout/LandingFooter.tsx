@@ -3,13 +3,13 @@ import Link from "next/link";
 
 export function LandingFooter() {
   return (
-    <footer className="mt-auto bg-[#EEF6FF] border-t border-sky-200/60">
+    <footer className="mt-auto bg-transparent border-t border-sky-200/70">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-7 space-y-5">
         {/* Row 1: Brand + Primary Nav */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <Link href="/" className="flex items-center gap-2.5">
             <Image
-              src="/images/brand/logo.jpg"
+              src="/images/brand/android-chrome-192x192.png"
               alt="NextRole Logo"
               width={24}
               height={24}

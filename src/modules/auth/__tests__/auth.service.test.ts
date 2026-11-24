@@ -85,9 +85,23 @@ describe("authService", () => {
   });
 
   it("provisions an isolated guest demo user", async () => {
-    const service = createAuthService(createInMemoryAuthRepo());
+    const events: { cleanupCutoff?: Date; seededUserId?: string } = {};
+    const baseRepo = createInMemoryAuthRepo();
+    const service = createAuthService({
+      ...baseRepo,
+      async deleteExpiredGuestUsers(cutoff) {
+        events.cleanupCutoff = cutoff;
+      },
+      async seedGuestWorkspace(userId) {
+        events.seededUserId = userId;
+      },
+    });
+
     const guest = await service.provisionGuestUser();
+    expect(guest.name).toBe("Guest Demo");
     expect(guest.isGuest).toBe(true);
     expect(guest.email.endsWith("@guest.nextrole.local")).toBe(true);
+    expect(events.cleanupCutoff).toBeInstanceOf(Date);
+    expect(events.seededUserId).toBe(guest.id);
   });
 });

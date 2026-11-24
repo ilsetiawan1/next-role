@@ -93,7 +93,7 @@ export function createAuthService(repo: AuthRepositoryPort = authRepository) {
 
       const shortId = randomUUID().slice(0, 8);
       const user = await repo.createUser({
-        name: "Ilham Setiawan (Demo)",
+        name: "Guest Demo",
         email: `guest-${shortId}${GUEST_EMAIL_DOMAIN}`,
       });
 

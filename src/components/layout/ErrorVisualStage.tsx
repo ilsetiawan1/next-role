@@ -31,9 +31,31 @@ export function ErrorVisualStage({
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-        tl.from(".err-numeral", { scale: 0.92, opacity: 0, duration: 0.65 })
-          .from(".err-mascot", { y: 30, opacity: 0, duration: 0.7 }, "-=0.45")
-          .from(".err-copy", { y: 18, opacity: 0, duration: 0.55, stagger: 0.08 }, "-=0.35");
+        tl.from(".err-header", { y: -14, opacity: 0, duration: 0.45 })
+          .from(".err-numeral", { scale: 0.9, opacity: 0, duration: 0.65 }, "-=0.25")
+          .from(".err-mascot", { y: 34, opacity: 0, duration: 0.7 }, "-=0.45")
+          .from(".err-copy", { y: 18, opacity: 0, duration: 0.5, stagger: 0.08 }, "-=0.35");
+
+        // Continuous floating & gentle tilt on the 3D mascot
+        gsap.to(".err-mascot-img", {
+          y: -12,
+          rotation: 1.6,
+          duration: 2.8,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: 0.6,
+        });
+
+        // Subtle breathing scale on the giant background numeral
+        gsap.to(".err-numeral", {
+          scale: 1.025,
+          duration: 3.4,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: 0.7,
+        });
       });
     },
     { scope: rootRef }
@@ -59,10 +81,10 @@ export function ErrorVisualStage({
         }}
       />
 
-      <header className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-12 pt-7 flex items-center justify-between">
+      <header className="err-header relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-12 pt-7 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 text-white">
           <Image
-            src="/images/brand/logo.jpg"
+            src="/images/brand/android-chrome-192x192.png"
             alt="NextRole Logo"
             width={34}
             height={34}
@@ -95,7 +117,7 @@ export function ErrorVisualStage({
               width={395}
               height={466}
               priority
-              className="w-44 sm:w-64 lg:w-80 h-auto object-contain drop-shadow-[0_24px_24px_rgba(15,23,42,0.18)]"
+              className="err-mascot-img w-44 sm:w-64 lg:w-80 h-auto object-contain drop-shadow-[0_24px_24px_rgba(15,23,42,0.18)] will-change-transform"
             />
           </div>
         </div>

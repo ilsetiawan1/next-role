@@ -1,4 +1,4 @@
-import { embed } from "ai";
+import { embed, embedMany } from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { getServerEnv } from "./env";
 
@@ -32,4 +32,23 @@ export async function generateEmbedding768(text: string): Promise<number[]> {
     },
   });
   return embedding;
+}
+
+/**
+ * Menghasilkan banyak vektor embedding 768 dimensi dalam 1 batch request tunggal
+ * (memangkas RPM secara drastis saat re-embed beberapa JD sekaligus).
+ */
+export async function generateEmbeddings768Batch(texts: string[]): Promise<number[][]> {
+  if (texts.length === 0) return [];
+  const google = getGoogleAI();
+  const { embeddings } = await embedMany({
+    model: google.textEmbeddingModel(AI_MODELS.EMBEDDING),
+    values: texts.map((t) => t.slice(0, 12000)),
+    providerOptions: {
+      google: {
+        outputDimensionality: AI_MODELS.EMBEDDING_DIMENSIONS,
+      },
+    },
+  });
+  return embeddings;
 }

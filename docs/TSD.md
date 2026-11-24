@@ -63,7 +63,7 @@ src/
 ```text
 src/
 ├── config/                    # Inisialisasi Prisma Client (Singleton), Google AI SDK, Cloudflare R2 Client (r2.ts)
-├── constants/                 # Enum status lamaran & konstanta kuota harian (MAX_DAILY_AI_CLIPS = 20)
+├── constants/                 # Enum status lamaran & konstanta kuota harian (MAX_DAILY_AI_CLIPS = 5, MAX_GUEST_AI_CLIPS = 2)
 ├── middlewares/               # Error handler, rate limit guard, & input sanitizer
 ├── utils/                     # Helper murni (tanggal, SHA-256 hash, formatter tanpa RegEx)
 └── modules/
@@ -128,7 +128,7 @@ model User {
   image             String?
   passwordHash      String?       @map("password_hash") // Optional jika login via Google
 
-  // Proteksi Kuota Ekstraksi AI Harian (20 Klip/Hari)
+  // Proteksi Kuota Ekstraksi AI Harian (5 Klip/Hari Terdaftar, 2 Klip Mode Demo)
   dailyAiClipsCount Int           @default(0) @map("daily_ai_clips_count")
   lastClipResetAt   DateTime      @default(now()) @map("last_clip_reset_at")
 
@@ -324,11 +324,29 @@ model JobParseCache {
 
 ## 5. Batasan Teknis & Kebijakan Rekayasa
 
-* **Proteksi Kuota AI Harian (*Rate Limit Guard*):** Batas 20 klip ekstraksi AI baru per akun per hari dihitung di sisi server via database User (`dailyAiClipsCount`). Reset otomatis harian jika selisih waktu `lastClipResetAt` melewati tanggal kalender baru. Cache hit dari `JobParseCache` tidak memotong kuota.
+* **Proteksi Kuota AI Harian (*Rate Limit Guard*):** Batas 5 klip ekstraksi AI baru per akun terdaftar per hari (dan 2 klip untuk Mode Demo) dihitung di sisi server via database User (`dailyAiClipsCount`). Reset otomatis harian jika selisih waktu `lastClipResetAt` melewati tanggal kalender baru. Cache hit dari `JobParseCache` tidak memotong kuota.
 * **Structured Output & Retry Guard:** Pemanggilan `Gemini 3.5 Flash Lite` wajib memakai `responseSchema` dan divalidasi ulang oleh `zod` di backend dengan maksimal 1–2 kali retry koreksi mandiri apabila format field tidak valid.
 * **Arsitektur Vector 0-Token Read Path:** `Gemini Embedding 2` (`outputDimensionality: 768`) hanya dipanggil pada saat simpan/update CV (jika `cvHash` SHA-256 berubah) dan saat simpan lamaran baru (`jdEmbedding`). Seluruh pembacaan skor kecocokan dijalankan lokal di Neon PostgreSQL (`pgvector` `<=>`).
 * **Keamanan File PII via Cloudflare R2:** Bucket R2 wajib bersifat **Private** (tidak membuka akses URL publik). Preview PDF CV hanya disajikan via *Presigned URL* berdurasi singkat (5 menit) setelah verifikasi kepemilikan `session.user.id`.
 * **Zero RegEx Policy:** Dilarang menggunakan pola regex (`/pattern/` atau `RegExp`). Seluruh ekstraksi string wajib menggunakan metode bawaan (`.split()`, `.trim()`, `.includes()`) atau validasi skema resmi `zod`.
 * **Pragmatic Engineering (`ponytail`):** Tidak membuat interface berlebih jika implementasinya hanya 1. Menjaga fungsi tetap ringkas dan langsung menyelesaikan masalah.
 * **Keamanan:** Kunci rahasia AI (`GEMINI_API_KEY`), kredensial R2 (`R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`), dan URL Database (`DATABASE_URL`, `DIRECT_URL`) wajib diakses via server-side environment variables, tidak boleh terekspos ke bundle browser client.
+
+---
+
+## 6. Strategi Efisiensi Kuota, Rate Limit (RPM/RPD), & Batching AI
+
+Untuk menjaga stabilitas layanan pada *Free Tier* Google AI Studio sekaligus menyiapkan jalur skala produksi, NextRole memisahkan beban AI ke dua pool model yang berbeda dan menekan jumlah request per sesi:
+
+| Model | Fungsi di NextRole | Pool Limit Free Tier (Estimasi) | Mekanisme Penghematan di Kode |
+| :--- | :--- | :--- | :--- |
+| **`gemini-3.5-flash-lite`** | Smart Job Clipper (Teks / URL / Poster) & Follow-Up Draft | **~15 RPM** · ~250K TPM · ~500–1,000 RPD | Cache deduplikasi **SHA-256** (`JobParseCache` = 0 req pada cache hit), kuota server **2 klip/hari (Guest)** & **5 klip/hari (Terdaftar)**. |
+| **`gemini-embedding-2` (`768d`)** | Vektor CV PDF & Vektor JD Lamaran | **~100 RPM** · ~30K TPM · ~1,000 RPD | Hanya dipanggil saat `cvHash` berubah atau lamaran baru dibuat. Re-embedding sampel Mode Demo digabung memakai **`embedMany()`** (8 JD → **1 batch request tunggal**). |
+| **0-Token Local Compute** | Skor Kecocokan CV, Analitik, Kanban, Kalender, & Hitung H+7 | **Tidak terbatas** (0 AI call) | Dihitung lokal via `pgvector` (`<=>`) di Neon PostgreSQL dan agregasi deterministik di TypeScript. |
+
+### Catatan Kapasitas & Skala RPM
+* **1 sesi demo penuh** (upload CV + re-embed 8 JD sampel via `embedMany()` + 1 ekstrak poster + 1 simpan lamaran) hanya memakai **1–2 request** ke `gemini-3.5-flash-lite` dan **3 request** ke `gemini-embedding-2` (~3K token total).
+* **Titik bottleneck Free Tier** ada pada **15 RPM** milik `gemini-3.5-flash-lite` apabila lebih dari 15 pengguna berbeda secara bersamaan (dalam 60 detik yang sama) menekan *Ekstrak dengan AI* atau *Buat Draf Follow-Up* untuk konten baru (non-cache).
+* **Mitigasi Produksi**: Untuk skala publik di atas 15 permintaan AI serentak per menit, cukup aktifkan *Pay-as-you-go (Tier 1)* pada project Google AI Studio tanpa perubahan kode (limit `gemini-3.5-flash-lite` naik drastis ke ratusan–ribuan RPM dengan biaya sangat rendah).
+
 

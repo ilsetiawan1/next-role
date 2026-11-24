@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { LegalDocumentLayout } from "@/components/layout/LegalDocumentLayout";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Kebijakan privasi pengelolaan data akun, lamaran kerja, dan dokumen CV di NextRole.",
+  alternates: { canonical: "/privacy" },
+};
 
 export default function PrivacyPolicyPage() {
   return (

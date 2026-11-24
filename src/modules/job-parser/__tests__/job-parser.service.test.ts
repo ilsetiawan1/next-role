@@ -54,7 +54,7 @@ describe("jobParserService", () => {
         cache.set(data.contentHash, data.parsedPayload as unknown as ParsedJobPayload);
       },
       async getUserQuota() {
-        return { dailyAiClipsCount: 5, lastClipResetAt: new Date("2026-11-24T01:00:00Z") };
+        return { dailyAiClipsCount: 2, lastClipResetAt: new Date("2026-11-24T01:00:00Z") };
       },
       async updateUserQuota() {
         quotaUpdated = true;
@@ -76,7 +76,7 @@ describe("jobParserService", () => {
       content: "Lowongan Frontend Engineer PT Teknologi Nusantara Jakarta",
     });
     expect(first.meta.cached).toBe(false);
-    expect(first.meta.quotaUsed).toBe(6);
+    expect(first.meta.quotaUsed).toBe(3);
     expect(aiCalls).toBe(1);
     expect(quotaUpdated).toBe(true);
 
@@ -87,19 +87,19 @@ describe("jobParserService", () => {
       content: "  Lowongan Frontend Engineer   PT Teknologi Nusantara Jakarta ",
     });
     expect(second.meta.cached).toBe(true);
-    expect(second.meta.quotaUsed).toBe(5);
+    expect(second.meta.quotaUsed).toBe(2);
     expect(aiCalls).toBe(1);
     expect(quotaUpdated).toBe(false);
   });
 
-  it("rejects with 429 when daily quota of 20 clips is reached", async () => {
+  it("rejects with 429 when daily quota of 5 clips is reached", async () => {
     const repo: JobParserRepositoryPort = {
       async findCacheByHash() {
         return null;
       },
       async saveCache() {},
       async getUserQuota() {
-        return { dailyAiClipsCount: 20, lastClipResetAt: new Date("2026-11-24T01:00:00Z") };
+        return { dailyAiClipsCount: 5, lastClipResetAt: new Date("2026-11-24T01:00:00Z") };
       },
       async updateUserQuota() {},
     };
@@ -116,6 +116,69 @@ describe("jobParserService", () => {
         content: "Lowongan Backend Engineer Go & PostgreSQL di Bandung",
       });
       expect.unreachable("Seharusnya melempar 429 RATE_LIMITED");
+    } catch (error) {
+      expect(error).toBeInstanceOf(AppError);
+      expect((error as AppError).statusCode).toBe(429);
+    }
+  });
+
+  it("extracts POSTER_IMAGE and enforces 2-clip quota for Guest Demo accounts", async () => {
+    let receivedImageMime: string | undefined;
+    const repo: JobParserRepositoryPort = {
+      async findCacheByHash() {
+        return null;
+      },
+      async saveCache() {},
+      async getUserQuota() {
+        return {
+          email: "guest-abc12345@guest.nextrole.local",
+          dailyAiClipsCount: 1,
+          lastClipResetAt: new Date("2026-11-24T01:00:00Z"),
+        };
+      },
+      async updateUserQuota() {},
+    };
+
+    const service = createJobParserService({
+      repo,
+      now: () => new Date("2026-11-24T08:00:00Z"),
+      aiExtract: async (input) => {
+        receivedImageMime = input.image?.mimeType;
+        return SAMPLE_PARSED;
+      },
+    });
+
+    const ok = await service.extract("guest-1", {
+      inputType: "POSTER_IMAGE",
+      imageBase64: Buffer.from("fake-png-bytes-for-unit-test").toString("base64"),
+      mimeType: "image/png",
+    });
+    expect(receivedImageMime).toBe("image/png");
+    expect(ok.meta.quotaUsed).toBe(2);
+    expect(ok.meta.quotaLimit).toBe(2);
+
+    // Guest dengan 2 klip terpakai harus ditolak 429
+    const exhaustedService = createJobParserService({
+      repo: {
+        ...repo,
+        async getUserQuota() {
+          return {
+            email: "guest-abc12345@guest.nextrole.local",
+            dailyAiClipsCount: 2,
+            lastClipResetAt: new Date("2026-11-24T01:00:00Z"),
+          };
+        },
+      },
+      now: () => new Date("2026-11-24T08:00:00Z"),
+      aiExtract: async () => SAMPLE_PARSED,
+    });
+
+    try {
+      await exhaustedService.extract("guest-1", {
+        inputType: "RAW_TEXT",
+        content: "Lowongan QA Engineer Automation Playwright di Jakarta",
+      });
+      expect.unreachable("Guest Demo harus dibatasi 2 klip");
     } catch (error) {
       expect(error).toBeInstanceOf(AppError);
       expect((error as AppError).statusCode).toBe(429);

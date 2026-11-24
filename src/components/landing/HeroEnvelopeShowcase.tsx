@@ -139,7 +139,7 @@ export function HeroEnvelopeShowcase() {
           {/* 2 Tall Fanned Cards Sitting Inside Real Open Envelope */}
           <div className="relative z-10 grid grid-cols-2 gap-1 sm:gap-2 px-5 sm:px-9 pb-14 sm:pb-20">
             {/* Left Card: Spreadsheet Manual */}
-            <div className="hero-card-left rotate-[3deg] translate-y-2 min-h-[118px] sm:min-h-[148px] rounded-2xl bg-white/95 border border-slate-200/80 p-3 sm:p-5 text-left shadow-md">
+            <div className="hero-card-left rotate-3 translate-y-2 min-h-29.5 sm:min-h-37 rounded-2xl bg-white/95 border border-slate-200/80 p-3 sm:p-5 text-left shadow-md">
               <p className="text-[11px] font-medium text-slate-400 truncate">
                 <span className="sm:hidden">Spreadsheet</span>
                 <span className="hidden sm:inline">Spreadsheet Manual</span>
@@ -154,7 +154,7 @@ export function HeroEnvelopeShowcase() {
             </div>
 
             {/* Right Card: NextRole Highlight */}
-            <div className="hero-card-right -rotate-[2deg] min-h-[126px] sm:min-h-[154px] rounded-2xl bg-white border border-sky-200/90 p-3 sm:p-5 text-left shadow-lg shadow-slate-900/8">
+            <div className="hero-card-right -rotate-2 min-h-31.5 sm:min-h-38.5 rounded-2xl bg-white border border-sky-200/90 p-3 sm:p-5 text-left shadow-lg shadow-slate-900/8">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
                 <span className="text-[11px] sm:text-xs font-medium text-slate-600 whitespace-nowrap">
                   PT Telkom Digital
@@ -178,7 +178,7 @@ export function HeroEnvelopeShowcase() {
             aria-hidden="true"
             viewBox="0 0 600 160"
             preserveAspectRatio="none"
-            className="absolute inset-x-0 bottom-0 w-full h-[104px] sm:h-[144px] z-20 pointer-events-none"
+            className="absolute inset-x-0 bottom-0 w-full h-26 sm:h-36 z-20 pointer-events-none"
           >
             <defs>
               <linearGradient id="envFrontGrey" x1="0" y1="0" x2="0" y2="1">
@@ -210,7 +210,7 @@ export function HeroEnvelopeShowcase() {
             className="hidden sm:block absolute -inset-x-8 -bottom-4 h-18 z-30 pointer-events-none"
             style={{
               background:
-                "linear-gradient(180deg, rgba(238,246,255,0) 0%, rgba(238,246,255,0.78) 58%, #EEF6FF 100%)",
+                "linear-gradient(180deg, rgba(239,246,255,0) 0%, rgba(239,246,255,0.82) 58%, #EFF6FF 100%)",
             }}
           />
         </div>

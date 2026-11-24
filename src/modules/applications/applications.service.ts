@@ -1,4 +1,4 @@
-import { generateEmbedding768 } from "@/config/ai";
+import { generateEmbedding768, generateEmbeddings768Batch } from "@/config/ai";
 import { ERROR_MESSAGES } from "@/constants/application";
 import { AppError } from "@/middlewares/error-handler";
 import { calculateFollowUpDate } from "@/utils/date";
@@ -23,13 +23,16 @@ export interface ApplicationsRepositoryPort {
 }
 
 export type EmbeddingGenerator = (text: string) => Promise<number[]>;
+export type BatchEmbeddingGenerator = (texts: string[]) => Promise<number[][]>;
 
 export function createApplicationsService(deps?: {
   repo?: ApplicationsRepositoryPort;
   generateEmbedding?: EmbeddingGenerator;
+  generateEmbeddingsBatch?: BatchEmbeddingGenerator;
 }) {
   const repo = deps?.repo ?? applicationsRepository;
   const generateEmbedding = deps?.generateEmbedding ?? generateEmbedding768;
+  const generateEmbeddingsBatch = deps?.generateEmbeddingsBatch ?? generateEmbeddings768Batch;
 
   return {
     async listApplications(
@@ -180,6 +183,34 @@ export function createApplicationsService(deps?: {
       }
       const label = language === "id" ? "Bahasa Indonesia" : "English";
       await repo.createActivityLog(id, "FOLLOW_UP_DRAFTED", `Draf pesan follow-up (${label}) dibuat.`);
+    },
+
+    async reembedUserApplications(userId: string): Promise<void> {
+      const apps = await repo.listByUser(userId, {});
+      const targets = apps
+        .map((app) => ({
+          id: app.id,
+          text: [
+            app.position,
+            app.companyName,
+            app.keyRequirements.join(", "),
+            app.jdSnapshot ?? "",
+          ]
+            .filter((part) => part.trim().length > 0)
+            .join("\n"),
+        }))
+        .filter((item) => item.text.length >= 10);
+
+      if (targets.length === 0) return;
+
+      const vectors = await generateEmbeddingsBatch(targets.map((t) => t.text));
+      await Promise.allSettled(
+        targets.map((target, idx) => {
+          const vec = vectors[idx];
+          if (!vec) return Promise.resolve();
+          return repo.updateEmbedding(target.id, toVectorLiteral(vec));
+        })
+      );
     },
   };
 }

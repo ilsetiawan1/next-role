@@ -5,16 +5,44 @@ import { HeroEnvelopeShowcase } from "@/components/landing/HeroEnvelopeShowcase"
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 import { LandingNavbar } from "@/components/landing/LandingNavbar";
 import { LandingFooter } from "@/components/layout/LandingFooter";
+import { getSiteUrl } from "@/lib/site";
 
 export default function LandingPage() {
+  const siteUrl = getSiteUrl();
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "NextRole",
+    url: siteUrl,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    inLanguage: "id-ID",
+    description:
+      "Asisten pencarian kerja cerdas dengan Smart AI Job Clipper, papan Kanban 5 tahap, arsip JD permanen, skor kecocokan CV, dan pengingat follow-up H+7.",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "IDR",
+    },
+  };
+
   return (
-    <div className="min-h-dvh flex flex-col bg-[#EEF6FF]">
+    <div
+      className="min-h-dvh flex flex-col"
+      style={{
+        background: "linear-gradient(180deg, #EFF6FF 0%, #DBEAFE 55%, #E0F2FE 100%)",
+      }}
+    >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero Section dengan gradasi sky-blue murni persis desain FigCraft */}
       <section
         className="relative overflow-hidden pb-10 sm:pb-12 pt-5"
         style={{
           background:
-            "linear-gradient(180deg, #0369A1 0%, #0284C7 34%, #2CA4E6 60%, #9AD5F7 78%, #EEF6FF 94%, #EEF6FF 100%)",
+            "linear-gradient(180deg, #0369A1 0%, #0284C7 34%, #2CA4E6 60%, #9AD5F7 78%, #EFF6FF 94%, #EFF6FF 100%)",
         }}
       >
 

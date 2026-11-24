@@ -57,7 +57,12 @@ describe("computeAnalyticsSummary", () => {
     expect(summary.responseRate).toBe(50);
     expect(summary.followUpDueCount).toBe(1);
     expect(summary.avgMatchScore).toBe(80);
-    expect(summary.sources[0]).toEqual({ name: "LinkedIn", total: 2, responded: 1 });
-    expect(summary.topRequirements[0]).toEqual({ skill: "TypeScript", count: 2 });
+    expect(summary.sources[0]).toEqual({
+      name: "LinkedIn",
+      total: 2,
+      responded: 1,
+      responseRate: 50,
+    });
+    expect(summary.topRequirements[0]).toEqual({ skill: "TypeScript", count: 2, pct: 100 });
   });
 });

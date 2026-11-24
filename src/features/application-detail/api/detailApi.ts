@@ -10,6 +10,30 @@ export async function fetchApplicationDetail(id: string): Promise<ApplicationDto
   return json.data as ApplicationDto;
 }
 
+export async function updateApplicationApi(
+  id: string,
+  payload: {
+    location?: string | null;
+    employmentType?: string | null;
+    salaryRange?: string | null;
+    jobSource?: string | null;
+    jobUrl?: string | null;
+    recruiterName?: string | null;
+    recruiterContact?: string | null;
+  }
+): Promise<ApplicationDto> {
+  const res = await fetch(`/api/v1/applications/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const json = await res.json();
+  if (!res.ok) {
+    throw new Error(json?.error?.message ?? "Gagal menyimpan perubahan lamaran.");
+  }
+  return json.data as ApplicationDto;
+}
+
 export async function updateApplicationStatusApi(
   id: string,
   status: ApplicationStatusType,
