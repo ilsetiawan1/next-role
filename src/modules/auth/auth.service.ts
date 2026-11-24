@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { GUEST_EMAIL_DOMAIN, isGuestEmail } from "@/constants/application";
 import { AppError } from "@/middlewares/error-handler";
 import { hashPassword, verifyPassword } from "@/utils/password";
 import { authRepository, type AuthUserRecord } from "./auth.repository";
@@ -8,6 +9,8 @@ export interface AuthRepositoryPort {
   findUserByEmail: typeof authRepository.findUserByEmail;
   createUser: typeof authRepository.createUser;
   upsertOAuthUser: typeof authRepository.upsertOAuthUser;
+  deleteExpiredGuestUsers?: typeof authRepository.deleteExpiredGuestUsers;
+  seedGuestWorkspace?: typeof authRepository.seedGuestWorkspace;
 }
 
 export interface SafeAuthUser {
@@ -24,7 +27,7 @@ function toSafeUser(user: AuthUserRecord): SafeAuthUser {
     name: user.name,
     email: user.email,
     image: user.image,
-    isGuest: user.email.endsWith("@guest.nextrole.local"),
+    isGuest: isGuestEmail(user.email),
   };
 }
 
@@ -78,11 +81,30 @@ export function createAuthService(repo: AuthRepositoryPort = authRepository) {
     },
 
     async provisionGuestUser(): Promise<SafeAuthUser> {
+      // Bersihkan akun guest berusia > 24 jam secara best-effort agar DB Neon tetap ramping
+      if (repo.deleteExpiredGuestUsers) {
+        try {
+          const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000);
+          await repo.deleteExpiredGuestUsers(cutoff);
+        } catch (error) {
+          console.error("[GUEST_CLEANUP_WARNING]", error);
+        }
+      }
+
       const shortId = randomUUID().slice(0, 8);
       const user = await repo.createUser({
-        name: "Guest Explorer",
-        email: `guest-${shortId}@guest.nextrole.local`,
+        name: "Ilham Setiawan (Demo)",
+        email: `guest-${shortId}${GUEST_EMAIL_DOMAIN}`,
       });
+
+      if (repo.seedGuestWorkspace) {
+        try {
+          await repo.seedGuestWorkspace(user.id);
+        } catch (error) {
+          console.error("[GUEST_SEED_WARNING]", error);
+        }
+      }
+
       return toSafeUser(user);
     },
   };

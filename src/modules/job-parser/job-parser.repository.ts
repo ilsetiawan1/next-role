@@ -10,6 +10,7 @@ export interface JobParseCacheRecord {
 }
 
 export interface UserQuotaRecord {
+  email?: string;
   dailyAiClipsCount: number;
   lastClipResetAt: Date;
 }
@@ -53,6 +54,7 @@ export const jobParserRepository = {
     return db.user.findUnique({
       where: { id: userId },
       select: {
+        email: true,
         dailyAiClipsCount: true,
         lastClipResetAt: true,
       },

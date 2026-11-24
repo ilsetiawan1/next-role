@@ -1,69 +1,88 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { FeaturesTabs } from "@/components/landing/FeaturesTabs";
+import { HeroEnvelopeShowcase } from "@/components/landing/HeroEnvelopeShowcase";
+import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
+import { LandingNavbar } from "@/components/landing/LandingNavbar";
+import { LandingFooter } from "@/components/layout/LandingFooter";
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="min-h-dvh flex flex-col bg-[#EEF6FF]">
+      {/* Hero Section dengan gradasi sky-blue murni persis desain FigCraft */}
+      <section
+        className="relative overflow-hidden pb-10 sm:pb-12 pt-5"
+        style={{
+          background:
+            "linear-gradient(180deg, #0369A1 0%, #0284C7 34%, #2CA4E6 60%, #9AD5F7 78%, #EEF6FF 94%, #EEF6FF 100%)",
+        }}
+      >
+
+        {/* Floating Top Navbar (Desktop Links + Mobile Circular Hamburger Menu) */}
+        <LandingNavbar />
+
+        {/* Hero Copy + Interactive Envelope Showcase (GSAP) */}
+        <div id="top">
+          <HeroEnvelopeShowcase />
+        </div>
+      </section>
+
+      {/* Features Showcase (macOS Browser Mockup + 5 Live Interactive States) */}
+      <section id="features" className="mx-auto w-full max-w-6xl px-4 sm:px-6 py-16">
+        <div className="text-center">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Features
+          </h2>
+          <p className="mt-2 text-sm sm:text-base text-slate-600">
+            Lihat langsung cara NextRole merapikan setiap tahap lamaranmu
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <FeaturesTabs />
+      </section>
+
+      {/* How It Works (Tilted Cards + Corner 3D Icons + Curved Arrows + ScrollTrigger) */}
+      <HowItWorksSection />
+
+      {/* Bottom CTA Banner — Ocean-Sky Gradient + Soft Luminous Orbs persis FigCraft */}
+      <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 py-12">
+        <div
+          className="rounded-4xl px-6 py-12 sm:px-12 sm:py-16 text-center text-white shadow-xl shadow-sky-700/15 relative overflow-hidden"
+          style={{
+            background: "linear-gradient(135deg, #0B5E98 0%, #0E86C7 52%, #19B4E3 100%)",
+          }}
+        >
+          {/* Decorative Soft Sky Orbs persis FigCraft */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-16 -bottom-24 h-64 w-64 rounded-full bg-sky-300/25 blur-xs"
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-12 -bottom-20 h-60 w-60 rounded-full bg-cyan-200/30 blur-xs"
+          />
+
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight relative z-10">
+            Mulai kelola lamaranmu dengan lebih
+            <br className="hidden sm:inline" /> tenang
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm sm:text-base text-sky-100 relative z-10">
+            Arsipkan JD permanen, cek skor kecocokan CV otomatis, dan jangan lewatkan follow-up H+7
+            lagi.
+          </p>
+          <div className="mt-7 relative z-10">
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-2 rounded-full bg-[#D4FF47] text-[#0C4A6E] px-6 py-3.5 text-sm font-bold hover:brightness-95 transition shadow-sm"
+            >
+              Coba Mode Demo
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
-      </main>
+      </section>
+
+      <LandingFooter />
     </div>
   );
 }

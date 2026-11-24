@@ -5,8 +5,8 @@ import { generateEmbedding768 } from "@/config/ai";
 import { getR2BucketName, getR2Client } from "@/config/r2";
 import {
   ERROR_MESSAGES,
+  getClipQuotaLimitForEmail,
   MAX_CV_FILE_SIZE_BYTES,
-  MAX_DAILY_AI_CLIPS,
 } from "@/constants/application";
 import { AppError } from "@/middlewares/error-handler";
 import { isSameUtcDay } from "@/utils/date";
@@ -86,7 +86,7 @@ function formatProfileResponse(profile: UserProfileRecord, now: Date) {
     image: profile.image,
     quota: {
       used: sameDay ? profile.dailyAiClipsCount : 0,
-      limit: MAX_DAILY_AI_CLIPS,
+      limit: getClipQuotaLimitForEmail(profile.email),
     },
     cv: profile.cvFileKey
       ? {
