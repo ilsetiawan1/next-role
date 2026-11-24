@@ -1,159 +1,73 @@
-# NextRole — Intelligent Job Hunt Assistant
+# NextRole
 
-Platform asisten pelacakan lamaran kerja untuk mengotomatisasi pencatatan lowongan berbasis AI, mengarsipkan deskripsi pekerjaan (*Job Description Snapshot*) secara utuh, memantau tindak lanjut HRD (*Follow-Up H+7*), serta mengevaluasi efektivitas pencarian karier dalam satu ruang kerja terstruktur.
+**NextRole** is an AI-assisted job application tracker that helps job seekers capture job postings quickly, manage their application pipeline visually, measure CV-to-job match scores, and stay on top of H+7 follow-ups.
 
----
+## Key Features
 
-## Ringkasan Masalah & Solusi
-
-Proses melamar kerja sering terhambat oleh empat kendala utama:
-1. **Lowongan Dihapus Sebelum Wawancara:** Iklan lowongan di portal kerja kerap ditutup ketika HRD baru menghubungi kandidat secara mendadak, sehingga pelamar kehilangan detail kualifikasi dan rentang gaji.
-2. **Input Manual yang Melelahkan:** Menyalin nama perusahaan, posisi, sumber portal, dan persyaratan ke spreadsheet satu per satu menyita waktu.
-3. **Sulit Menjaga Ritme Follow-Up:** Pelamar kerap lupa menindaklanjuti lamaran yang sudah melewati batas wajar tanpa respon atau bingung menyusun pesan yang tepat.
-4. **Histori Statistik Rusak:** Menghapus data lamaran yang ditolak menghilangkan metrik evaluasi konversi portal dan tingkat respon perusahaan.
-
-**NextRole** menjawab kendala tersebut melalui kapabilitas inti berikut:
-* **Smart Job Clipper (Otomatis AI & Manual):** Mendukung ekstraksi terstruktur dari tautan iklan, tangkapan layar (*screenshot*), PDF, maupun teks mentah menggunakan **Google Gemini 3.5 Flash Lite** dengan cache deduplikasi SHA-256, lengkap dengan pencatatan sumber portal (`jobSource`, `jobUrl`) dan penyimpanan deskripsi pekerjaan secara utuh. Mode input manual juga tersedia dengan kolom sumber bersifat opsional.
-* **Profil CV PDF & Pencocokan Semantik (`pgvector`):** Pengguna dapat mengunggah file PDF CV di halaman `Profile` (disimpan aman di **Cloudflare R2 Private Bucket** dengan *Presigned URL* agar tetap bisa di-preview kapan saja) sementara vektor `768d` dari **Gemini Embedding 2** disimpan di PostgreSQL Neon untuk menghitung persentase kecocokan CV vs lowongan secara instan dengan 0 token AI saat membaca.
-* **5-Column Kanban Pipeline:** Papan visual progres lamaran langsung tanpa daftar tunggu (*Wishlist*), meliputi `Applied`, `Follow-Up Needed`, `Interview`, `Offered`, dan `Rejected / Ghosted`.
-* **Detail Lamaran & Generator Follow-Up Dwi-Bahasa:** Drawer detail yang memuat ringkasan riwayat, arsip deskripsi pekerjaan untuk persiapan wawancara mendadak, indikator H+7, serta pembuat draf pesan follow-up ke HRD dalam Bahasa Indonesia dan Bahasa Inggris.
-* **Career Analytics Dashboard:** Evaluasi data riil meliputi kecepatan respon HRD, konversi antar-tahap pipeline, rata-rata *lead time*, distribusi gaji & tipe kerja, efektivitas portal sumber, hingga daftar kualifikasi teknis yang paling sering diminta.
-* **Soft-Delete Protection:** Arsip lamaran yang dihapus tetap menjaga integritas statistik dan dapat dipulihkan dari halaman Profile.
-* **1-Click Guest / Demo Mode:** Opsi uji coba instan di halaman autentikasi berdampingan dengan login Google OAuth.
-
----
-
-## Struktur Modul & Navigasi Aplikasi
-
-### Antarmuka Pengguna (Desktop 1440px, Tablet 834px, Mobile 390px)
-* **Home:** Ringkasan harian, *search & quick filter*, daftar lamaran yang memerlukan tindak lanjut H+7, status pipeline terkini, statistik ringkas, serta kalender agenda.
-* **Roles:** Papan Kanban interaktif 5 kolom dengan pembaruan status *drag-and-drop* dan akses cepat ke drawer detail lamaran.
-* **Analytics:** Evaluasi performa pencarian kerja (*Kecepatan Respon HRD*, *Konversi Pipeline*, *Lead Time Tahapan*, *Preferensi & Gaji*, *Efektivitas Portal Sumber*, dan *Kualifikasi Diminta*).
-* **Profile:** Kartu identitas pengguna dengan statistik karier ringkas (`Total Lamaran`, `Wawancara`, `Penawaran`, `Tingkat Respon`) serta pengelompokan menu **Account** (kuota AI Clipper 20 klip/hari, koneksi Google), **Preferences** (toggle pengingat H+7, bahasa draf pesan), **Data & Privacy** (ekspor CSV/JSON, pemulihan arsip), dan **Session**.
-
-### Bahasa Visual (*Soft Sky Glass*)
-* **Palet Warna:** Latar gradien biru langit lembut (`#F4F9FF` ke `#E3F1FD`), permukaan kartu kaca putih semi-transparan (`#FFFFFFE0`), aksen utama biru (`#0284C7` / `#0369A1`), serta sorotan fungsional kuning neon (`#D4FF47`) pada CTA utama dan indikator kuota.
-* **Tipografi:** `Poppins` dan `Plus Jakarta Sans` dengan bobot ringan (`Regular` dan `Medium`) tanpa penggunaan `Bold` berlebih.
-
----
-
-## Arsitektur Sistem
-
-NextRole dirancang menggunakan arsitektur monolit modular dengan pemisahan tanggung jawab yang jelas antara lapisan antarmuka dan layanan backend.
-
-### 1. Frontend: Feature-Driven Architecture (FDA)
-```text
-src/
-├── components/ui/             # Komponen atomik bersama (Button, Input, Modal, Drawer, Badge)
-├── features/
-│   ├── auth/                  # Autentikasi (Google OAuth & Guest Demo Session)
-│   ├── clipper/               # Modal Smart Job Clipper (AI Extract Link/Gambar & Input Manual)
-│   ├── kanban/                # Papan visual Kanban 5 kolom drag-and-drop (DnD-Kit)
-│   ├── application-detail/    # Drawer detail, arsip JD, follow-up generator, & skor kecocokan CV
-│   ├── profile/               # Manajemen akun, kuota AI, upload & preview PDF CV (Cloudflare R2)
-│   └── analytics/             # Visualisasi metrik performa karier
-└── app/                       # Next.js App Router (Pages, Layouts, API Route Handlers)
-```
-
-### 2. Backend: Modular Layered Architecture & Repository Pattern
-```text
-src/
-├── config/                    # Singleton Prisma Client, Google AI SDK, Cloudflare R2 S3 Client
-├── constants/                 # Enum ApplicationStatus & pesan standar
-├── middlewares/               # Auth guard, error handler, input sanitizer
-├── utils/                     # Fungsi helper murni (tanggal, SHA-256 hash, & formatter)
-└── modules/
-    ├── auth/                  # Manajemen sesi akun & Guest Mode
-    ├── profile/               # Upload/hapus PDF CV di R2, Presigned URL preview, & CV embedding (768d)
-    ├── job-parser/            # Ekstraksi lowongan via Gemini 3.5 Flash Lite + cache SHA-256
-    ├── applications/          # CRUD lamaran, JD embedding, match score pgvector, soft delete
-    └── follow-up/             # Perhitungan H+7 & generator draf pesan dwi-bahasa
-        ├── <modul>.routes.ts
-        ├── <modul>.controller.ts
-        ├── <modul>.service.ts
-        ├── <modul>.repository.ts
-        ├── <modul>.openapi.ts
-        └── __tests__/
-```
-
-* **Aliran Eksekusi Data:** `Client Request -> Routes -> Controller -> Service -> Repository -> Prisma / Neon (pgvector)` (didukung AI SDK & Cloudflare R2 di lapisan Service).
-* **Dokumentasi API Terintegrasi:** Setiap modul menyertakan kontrak OpenAPI kolokasi (`<modul>.openapi.ts`) yang disajikan secara interaktif melalui Scalar di endpoint `/docs`.
-
----
+- **Smart Job Clipper** — Paste a raw job description or job URL to extract structured details (company, role, location, salary, and key requirements) with built-in deduplication caching and daily quota management.
+- **Visual Kanban Pipeline** — Track applications across 5 actionable stages (`Applied`, `Follow-Up Needed`, `Interview`, `Offered`, `Rejected / Ghosted`) with drag-and-drop updates and activity history.
+- **Permanent JD Archiving** — Saves a permanent snapshot of each job description so details stay accessible even after the original posting expires.
+- **Semantic CV Match Score** — Upload your PDF resume once and automatically see a 0–100% relevance score against every saved job posting.
+- **H+7 Follow-Up Assistant** — Automatic follow-up reminders with polite Indonesian & English draft message generation.
+- **1-Click Guest Demo & Google OAuth** — Try the workspace immediately in guest mode or sign in with Google.
 
 ## Tech Stack
 
-* **Framework:** Next.js (App Router, React 19, TypeScript)
-* **Styling & Interaksi:** Tailwind CSS, Lucide Icons, DnD-Kit
-* **Autentikasi:** Auth.js (NextAuth v5) — Google OAuth & Guest Session
-* **Database & ORM:** PostgreSQL + `pgvector` (Neon Serverless) melalui Prisma ORM v6+ (koneksi *pooled* port `6543`)
-* **Penyimpanan File (PDF CV):** Cloudflare R2 (`Standard`, Private Bucket + Presigned URL) melalui `@aws-sdk/client-s3`
-* **Mesin AI:** Google Gemini 3.5 Flash Lite & Gemini Embedding 2 (`768d`) melalui Vercel AI SDK (`ai` & `@ai-sdk/google`)
-* **Dokumentasi API:** Scalar API Reference (`@scalar/nextjs-api-reference`)
-* **Deployment:** Vercel (region Singapore)
-* **Desain Kanvas:** FigCraft
+- **Framework:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS
+- **Runtime & Package Manager:** Bun
+- **Database & Vector Search:** PostgreSQL (Neon Serverless + `pgvector`) with Prisma ORM
+- **AI Engine:** Vercel AI SDK + Google Gemini (`gemini-3.5-flash-lite` & `gemini-embedding-2`)
+- **Object Storage:** Cloudflare R2 (Private Bucket + Presigned URLs)
+- **Authentication & API Docs:** Auth.js v5 (`next-auth`) & Scalar OpenAPI (`/docs`)
 
----
+## Getting Started
 
-## Standar Rekayasa & Keamanan
+### Prerequisites
 
-1. **Zero RegEx Policy:** Seluruh logika validasi dan pengolahan string dilarang menggunakan Regular Expression (`RegExp` / `/pattern/`) untuk mencegah kerentanan ReDoS dan menjaga keterbacaan kode. Validasi format memanfaatkan `zod` dan parser standar (`new URL()`), sedangkan pengolahan teks memakai metode native string (`.includes()`, `.startsWith()`, `.split()`, `.trim()`).
-2. **Strict Ownership Guard:** Validasi kepemilikan data (`userId`), akses PDF CV via Presigned URL terbatas waktu, dan penyaringan arsip terhapus (`deletedAt IS NULL`) ditegakkan di lapisan Service dan Repository.
-3. **Pragmatic Engineering:** Menghindari abstraksi dan wrapper berlebihan di luar kebutuhan nyata.
-4. **Proteksi Kredensial:** Kunci sensitif (`DATABASE_URL`, `AUTH_SECRET`, `GEMINI_API_KEY`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`) hanya dibaca pada lingkungan server.
+- [Bun](https://bun.sh/) `>= 1.2`
+- A PostgreSQL database with `pgvector` enabled (e.g., [Neon](https://neon.tech/))
+- API credentials for Google Gemini, Google OAuth, and Cloudflare R2
 
----
-
-## Dokumen Spesifikasi & Status Pengembangan
-
-Seluruh cetak biru produk dan desain tersimpan di direktori [docs](docs):
-* [Product Requirements Document (PRD)](docs/PRD.md)
-* [Technical Specification Document (TSD)](docs/TSD.md)
-* [UI/UX Design Guide](docs/DESIGN.md)
-* [Execution Roadmap (5 Sprint)](docs/ROADMAP.md)
-* [Agent & Engineering Rules](AGENTS.md)
-
-**Status Saat Ini:** Penyelesaian desain antarmuka *multi-device* (Mobile, Tablet, Desktop) pada [docs/next-role.figcraft](docs/next-role.figcraft) serta sinkronisasi dokumen spesifikasi (**Sprint 1**) sebelum masuk ke tahap inisialisasi proyek Next.js dan implementasi backend (**Sprint 2–5**).
-
----
-
-## Persiapan Lingkungan Lokal (Tahap Implementasi)
+### Installation
 
 ```bash
+# 1. Clone the repository
 git clone https://github.com/ilsetiawan1/next-role.git
 cd next-role
+
+# 2. Install dependencies
+bun install
+
+# 3. Configure environment variables
+cp .env.example .env
+# Fill in DATABASE_URL, DIRECT_URL, GEMINI_API_KEY, AUTH_*, and R2_* values
+
+# 4. Run database migrations & generate Prisma client
+bunx prisma migrate dev
+bunx prisma generate
+
+# 5. Start the development server
+bun run dev
 ```
 
-Konfigurasi variabel `.env` saat inisialisasi aplikasi Next.js di Sprint 2:
+Open [http://localhost:3000](http://localhost:3000) in your browser, and view interactive API documentation at `/docs`.
 
-```env
-DATABASE_URL="postgresql://user:password@ep-sample-pooler.region.aws.neon.tech/nextrole?sslmode=require&pgbouncer=true"
-DIRECT_URL="postgresql://user:password@ep-sample.region.aws.neon.tech/nextrole?sslmode=require"
+## Scripts
 
-AUTH_SECRET="your-super-secret-key-min-32-chars"
-AUTH_URL="http://localhost:3000"
+| Command | Description |
+|---|---|
+| `bun run dev` | Start the Next.js development server |
+| `bun run build` | Build the production application |
+| `bun run start` | Start the production server |
+| `bun test` | Run unit and integration tests |
+| `bun run lint` | Run ESLint checks |
 
-GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET="your-google-client-secret"
+## Documentation
 
-GEMINI_API_KEY="your-google-gemini-api-key"
+- [Product Requirements (PRD)](docs/PRD.md)
+- [Technical Specification (TSD)](docs/TSD.md)
+- [Design System](docs/DESIGN.md)
 
-R2_ACCOUNT_ID="your-cloudflare-account-id"
-R2_ACCESS_KEY_ID="your-r2-access-key-id"
-R2_SECRET_ACCESS_KEY="your-r2-secret-access-key"
-R2_BUCKET_NAME="nextrole-storage"
-```
+## License
 
----
-
-## Standar Git Workflow
-
-* **Branch Utama:** Dilarang melakukan commit langsung ke `main`.
-* **Isolasi Perubahan:** Gunakan penamaan branch terpisah sesuai konteks (`feat/<fitur>`, `fix/<bug>`, `refactor/<modul>`).
-* **Conventional Commits:** Gunakan awalan standar (`feat:`, `fix:`, `refactor:`, `style:`, `test:`, `docs:`).
-
----
-
-## Lisensi
-
-Proyek ini dikembangkan untuk keperluan portofolio profesional dan penggunaan personal.
+MIT

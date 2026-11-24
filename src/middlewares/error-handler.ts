@@ -17,6 +17,18 @@ export class AppError extends Error {
  * Mengubah error internal menjadi response JSON aman tanpa membocorkan stack trace.
  */
 export function handleApiError(error: unknown): NextResponse {
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "digest" in error &&
+    typeof (error as { digest?: unknown }).digest === "string"
+  ) {
+    const digest = (error as { digest: string }).digest;
+    if (digest === "HANGING_PROMISE_REJECTION" || digest.startsWith("NEXT_")) {
+      throw error;
+    }
+  }
+
   if (error instanceof AppError) {
     return NextResponse.json(
       { error: { code: error.code, message: error.message } },
