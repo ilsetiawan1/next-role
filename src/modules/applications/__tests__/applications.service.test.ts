@@ -130,4 +130,47 @@ describe("applicationsService & vector utils", () => {
     const list = await service.listApplications("user-a", {});
     expect(list.length).toBe(0);
   });
+
+  it("re-embeds all user applications in a single batch call via embedMany", async () => {
+    let batchCalls = 0;
+    let batchSize = 0;
+    const updatedIds: string[] = [];
+    const baseRepo = createInMemoryApplicationsRepo();
+    const repo: ApplicationsRepositoryPort = {
+      ...baseRepo,
+      async updateEmbedding(id, vec) {
+        updatedIds.push(id);
+        await baseRepo.updateEmbedding(id, vec);
+      },
+    };
+
+    const service = createApplicationsService({
+      repo,
+      generateEmbedding: async () => Array.from({ length: 768 }, () => 0.1),
+      generateEmbeddingsBatch: async (texts) => {
+        batchCalls += 1;
+        batchSize = texts.length;
+        return texts.map(() => Array.from({ length: 768 }, () => 0.25));
+      },
+    });
+
+    await service.createApplication("user-batch", {
+      companyName: "Tokopedia",
+      position: "Frontend Engineer",
+      keyRequirements: ["React", "TypeScript"],
+      jdSnapshot: "Membangun antarmuka e-commerce dengan React dan Next.js.",
+    });
+    await service.createApplication("user-batch", {
+      companyName: "GoTo",
+      position: "Fullstack Engineer",
+      keyRequirements: ["Node.js", "PostgreSQL"],
+      jdSnapshot: "Mengembangkan layanan backend Node.js dan database PostgreSQL.",
+    });
+
+    updatedIds.length = 0;
+    await service.reembedUserApplications("user-batch");
+    expect(batchCalls).toBe(1);
+    expect(batchSize).toBe(2);
+    expect(updatedIds.length).toBe(2);
+  });
 });

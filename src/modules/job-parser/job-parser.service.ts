@@ -273,11 +273,11 @@ export function createJobParserService(deps?: {
         }
       }
 
-      // 2. Cek batas kuota harian (3 klip untuk Mode Demo, 20 klip/hari untuk akun terdaftar)
+      // 2. Cek batas kuota harian (2 klip untuk Mode Demo, 5 klip/hari untuk akun terdaftar)
       if (currentQuotaUsed >= quotaLimit) {
         const message =
           quotaRecord.email && isGuestEmail(quotaRecord.email)
-            ? `Kuota Mode Demo (${quotaLimit} klip AI) telah tercapai. Masuk dengan Google untuk mendapatkan 20 klip/hari.`
+            ? `Kuota Mode Demo (${quotaLimit} klip AI) telah tercapai. Masuk dengan Google untuk mendapatkan ${MAX_DAILY_AI_CLIPS} klip/hari.`
             : ERROR_MESSAGES.QUOTA_EXCEEDED;
         throw new AppError(429, message, "RATE_LIMITED");
       }

@@ -13,7 +13,7 @@ export function LandingNavbar() {
       <nav className="flex items-center justify-between rounded-full bg-white/15 backdrop-blur-xl border border-white/30 px-3.5 sm:px-6 py-2 text-white">
         <Link href="/" className="flex items-center gap-2.5">
           <Image
-            src="/images/brand/logo.jpg"
+            src="/images/brand/android-chrome-192x192.png"
             alt="NextRole Logo"
             width={34}
             height={34}

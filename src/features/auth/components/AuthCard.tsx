@@ -99,11 +99,11 @@ export function AuthCard() {
   return (
     <div
       ref={cardRef}
-      className="w-full max-w-[440px] sm:max-w-[680px] lg:max-w-5xl rounded-[32px] bg-white/95 backdrop-blur-xl border border-white shadow-[0_24px_60px_-15px_rgba(2,132,199,0.2)] p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-4"
+      className="w-full max-w-110 sm:max-w-170 lg:max-w-5xl rounded-4xl bg-white/95 backdrop-blur-xl border border-white shadow-[0_24px_60px_-15px_rgba(2,132,199,0.2)] p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-4"
     >
       {/* Blue Visual Banner — Side-by-side characters on Tablet (sm..lg), Stacked on Desktop (lg+) */}
       <div
-        className="lg:col-span-5 rounded-[24px] p-6 sm:p-7 lg:p-8 text-white flex flex-col sm:flex-row lg:flex-col justify-between items-start sm:items-end lg:items-stretch gap-4 relative overflow-hidden min-h-[200px] sm:min-h-[250px] lg:min-h-[580px]"
+        className="lg:col-span-5 rounded-3xl p-6 sm:p-7 lg:p-8 text-white flex flex-col sm:flex-row lg:flex-col justify-between items-start sm:items-end lg:items-stretch gap-4 relative overflow-hidden min-h-50 sm:min-h-62.5 lg:min-h-145"
         style={{
           background: "linear-gradient(135deg, #0B5E98 0%, #0E86C7 55%, #1BB3E3 100%)",
         }}
@@ -155,7 +155,7 @@ export function AuthCard() {
             alt="Ilustrasi pengguna NextRole"
             width={340}
             height={300}
-            className="w-52 lg:w-full lg:max-w-[300px] h-auto object-contain drop-shadow-lg"
+            className="w-52 lg:w-full lg:max-w-75 h-auto object-contain drop-shadow-lg"
             priority
           />
         </div>
@@ -166,7 +166,7 @@ export function AuthCard() {
         <div className="mx-auto w-full max-w-md">
           <div className="flex items-center justify-center gap-2.5">
             <Image
-              src="/images/brand/logo.jpg"
+              src="/images/brand/android-chrome-192x192.png"
               alt="NextRole Logo"
               width={32}
               height={32}

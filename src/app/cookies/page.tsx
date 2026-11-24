@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { LegalDocumentLayout } from "@/components/layout/LegalDocumentLayout";
+
+export const metadata: Metadata = {
+  title: "Cookie Policy",
+  description: "Kebijakan cookie esensial untuk autentikasi dan keamanan sesi di NextRole.",
+  alternates: { canonical: "/cookies" },
+};
 
 export default function CookiePolicyPage() {
   return (

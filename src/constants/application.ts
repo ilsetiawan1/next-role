@@ -1,5 +1,5 @@
-export const MAX_DAILY_AI_CLIPS = 20;
-export const MAX_GUEST_AI_CLIPS = 3;
+export const MAX_DAILY_AI_CLIPS = 5;
+export const MAX_GUEST_AI_CLIPS = 2;
 export const GUEST_EMAIL_DOMAIN = "@guest.nextrole.local";
 export const MAX_CV_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 export const FOLLOW_UP_DAYS_THRESHOLD = 7;
@@ -28,7 +28,7 @@ export const ERROR_MESSAGES = {
   FORBIDDEN: "Anda tidak memiliki akses ke data ini.",
   NOT_FOUND: "Data lamaran tidak ditemukan.",
   INVALID_INPUT: "Data masukan tidak valid.",
-  QUOTA_EXCEEDED: "Kuota harian 20 klip AI telah tercapai. Silakan coba lagi besok.",
+  QUOTA_EXCEEDED: `Kuota harian ${MAX_DAILY_AI_CLIPS} klip AI telah tercapai. Silakan coba lagi besok.`,
   PDF_TOO_LARGE: "Ukuran file PDF CV maksimal 5 MB.",
   PDF_ONLY: "Hanya file berformat PDF yang diizinkan.",
   INTERNAL_ERROR: "Terjadi kesalahan pada server. Silakan coba beberapa saat lagi.",

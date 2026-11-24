@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { AnalyticsView } from "@/features/analytics";
 import type { ApplicationDto } from "@/features/shared/workspace-types";
 import { auth } from "@/modules/auth/auth.config";
@@ -7,6 +8,7 @@ import { applicationsService } from "@/modules/applications/applications.service
 export const instant = false;
 
 export default async function AnalyticsPage() {
+  await connection();
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
@@ -21,5 +23,11 @@ export default async function AnalyticsPage() {
     activities: r.activities?.map((a) => ({ ...a, createdAt: a.createdAt.toISOString() })),
   }));
 
-  return <AnalyticsView initialApplications={initialApplications} />;
+  return (
+    <AnalyticsView
+      initialApplications={initialApplications}
+      userName={session.user.name ?? session.user.email ?? "Pengguna NextRole"}
+      userEmail={session.user.email ?? ""}
+    />
+  );
 }

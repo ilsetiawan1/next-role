@@ -158,9 +158,9 @@ export function HowItWorksSection() {
         {HOW_STEPS.map((step) => (
           <div
             key={step.title}
-            className={`how-card-anim relative glass-surface rounded-[24px] p-5 sm:p-6 pt-6 sm:pt-7 mx-3 md:mx-0 transition-transform duration-300 hover:-translate-y-1 ${step.tiltClass}`}
+            className={`how-card-anim relative rounded-3xl bg-white border border-sky-100/90 shadow-[0_16px_38px_-10px_rgba(2,132,199,0.16),0_4px_12px_rgba(15,23,42,0.04)] p-5 sm:p-6 pt-6 sm:pt-7 mx-3 md:mx-0 transition-transform duration-300 hover:-translate-y-1 ${step.tiltClass}`}
           >
-            {/* Transparent Floating 3D Isometric Icon (NO background box) */}
+            {/* Transparent Floating 3D Isometric Icon sticking out of top-right corner */}
             <Image
               src={step.image}
               alt={step.title}

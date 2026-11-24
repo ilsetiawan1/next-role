@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { LegalDocumentLayout } from "@/components/layout/LegalDocumentLayout";
+
+export const metadata: Metadata = {
+  title: "Security",
+  description: "Standar keamanan data, enkripsi, dan privasi dokumen CV di NextRole.",
+  alternates: { canonical: "/security" },
+};
 
 export default function SecurityPage() {
   return (

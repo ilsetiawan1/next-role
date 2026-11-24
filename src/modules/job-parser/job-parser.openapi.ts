@@ -4,7 +4,7 @@ export const jobParserOpenApiPaths = {
       tags: ["Job Parser"],
       summary: "Ekstrak detail lowongan kerja dari teks mentah atau URL menggunakan AI",
       description:
-        "Menggunakan SHA-256 deduplication cache (`JobParseCache`). Cache hit tidak memanggil Gemini dan tidak mengurangi kuota harian 20 klip/hari.",
+        "Menggunakan SHA-256 deduplication cache (`JobParseCache`). Cache hit tidak memanggil Gemini dan tidak mengurangi kuota harian (5 klip/hari untuk akun terdaftar, 2 klip untuk Mode Demo).",
       requestBody: {
         required: true,
         content: {
@@ -29,7 +29,7 @@ export const jobParserOpenApiPaths = {
         "200": { description: "Hasil ekstraksi terstruktur beserta status cache & kuota" },
         "400": { description: "Payload atau URL tidak valid" },
         "401": { description: "Sesi belum terautentikasi" },
-        "429": { description: "Kuota harian 20 klip AI telah tercapai" },
+        "429": { description: "Kuota harian klip AI (5/hari terdaftar, 2 Mode Demo) telah tercapai" },
       },
     },
   },

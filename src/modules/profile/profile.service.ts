@@ -6,6 +6,7 @@ import { getR2BucketName, getR2Client } from "@/config/r2";
 import {
   ERROR_MESSAGES,
   getClipQuotaLimitForEmail,
+  isGuestEmail,
   MAX_CV_FILE_SIZE_BYTES,
 } from "@/constants/application";
 import { AppError } from "@/middlewares/error-handler";
@@ -13,6 +14,7 @@ import { isSameUtcDay } from "@/utils/date";
 import { normalizeWhitespace, sanitizeFileName } from "@/utils/format";
 import { sha256Hex } from "@/utils/hash";
 import { toVectorLiteral } from "@/utils/vector";
+import { applicationsService } from "@/modules/applications/applications.service";
 import { profileRepository, type UserProfileRecord } from "./profile.repository";
 
 const PRESIGNED_URL_EXPIRY_SECONDS = 300; // 5 menit
@@ -79,11 +81,18 @@ function isPdfMagicBytes(buffer: Buffer): boolean {
 
 function formatProfileResponse(profile: UserProfileRecord, now: Date) {
   const sameDay = isSameUtcDay(profile.lastClipResetAt, now);
+  const demoExpiresAt =
+    isGuestEmail(profile.email) && profile.createdAt
+      ? new Date(profile.createdAt.getTime() + 24 * 60 * 60 * 1000)
+      : null;
+
   return {
     id: profile.id,
     name: profile.name,
     email: profile.email,
     image: profile.image,
+    demoExpiresAt,
+    serverNowMs: now.getTime(),
     quota: {
       used: sameDay ? profile.dailyAiClipsCount : 0,
       limit: getClipQuotaLimitForEmail(profile.email),
@@ -93,11 +102,17 @@ function formatProfileResponse(profile: UserProfileRecord, now: Date) {
           fileName: profile.cvFileName,
           updatedAt: profile.cvUpdatedAt,
           hasCv: true,
+          textPreview: profile.cvText
+            ? profile.cvText.length > 220
+              ? `${profile.cvText.slice(0, 220)}...`
+              : profile.cvText
+            : null,
         }
       : {
           fileName: null,
           updatedAt: null,
           hasCv: false,
+          textPreview: null,
         },
   };
 }
@@ -107,12 +122,16 @@ export function createProfileService(deps?: {
   storage?: R2StoragePort;
   extractPdfText?: PdfTextExtractor;
   generateEmbedding?: CvEmbeddingGenerator;
+  reembedUserApplications?: (userId: string) => Promise<void>;
   now?: () => Date;
 }) {
   const repo = deps?.repo ?? profileRepository;
   const storage = deps?.storage ?? defaultR2Storage;
   const extractPdf = deps?.extractPdfText ?? defaultExtractPdfText;
   const generateEmbedding = deps?.generateEmbedding ?? generateEmbedding768;
+  const reembedUserApplications =
+    deps?.reembedUserApplications ??
+    ((uid: string) => applicationsService.reembedUserApplications(uid));
   const getNow = deps?.now ?? (() => new Date());
 
   return {
@@ -187,6 +206,16 @@ export function createProfileService(deps?: {
       if (reembedded) {
         const vector = await generateEmbedding(extractedText);
         await repo.updateCvEmbedding(userId, toVectorLiteral(vector));
+      }
+
+      // Pada akun Guest Demo, lamaran sampel awalnya memakai vektor sintetis (0 AI call saat login).
+      // Saat user mengunggah CV PDF asli, hitung ulang vektor JD sampel agar skor kecocokan akurat.
+      if (isGuestEmail(existing.email)) {
+        try {
+          await reembedUserApplications(userId);
+        } catch (error) {
+          console.error("[GUEST_REEMBED_APPLICATIONS_WARNING]", error);
+        }
       }
 
       return {

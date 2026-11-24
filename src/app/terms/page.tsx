@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { LegalDocumentLayout } from "@/components/layout/LegalDocumentLayout";
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description: "Ketentuan layanan penggunaan aplikasi pelacak lamaran kerja NextRole.",
+  alternates: { canonical: "/terms" },
+};
 
 export default function TermsOfServicePage() {
   return (
@@ -14,7 +21,7 @@ export default function TermsOfServicePage() {
         },
         {
           title: "2. Kuota Penggunaan Wajar",
-          body: "Setiap akun memperoleh kuota ekstraksi Smart Job Clipper harian (20 klip per hari) yang direset otomatis setiap hari UTC. Input lowongan yang identik dilayani melalui cache SHA-256 tanpa memotong kuota harian.",
+          body: "Setiap akun terdaftar memperoleh kuota ekstraksi Smart Job Clipper harian (5 klip per hari; 2 klip untuk Mode Demo) yang direset otomatis setiap hari UTC. Input lowongan yang identik dilayani melalui cache tanpa memotong kuota harian.",
         },
         {
           title: "3. Tanggung Jawab Konten Pengguna",

@@ -27,7 +27,7 @@ const FEATURE_TABS: Array<{
     points: [
       "Dukung link, teks, dan poster/screenshot loker",
       "Deteksi gaji & kualifikasi kunci otomatis",
-      "Hingga 20 klip gratis setiap hari",
+      "Hingga 5 klip AI gratis setiap hari",
     ],
   },
   {
@@ -489,7 +489,7 @@ export function FeaturesTabs() {
           </div>
           <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-slate-50 border border-slate-200/80 px-3 py-1 text-[11px] font-semibold text-slate-600">
             <span className="h-2 w-2 rounded-full bg-[#84CC16]" />
-            18 / 20 Klip Hari Ini
+            4 / 5 Klip Hari Ini
           </span>
         </div>
 
