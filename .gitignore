@@ -16,9 +16,13 @@ Thumbs.db
 
 # Dependencies & Build Caches
 node_modules/
+.next/
+out/
 dist/
 build/
 .cache/
+*.tsbuildinfo
+next-env.d.ts
 
 # Logs
 *.log
@@ -27,4 +31,13 @@ yarn-debug.log*
 
 # Scratch & Temporary
 scratch/
+
+# Local Infrastructure & Account Notes
+docs/INFRA.md
+
+# Private Internal Docs & Design Binary
+AGENTS.md
+docs/ROADMAP.md
+docs/next-role.figcraft
+
 
