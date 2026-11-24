@@ -1,0 +1,145 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum ApplicationStatus {
+  APPLIED
+  FOLLOW_UP_NEEDED
+  INTERVIEW_SCHEDULED
+  OFFERED
+  REJECTED
+  GHOSTED
+}
+
+model User {
+  id                String        @id @default(uuid())
+  name              String?
+  email             String        @unique
+  emailVerified     DateTime?     @map("email_verified")
+  image             String?
+  passwordHash      String?       @map("password_hash")
+
+  // Proteksi Kuota Ekstraksi AI Harian (20 Klip/Hari)
+  dailyAiClipsCount Int           @default(0) @map("daily_ai_clips_count")
+  lastClipResetAt   DateTime      @default(now()) @map("last_clip_reset_at")
+
+  // Profil CV (PDF di Cloudflare R2 Private Bucket + Teks & Vektor 768d di Neon pgvector)
+  cvFileKey         String?                              @map("cv_file_key")
+  cvFileName        String?                              @map("cv_file_name")
+  cvText            String?       @db.Text               @map("cv_text")
+  cvHash            String?                              @map("cv_hash")
+  cvEmbedding       Unsupported("vector(768)")?          @map("cv_embedding")
+  cvUpdatedAt       DateTime?                            @map("cv_updated_at")
+
+  accounts          Account[]
+  sessions          Session[]
+  applications      Application[]
+
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Application {
+  id               String            @id @default(uuid())
+  userId           String            @map("user_id")
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  companyName      String            @map("company_name")
+  position         String
+  location         String?
+  employmentType   String?           @map("employment_type")
+  salaryRange      String?           @map("salary_range")
+  jobSource        String?           @map("job_source")
+  jobUrl           String?           @map("job_url")
+  keyRequirements  String[]          @default([]) @map("key_requirements")
+
+  // Arsip Permanen Teks Iklan Lowongan & Vektor Semantik (768d)
+  jdSnapshot       String?                      @db.Text @map("jd_snapshot")
+  jdEmbedding      Unsupported("vector(768)")?           @map("jd_embedding")
+
+  // Status & Jadwal Alur
+  status           ApplicationStatus @default(APPLIED)
+  appliedAt        DateTime          @default(now()) @map("applied_at")
+  followUpAt       DateTime?         @map("follow_up_at")
+  interviewAt      DateTime?         @map("interview_at")
+
+  // Kontak Recruiter
+  recruiterName    String?           @map("recruiter_name")
+  recruiterContact String?           @map("recruiter_contact")
+
+  // Relasi Log Aktivitas
+  activities       ActivityLog[]
+
+  // Proteksi Soft Delete
+  deletedAt        DateTime?         @map("deleted_at")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([status])
+  @@index([appliedAt])
+  @@index([deletedAt])
+  @@map("applications")
+}
+
+model ActivityLog {
+  id            String      @id @default(uuid())
+  applicationId String      @map("application_id")
+  actionType    String      @map("action_type")
+  notes         String?     @db.Text
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([applicationId])
+  @@map("activity_logs")
+}
+
+model JobParseCache {
+  id            String   @id @default(uuid())
+  contentHash   String   @unique @map("content_hash")
+  inputType     String   @map("input_type")
+  parsedPayload Json     @map("parsed_payload")
+  modelVersion  String   @map("model_version")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("job_parse_cache")
+}
