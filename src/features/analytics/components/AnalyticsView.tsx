@@ -880,13 +880,13 @@ export function AnalyticsView({
                 </span>
               </div>
             </div>
-            <span className="h-10 w-10 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center shrink-0 p-1.5">
+            <span className="h-10 w-10 rounded-xl overflow-hidden bg-slate-100 ring-1 ring-white/30 shadow-xs shrink-0">
               <Image
                 src="/images/dashboard/icon-total-applied.png"
                 alt="Total Lamaran"
-                width={32}
-                height={32}
-                className="h-7 w-7 object-contain"
+                width={40}
+                height={40}
+                className="h-full w-full object-cover"
               />
             </span>
           </div>
@@ -911,13 +911,13 @@ export function AnalyticsView({
                 </span>
               </div>
             </div>
-            <span className="h-10 w-10 rounded-xl bg-sky-50/90 border border-sky-100/80 flex items-center justify-center shrink-0 p-1.5">
+            <span className="h-10 w-10 rounded-xl overflow-hidden border border-sky-100/80 shrink-0">
               <Image
                 src="/images/dashboard/icon-interview.png"
                 alt="Lolos Wawancara"
-                width={32}
-                height={32}
-                className="h-7 w-7 object-contain"
+                width={40}
+                height={40}
+                className="h-full w-full object-cover"
               />
             </span>
           </div>
@@ -944,13 +944,13 @@ export function AnalyticsView({
                 </span>
               </div>
             </div>
-            <span className="h-10 w-10 rounded-xl bg-sky-50/90 border border-sky-100/80 flex items-center justify-center shrink-0 p-1.5">
+            <span className="h-10 w-10 rounded-xl overflow-hidden border border-sky-100/80 shrink-0">
               <Image
                 src="/images/dashboard/icon-follow-up.png"
                 alt="Tingkat Respon HRD"
-                width={32}
-                height={32}
-                className="h-7 w-7 object-contain"
+                width={40}
+                height={40}
+                className="h-full w-full object-cover"
               />
             </span>
           </div>
@@ -985,13 +985,13 @@ export function AnalyticsView({
                 ) : null}
               </div>
             </div>
-            <span className="h-10 w-10 rounded-xl bg-sky-50/90 border border-sky-100/80 flex items-center justify-center shrink-0 p-1.5">
+            <span className="h-10 w-10 rounded-xl overflow-hidden border border-sky-100/80 shrink-0">
               <Image
                 src="/images/dashboard/icon-response-rate.png"
                 alt="Rata-Rata Kecocokan CV"
-                width={32}
-                height={32}
-                className="h-7 w-7 object-contain"
+                width={40}
+                height={40}
+                className="h-full w-full object-cover"
               />
             </span>
           </div>
