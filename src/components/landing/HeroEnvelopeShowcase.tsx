@@ -45,29 +45,29 @@ export function HeroEnvelopeShowcase() {
   );
 
   return (
-    <div ref={scopeRef} className="mx-auto max-w-4xl px-4 sm:px-6 pt-10 sm:pt-14 text-center">
+    <div ref={scopeRef} className="mx-auto w-full max-w-5xl px-4 sm:px-6 py-6 sm:py-8 lg:py-6 text-center">
       {/* Exact FigCraft weight: font-normal (400) airy headline */}
-      <h1 className="hero-copy-anim text-[30px] sm:text-[46px] font-normal tracking-tight text-white leading-[1.18]">
+      <h1 className="hero-copy-anim text-[30px] sm:text-[48px] lg:text-[58px] xl:text-[64px] font-normal tracking-tight text-white leading-[1.14]">
         Satu ruang tenang untuk
         <br />
         kelola lamaranmu
       </h1>
-      <p className="hero-copy-anim mx-auto mt-3.5 max-w-lg text-xs sm:text-[15px] font-normal text-sky-50/90 leading-relaxed px-2">
+      <p className="hero-copy-anim mx-auto mt-3.5 lg:mt-4 max-w-lg lg:max-w-2xl text-xs sm:text-[15px] lg:text-[17px] font-normal text-sky-50/90 leading-relaxed px-2">
         Simpan arsip iklan lowongan secara permanen, cek kecocokan CV otomatis, dan pantau
         follow-up H+7 di satu papan kerja.
       </p>
 
       {/* FigCraft 3D Open Silver-Grey Envelope + 2-Col Pills */}
-      <div className="mt-8 sm:mt-11 relative mx-auto max-w-87 sm:max-w-162.5">
+      <div className="mt-8 sm:mt-10 lg:mt-11 relative mx-auto max-w-87 sm:max-w-162.5 lg:max-w-195 xl:max-w-205">
         {/* Top Floating Comparison Pills — 2 Columns Side-by-Side */}
-        <div className="grid grid-cols-2 gap-3 sm:gap-16 items-start relative z-30">
-          <div className="hero-pill-left relative flex items-center gap-2 sm:gap-3 rounded-2xl bg-white/95 backdrop-blur-md border border-white px-3 py-2.5 sm:px-4 sm:py-2.5 shadow-lg shadow-sky-900/12 text-left">
-            <span className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-slate-100 border border-slate-200 text-slate-600 flex items-center justify-center shrink-0">
-              <Frown className="h-4 w-4 sm:h-5 sm:w-5" />
+        <div className="grid grid-cols-2 gap-3 sm:gap-16 lg:gap-24 items-start relative z-30">
+          <div className="hero-pill-left relative flex items-center gap-2 sm:gap-3 lg:gap-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-white px-3 py-2.5 sm:px-4 sm:py-3 lg:px-5 lg:py-3.5 shadow-lg shadow-sky-900/12 text-left">
+            <span className="h-8 w-8 sm:h-9 sm:w-9 lg:h-11 lg:w-11 rounded-full bg-slate-100 border border-slate-200 text-slate-600 flex items-center justify-center shrink-0">
+              <Frown className="h-4 w-4 sm:h-5 sm:w-5 lg:h-5.5 lg:w-5.5" />
             </span>
             <div className="min-w-0">
-              <p className="text-xs font-bold text-slate-900 truncate">Cara Manual</p>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 truncate">
+              <p className="text-xs lg:text-sm font-bold text-slate-900 truncate">Cara Manual</p>
+              <p className="text-[10px] sm:text-[11px] lg:text-xs text-slate-500 truncate">
                 <span className="sm:hidden">JD tutup • Lupa</span>
                 <span className="hidden sm:inline">JD hilang &amp; lupa H+7</span>
               </p>
@@ -77,7 +77,7 @@ export function HeroEnvelopeShowcase() {
               aria-hidden="true"
               viewBox="0 0 64 64"
               fill="none"
-              className="absolute -bottom-14 sm:-bottom-16 left-12 sm:left-24 w-14 sm:w-16 h-14 sm:h-16 text-white/90 pointer-events-none"
+              className="absolute -bottom-14 sm:-bottom-16 left-12 sm:left-24 lg:left-28 w-14 sm:w-16 h-14 sm:h-16 text-white/90 pointer-events-none"
             >
               <path
                 d="M 4 0 L 4 18 Q 4 26 12 26 L 48 26 Q 56 26 56 34 L 56 64"
@@ -88,16 +88,16 @@ export function HeroEnvelopeShowcase() {
             </svg>
           </div>
 
-          <div className="hero-pill-right relative flex items-center gap-2 sm:gap-3 rounded-2xl bg-white/95 backdrop-blur-md border border-white px-3 py-2.5 sm:px-4 sm:py-2.5 shadow-lg shadow-sky-900/12 text-left mt-3 sm:mt-4">
-            <span className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-[#0F2942] text-white flex items-center justify-center shrink-0">
-              <Smile className="h-4 w-4 sm:h-5 sm:w-5" />
+          <div className="hero-pill-right relative flex items-center gap-2 sm:gap-3 lg:gap-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-white px-3 py-2.5 sm:px-4 sm:py-3 lg:px-5 lg:py-3.5 shadow-lg shadow-sky-900/12 text-left mt-3 sm:mt-4 lg:mt-5">
+            <span className="h-8 w-8 sm:h-9 sm:w-9 lg:h-11 lg:w-11 rounded-xl bg-[#0F2942] text-white flex items-center justify-center shrink-0">
+              <Smile className="h-4 w-4 sm:h-5 sm:w-5 lg:h-5.5 lg:w-5.5" />
             </span>
             <div className="min-w-0">
-              <p className="text-xs font-bold text-slate-900 truncate">
+              <p className="text-xs lg:text-sm font-bold text-slate-900 truncate">
                 <span className="sm:hidden">NextRole</span>
                 <span className="hidden sm:inline">Dengan NextRole</span>
               </p>
-              <p className="text-[10px] sm:text-[11px] text-sky-700 font-medium truncate">
+              <p className="text-[10px] sm:text-[11px] lg:text-xs text-sky-700 font-medium truncate">
                 <span className="sm:hidden">Cocok CV: 88%</span>
                 <span className="hidden sm:inline">Arsip utuh • Cocok 88%</span>
               </p>
@@ -107,7 +107,7 @@ export function HeroEnvelopeShowcase() {
               aria-hidden="true"
               viewBox="0 0 64 56"
               fill="none"
-              className="absolute -bottom-12 sm:-bottom-14 right-12 sm:right-28 w-14 sm:w-16 h-12 sm:h-14 text-white/90 pointer-events-none"
+              className="absolute -bottom-12 sm:-bottom-14 right-12 sm:right-28 lg:right-32 w-14 sm:w-16 h-12 sm:h-14 text-white/90 pointer-events-none"
             >
               <path
                 d="M 56 0 L 56 14 Q 56 22 48 22 L 14 22 Q 6 22 6 30 L 6 56"
@@ -120,7 +120,15 @@ export function HeroEnvelopeShowcase() {
         </div>
 
         {/* Open 3D Silver-Grey Envelope Assembly (True V-Peak Back Flap Connecting Front Corners) */}
-        <div className="relative mx-auto mt-4 sm:mt-5 max-w-82.5 sm:max-w-145 pt-6 sm:pt-8">
+        <div
+          className="relative mx-auto mt-4 sm:mt-5 lg:mt-6 max-w-82.5 sm:max-w-145 lg:max-w-180 xl:max-w-190 pt-6 sm:pt-8 lg:pt-10"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(180deg, #000 0%, #000 84%, rgba(0,0,0,0.45) 95%, transparent 100%)",
+            maskImage:
+              "linear-gradient(180deg, #000 0%, #000 84%, rgba(0,0,0,0.45) 95%, transparent 100%)",
+          }}
+        >
           {/* Envelope Back Flap — Real Triangular Open Envelope Peak Above Cards */}
           <svg
             aria-hidden="true"
@@ -137,37 +145,41 @@ export function HeroEnvelopeShowcase() {
           </svg>
 
           {/* 2 Tall Fanned Cards Sitting Inside Real Open Envelope */}
-          <div className="relative z-10 grid grid-cols-2 gap-1 sm:gap-2 px-5 sm:px-9 pb-14 sm:pb-20">
+          <div className="relative z-10 grid grid-cols-2 gap-1 sm:gap-2 lg:gap-3 px-5 sm:px-9 lg:px-11 pb-14 sm:pb-20 lg:pb-24">
             {/* Left Card: Spreadsheet Manual */}
-            <div className="hero-card-left rotate-3 translate-y-2 min-h-29.5 sm:min-h-37 rounded-2xl bg-white/95 border border-slate-200/80 p-3 sm:p-5 text-left shadow-md">
-              <p className="text-[11px] font-medium text-slate-400 truncate">
+            <div className="hero-card-left rotate-3 translate-y-2 min-h-29.5 sm:min-h-37 lg:min-h-47.5 rounded-2xl bg-white/95 border border-slate-200/80 p-3 sm:p-5 lg:p-6 text-left shadow-md">
+              <p className="text-[11px] lg:text-xs font-medium text-slate-400 truncate">
                 <span className="sm:hidden">Spreadsheet</span>
                 <span className="hidden sm:inline">Spreadsheet Manual</span>
               </p>
-              <p className="mt-1 text-xs sm:text-base font-bold text-slate-700 leading-snug">
+              <p className="mt-1 lg:mt-1.5 text-xs sm:text-base lg:text-lg font-bold text-slate-700 leading-snug">
                 <span className="sm:hidden">14 data tercecer</span>
                 <span className="hidden sm:inline">14 lamaran tercecer</span>
               </p>
-              <span className="hidden sm:inline-block mt-3 rounded-lg bg-slate-100/90 px-3 py-1 text-[11px] font-medium text-slate-500">
+              <span className="hidden sm:inline-block mt-3 lg:mt-4 rounded-lg bg-slate-100/90 px-3 py-1 lg:px-3.5 lg:py-1.5 text-[11px] lg:text-xs font-medium text-slate-500">
                 Iklan lowongan ditutup
               </span>
             </div>
 
             {/* Right Card: NextRole Highlight */}
-            <div className="hero-card-right -rotate-2 min-h-31.5 sm:min-h-38.5 rounded-2xl bg-white border border-sky-200/90 p-3 sm:p-5 text-left shadow-lg shadow-slate-900/8">
+            <div className="hero-card-right -rotate-2 min-h-31.5 sm:min-h-38.5 lg:min-h-49.5 rounded-2xl bg-white border border-sky-200/90 p-3 sm:p-5 lg:p-6 text-left shadow-lg shadow-slate-900/8">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
-                <span className="text-[11px] sm:text-xs font-medium text-slate-600 whitespace-nowrap">
+                <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs lg:text-[13px] font-medium text-slate-600 whitespace-nowrap">
+                  <span className="hidden lg:inline-flex h-6 w-6 items-center justify-center rounded-md bg-sky-50 border border-sky-100 text-[10px] font-bold text-sky-700">
+                    TD
+                  </span>
                   PT Telkom Digital
                 </span>
-                <span className="w-fit rounded-full bg-[#D4FF47] px-2.5 py-0.5 text-[10px] font-extrabold text-[#0C4A6E] shrink-0">
-                  Cocok 88%
+                <span className="w-fit rounded-full bg-[#D4FF47] px-2.5 py-0.5 lg:px-3 lg:py-1 text-[10px] lg:text-[11px] font-extrabold text-[#0C4A6E] shrink-0">
+                  <span className="lg:hidden">Cocok 88%</span>
+                  <span className="hidden lg:inline">Cocok CV: 88%</span>
                 </span>
               </div>
-              <p className="mt-2 sm:mt-2.5 text-xs sm:text-[15px] font-bold text-slate-900 leading-snug">
+              <p className="mt-2 sm:mt-2.5 lg:mt-3.5 text-xs sm:text-[15px] lg:text-lg font-bold text-slate-900 leading-snug">
                 <span className="sm:hidden">Frontend Eng.</span>
                 <span className="hidden sm:inline">Senior Frontend Engineer</span>
               </p>
-              <span className="hidden sm:inline-block mt-2.5 rounded-full bg-sky-50 border border-sky-100 px-3 py-1 text-[11px] font-semibold text-[#0284C7]">
+              <span className="hidden sm:inline-block mt-2.5 lg:mt-3.5 rounded-full bg-sky-50 border border-sky-100 px-3 py-1 lg:px-3.5 lg:py-1.5 text-[11px] lg:text-xs font-semibold text-[#0284C7]">
                 Arsip JD Utuh
               </span>
             </div>
@@ -178,7 +190,7 @@ export function HeroEnvelopeShowcase() {
             aria-hidden="true"
             viewBox="0 0 600 160"
             preserveAspectRatio="none"
-            className="absolute inset-x-0 bottom-0 w-full h-26 sm:h-36 z-20 pointer-events-none"
+            className="absolute inset-x-0 bottom-0 w-full h-26 sm:h-36 lg:h-44 z-20 pointer-events-none"
           >
             <defs>
               <linearGradient id="envFrontGrey" x1="0" y1="0" x2="0" y2="1">
@@ -203,16 +215,6 @@ export function HeroEnvelopeShowcase() {
               strokeWidth="1.2"
             />
           </svg>
-
-          {/* Soft Bottom Mist Fade covering lower edge of envelope on Desktop/Tablet */}
-          <div
-            aria-hidden="true"
-            className="hidden sm:block absolute -inset-x-8 -bottom-4 h-18 z-30 pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(239,246,255,0) 0%, rgba(239,246,255,0.82) 58%, #EFF6FF 100%)",
-            }}
-          />
         </div>
       </div>
     </div>

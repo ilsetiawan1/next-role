@@ -9,8 +9,8 @@ export function LandingNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="mx-auto max-w-6xl px-4 sm:px-6 relative z-40">
-      <nav className="flex items-center justify-between rounded-full bg-white/15 backdrop-blur-xl border border-white/30 px-3.5 sm:px-6 py-2 text-white">
+    <header className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-40">
+      <nav className="flex items-center justify-between rounded-full bg-white/15 backdrop-blur-xl border border-white/30 px-3.5 sm:px-6 py-2 lg:py-2.5 text-white">
         <Link href="/" className="flex items-center gap-2.5">
           <Image
             src="/images/brand/android-chrome-192x192.png"
