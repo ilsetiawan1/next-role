@@ -189,7 +189,7 @@ export function HomeOverview({
         key={app.id}
         onClick={() => setSelectedApp(app)}
         className={cn(
-          "home-stagger-card glass-surface rounded-2xl p-4 hover:border-sky-200 transition cursor-pointer",
+          "home-stagger-card glass-surface rounded-2xl p-4 min-h-[126px] flex flex-col justify-between hover:border-sky-200 transition cursor-pointer",
           compactHorizontal && "w-[280px] shrink-0"
         )}
       >
@@ -210,7 +210,7 @@ export function HomeOverview({
 
         <p className="mt-2.5 text-sm font-normal text-slate-900 truncate">{app.position}</p>
 
-        <div className="mt-2 flex items-center justify-between gap-2">
+        <div className="mt-2 min-h-7 flex items-center justify-between gap-2">
           <span className="text-xs font-normal text-slate-600 truncate">
             {app.salaryRange ?? `${days} hari lalu`}
           </span>
@@ -245,7 +245,7 @@ export function HomeOverview({
       <div
         key={app.id}
         onClick={() => setSelectedApp(app)}
-        className="home-stagger-card glass-surface rounded-2xl p-4 hover:border-sky-200 transition cursor-pointer"
+        className="home-stagger-card glass-surface rounded-2xl p-4 min-h-[126px] flex flex-col justify-between hover:border-sky-200 transition cursor-pointer"
       >
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-3 min-w-0">
@@ -264,7 +264,7 @@ export function HomeOverview({
 
         <p className="mt-2.5 text-sm font-normal text-slate-900 truncate">{app.position}</p>
 
-        <div className="mt-2 flex items-center justify-between gap-2 text-xs">
+        <div className="mt-2 min-h-7 flex items-center justify-between gap-2 text-xs">
           <span className="text-slate-600 font-normal truncate">{app.salaryRange ?? "-"}</span>
           {statusDot ? (
             <span className="inline-flex items-center gap-1.5 text-slate-600 font-normal shrink-0">
@@ -384,7 +384,11 @@ export function HomeOverview({
 
           <aside className="col-span-5 space-y-5">
             {statsBento}
-            <MiniCalendarCard applications={applications} showWeeklyTarget={false} />
+            <MiniCalendarCard
+              applications={applications}
+              showWeeklyTarget={false}
+              onSelectApplication={setSelectedApp}
+            />
           </aside>
         </div>
 
@@ -435,7 +439,11 @@ export function HomeOverview({
 
         <aside className="col-span-4 space-y-5">
           {statsBento}
-          <MiniCalendarCard applications={applications} showWeeklyTarget />
+          <MiniCalendarCard
+            applications={applications}
+            showWeeklyTarget
+            onSelectApplication={setSelectedApp}
+          />
         </aside>
       </div>
 
