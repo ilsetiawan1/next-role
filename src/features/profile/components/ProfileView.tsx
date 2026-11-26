@@ -677,17 +677,21 @@ export function ProfileView({
         {promoBannerCard}
       </div>
 
-      {/* DESKTOP LAYOUT (xl+): EXACT FigCraft Profile Desktop 1440x900 (2-Column Split!) */}
-      <div className="hidden xl:grid xl:grid-cols-12 gap-6 items-start">
-        <div className="col-span-6 space-y-5">
-          {heroProfileCard}
-          {promoBannerCard}
+      {/* DESKTOP LAYOUT (xl+): Symmetrical 2-Row Grid (Top: Hero+Banner | Account+Session; Bottom: Preferences | Data & Privacy) */}
+      <div className="hidden xl:block space-y-5">
+        <div className="grid grid-cols-12 gap-6 items-stretch">
+          <div className="col-span-6 flex flex-col justify-between gap-5">
+            {heroProfileCard}
+            {promoBannerCard}
+          </div>
+          <div className="col-span-6 flex flex-col justify-between gap-5">
+            {accountGroup(true)}
+            {sessionGroup}
+          </div>
         </div>
-        <div className="col-span-6 space-y-4">
-          {accountGroup(true)}
-          {preferencesGroup}
-          {dataPrivacyGroup}
-          {sessionGroup}
+        <div className="grid grid-cols-12 gap-6 items-start">
+          <div className="col-span-6">{preferencesGroup}</div>
+          <div className="col-span-6">{dataPrivacyGroup}</div>
         </div>
       </div>
 
