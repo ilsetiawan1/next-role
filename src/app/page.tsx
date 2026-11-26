@@ -39,7 +39,7 @@ export default function LandingPage() {
       />
       {/* Hero Section dengan gradasi sky-blue murni persis desain FigCraft */}
       <section
-        className="relative overflow-hidden pb-10 sm:pb-12 pt-5"
+        className="relative overflow-hidden min-h-svh flex flex-col pb-10 sm:pb-12 pt-5"
         style={{
           background:
             "linear-gradient(180deg, #0369A1 0%, #0284C7 34%, #2CA4E6 60%, #9AD5F7 78%, #EFF6FF 94%, #EFF6FF 100%)",
@@ -50,7 +50,7 @@ export default function LandingPage() {
         <LandingNavbar />
 
         {/* Hero Copy + Interactive Envelope Showcase (GSAP) */}
-        <div id="top">
+        <div id="top" className="flex-1 flex flex-col justify-center">
           <HeroEnvelopeShowcase />
         </div>
       </section>
