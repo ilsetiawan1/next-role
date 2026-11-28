@@ -66,7 +66,7 @@ export function WorkspaceShell({
 
   return (
     <div
-      className="min-h-dvh flex flex-col pb-24 md:pb-10"
+      className="min-h-dvh flex flex-col pb-28 md:pb-10"
       style={{
         background: isFlatSkyCanvas
           ? "#F4F9FF"
@@ -150,7 +150,10 @@ export function WorkspaceShell({
 
       {/* Clean Floating Dismissible Demo Reminder Pill (zero layout shift; hidden on /profile where banner shows it) */}
       {user.isGuest && demoRemaining && !demoNoticeDismissed && pathname !== "/profile" ? (
-        <div className="fixed bottom-23.5 right-4 md:bottom-5 md:right-6 z-30">
+        <div
+          className="fixed bottom-[calc(env(safe-area-inset-bottom,0px)+5.75rem)] right-4 md:bottom-5 md:right-6 z-30"
+          style={{ transform: "translateZ(0)" }}
+        >
           <div className="bg-white/95 backdrop-blur-xl border border-sky-100/90 shadow-[0_10px_28px_-6px_rgba(2,132,199,0.2)] rounded-full pl-3.5 pr-1.5 py-1.5 flex items-center gap-2.5 text-xs">
             <span className="inline-flex items-center gap-1.5 text-slate-700 font-normal">
               <Clock className="h-3.5 w-3.5 text-[#0284C7] shrink-0" />
@@ -176,56 +179,64 @@ export function WorkspaceShell({
         </div>
       ) : null}
 
-      {/* Mobile Floating Bottom Pill Dock + Raised Center FAB */}
-      <nav
-        aria-label="Navigasi mobile"
-        className="md:hidden fixed bottom-4 inset-x-4 z-40 glass-pill rounded-[28px] h-17 px-2 flex items-center justify-around"
+      {/* Mobile Floating Bottom Pill Dock + Raised Center FAB (outer fixed wrapper separated from backdrop-filter for iOS WebKit/PWA stability) */}
+      <div
+        className="md:hidden fixed inset-x-0 bottom-0 z-40 px-4 pointer-events-none"
+        style={{
+          paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 1rem)",
+          transform: "translateZ(0)",
+        }}
       >
-        {NAV_ITEMS.slice(0, 2).map((item) => {
-          const Icon = item.icon;
-          const active = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex flex-col items-center justify-center min-w-14 min-h-11 rounded-xl text-[11px] font-semibold transition",
-                active ? "text-[#0284C7]" : "text-slate-500"
-              )}
-            >
-              <Icon className="h-5 w-5" />
-              <span className="mt-0.5">{item.label}</span>
-            </Link>
-          );
-        })}
-
-        <button
-          type="button"
-          onClick={() => setClipperOpen(true)}
-          aria-label="Catat Lamaran Baru"
-          className="-mt-7 h-14 w-14 rounded-full bg-[#0284C7] text-white shadow-lg shadow-sky-600/35 border-4 border-white flex items-center justify-center active:scale-95 transition cursor-pointer"
+        <nav
+          aria-label="Navigasi mobile"
+          className="pointer-events-auto glass-pill rounded-[28px] h-17 px-2 flex items-center justify-around"
         >
-          <Plus className="h-6 w-6" />
-        </button>
+          {NAV_ITEMS.slice(0, 2).map((item) => {
+            const Icon = item.icon;
+            const active = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex flex-col items-center justify-center min-w-14 min-h-11 rounded-xl text-[11px] font-semibold transition",
+                  active ? "text-[#0284C7]" : "text-slate-500"
+                )}
+              >
+                <Icon className="h-5 w-5" />
+                <span className="mt-0.5">{item.label}</span>
+              </Link>
+            );
+          })}
 
-        {NAV_ITEMS.slice(2).map((item) => {
-          const Icon = item.icon;
-          const active = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex flex-col items-center justify-center min-w-14 min-h-11 rounded-xl text-[11px] font-semibold transition",
-                active ? "text-[#0284C7]" : "text-slate-500"
-              )}
-            >
-              <Icon className="h-5 w-5" />
-              <span className="mt-0.5">{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
+          <button
+            type="button"
+            onClick={() => setClipperOpen(true)}
+            aria-label="Catat Lamaran Baru"
+            className="-mt-7 h-14 w-14 rounded-full bg-[#0284C7] text-white shadow-lg shadow-sky-600/35 border-4 border-white flex items-center justify-center active:scale-95 transition cursor-pointer"
+          >
+            <Plus className="h-6 w-6" />
+          </button>
+
+          {NAV_ITEMS.slice(2).map((item) => {
+            const Icon = item.icon;
+            const active = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex flex-col items-center justify-center min-w-14 min-h-11 rounded-xl text-[11px] font-semibold transition",
+                  active ? "text-[#0284C7]" : "text-slate-500"
+                )}
+              >
+                <Icon className="h-5 w-5" />
+                <span className="mt-0.5">{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
 
       <ClipperModal
         open={clipperOpen}
