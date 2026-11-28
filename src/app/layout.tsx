@@ -87,6 +87,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#0284C7",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -95,8 +96,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${plusJakartaSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+    <html lang="id" className={`${plusJakartaSans.variable} antialiased`}>
+      <body className="min-h-dvh flex flex-col font-sans">{children}</body>
     </html>
   );
 }

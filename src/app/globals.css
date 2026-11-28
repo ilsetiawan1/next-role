@@ -16,6 +16,10 @@
   --font-sans: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", system-ui, sans-serif;
 }
 
+html {
+  overscroll-behavior-y: none;
+}
+
 body {
   background: linear-gradient(180deg, #f2f7fd 0%, #e6f0fa 100%);
   color: var(--foreground);
